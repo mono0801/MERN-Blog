@@ -9,10 +9,10 @@ Currently, two official plugins are available:
 
 ## Client init
 
-```react
-$ npm create @vite/latest
-$ cd client
+```bash
+# vite로 생성된 파일에는 nodemodule이 설치되어있지 않다
 $ npm i
+# Tailwind CSS 설치
 $ npm install -D tailwindcss postcss autoprefixer
 $ npx tailwindcss init -p
 $ npm i styled-components
