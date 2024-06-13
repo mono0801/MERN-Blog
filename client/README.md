@@ -17,6 +17,7 @@ $ npm install -D tailwindcss postcss autoprefixer
 $ npx tailwindcss init -p
 $ npm i styled-components
 $ npm i --save-dev @types/styled-components
+$ npm i react-router-dom
 ```
 
 ## Expanding the ESLint configuration
