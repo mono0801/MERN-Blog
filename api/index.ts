@@ -1,9 +1,8 @@
-import express from "express";
 import "dotenv/config";
 import "./db";
 import "./model/User";
+import app from "./server";
 
-const app = express();
 const PORT = 3000;
 
 const handleListening = () => {
