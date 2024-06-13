@@ -1,8 +1,12 @@
 import express from "express";
+import "dotenv/config";
+import "./db";
 
 const app = express();
-const port = 3000;
+const PORT = 3000;
 
-app.listen(port, () => {
+const handleListening = () => {
     console.log("✔ Server is running on port 3000");
-});
+};
+
+app.listen(PORT, handleListening);

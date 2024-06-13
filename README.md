@@ -18,5 +18,9 @@ $ npm i express
 $ npm i -D nodemon
 # TypeScript에서 express 인식
 $ tsc --init
+# TypeScript가 Node.js에서 실행하도록 설정
 $ npm i -D typescript ts-node tsx @types/node @types/express
+$ npm i mongoose
+$ npm i dotenv
+$ npm i -D @types/dotenv
 ```
