@@ -44,3 +44,25 @@ export default {
 -   Replace `plugin:@typescript-eslint/recommended` to `plugin:@typescript-eslint/recommended-type-checked` or `plugin:@typescript-eslint/strict-type-checked`
 -   Optionally add `plugin:@typescript-eslint/stylistic-type-checked`
 -   Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and add `plugin:react/recommended` & `plugin:react/jsx-runtime` to the `extends` list
+
+## Expanding the TailWind CSS & Flowbite-React configuration
+
+```js
+/** @type {import('tailwindcss').Config} */
+export default {
+    content: [
+        // TailWind CSS Configuration
+        "./index.html",
+        "./src/**/*.{js,ts,jsx,tsx}",
+        // Flowbite-React Configuration
+        "node_modules/flowbite-react/**/*.{js,jsx,ts,tsx}",
+    ],
+    theme: {
+        extend: {},
+    },
+    plugins: [
+        // Flowbite-React Configuration
+        require("flowbite/plugin"),
+    ],
+};
+```
