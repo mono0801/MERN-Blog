@@ -15,7 +15,8 @@ $ cd client
 # package.json 설정
 $ npm init -y
 $ npm i express
+$ npm i -D nodemon
 # TypeScript에서 express 인식
-$ npm install --save @types/express
-$ npm i nodemon
+$ tsc --init
+$ npm i -D typescript ts-node tsx @types/node @types/express
 ```
