@@ -18,6 +18,9 @@ $ npx tailwindcss init -p
 $ npm i styled-components
 $ npm i --save-dev @types/styled-components
 $ npm i react-router-dom
+# UI 컴포넌트 디자인 제공 - Tailwind CSS 설치 필요
+$ npm i flowbite-react@0.7.0
+$ npm i react-icons
 ```
 
 ## Expanding the ESLint configuration
