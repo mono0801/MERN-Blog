@@ -23,4 +23,5 @@ $ npm i -D typescript ts-node tsx @types/node @types/express
 $ npm i mongoose
 $ npm i dotenv
 $ npm i -D @types/dotenv
+$ npm i @types/bcrypt
 ```

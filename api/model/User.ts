@@ -1,7 +1,9 @@
 import mongoose from "mongoose";
+import bcrypt from "bcrypt";
 
 export interface IUser extends mongoose.Document {
     username: string;
+    nickname: string;
     email: string;
     password: string;
     socialLogin?: boolean;
@@ -9,7 +11,8 @@ export interface IUser extends mongoose.Document {
 
 const userSchema = new mongoose.Schema<IUser>(
     {
-        username: { type: String, required: true, unique: true },
+        username: { type: String, required: true },
+        nickname: { type: String, required: true, unique: true },
         email: { type: String, required: true, unique: true },
         password: {
             type: String,
@@ -22,6 +25,12 @@ const userSchema = new mongoose.Schema<IUser>(
     // 생성 & 업데이트 시간 자동 입력
     { timestamps: true }
 );
+
+userSchema.pre("save", async function () {
+    if (this.isModified("password")) {
+        this.password = await bcrypt.hash(this.password, 5);
+    }
+});
 
 const userModel = mongoose.model<IUser>("User", userSchema);
 
