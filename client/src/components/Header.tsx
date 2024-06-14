@@ -2,16 +2,7 @@ import { Button, Navbar, TextInput } from "flowbite-react";
 import { AiOutlineSearch } from "react-icons/ai";
 import { FaMoon } from "react-icons/fa";
 import { Link, useLocation } from "react-router-dom";
-import styled from "styled-components";
-
-const LinkSpan = styled.span`
-    font-weight: bold;
-    font-size: 1rem;
-`;
-
-const LogoSpan = styled.span`
-    margin-left: 4px;
-`;
+import { LinkSpan, LogoSpan } from "../styles/components/header.style";
 
 const Header = () => {
     const path = useLocation().pathname;

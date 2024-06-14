@@ -7,16 +7,9 @@ export const signup = async (
     res: Response,
     next: NextFunction
 ) => {
-    const { username, nickname, email, password } = req.body;
+    const { nickname, email, password } = req.body;
 
-    if (
-        !username ||
-        !email ||
-        !nickname ||
-        username == "" ||
-        nickname == "" ||
-        email == ""
-    ) {
+    if (!email || !nickname || nickname == "" || email == "") {
         next(new HttpException(400, "All Fields are Required"));
         // return res.status(400).json({ message: "All Fields are Required" });
     }
@@ -44,7 +37,6 @@ export const signup = async (
     // }
 
     const newUser = new User({
-        username,
         nickname,
         email,
         password,
