@@ -21,6 +21,9 @@ $ npm i react-router-dom
 # UI 컴포넌트 디자인 제공 - Tailwind CSS 설치 필요
 $ npm i flowbite-react@0.7.0
 $ npm i react-icons
+$ npm i react-hook-form
+# React-Hook-Form에 사용할 Input Schema 설정
+$ npm i @hookform/resolvers yup
 ```
 
 ## Expanding the ESLint configuration
