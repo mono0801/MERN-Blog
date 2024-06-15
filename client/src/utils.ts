@@ -6,7 +6,7 @@ export interface IJoin {
 
 export async function fetchJoin(formData: IJoin) {
     try {
-        const response = await fetch("/auth/signup", {
+        const response = await fetch("/auth/join", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify(formData),

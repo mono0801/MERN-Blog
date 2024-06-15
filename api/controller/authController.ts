@@ -1,8 +1,10 @@
 import { NextFunction, Request, Response } from "express";
-import User from "../model/User";
+import User, { IUser } from "../model/User";
 import { HttpException } from "../utils";
+import bcrypt from "bcrypt";
+import jwt from "jsonwebtoken";
 
-export const signup = async (
+export const postJoin = async (
     req: Request,
     res: Response,
     next: NextFunction
@@ -10,8 +12,8 @@ export const signup = async (
     const { nickname, email, password } = req.body;
 
     if (!email || !nickname || nickname == "" || email == "") {
-        next(new HttpException(400, "All Fields are Required"));
-        // return res.status(400).json({ message: "All Fields are Required" });
+        // next(new HttpException(400, "All Fields are Required"));
+        return res.status(400).json({ message: "All Fields are Required" });
     }
 
     try {
@@ -23,6 +25,7 @@ export const signup = async (
         }
     } catch (err) {
         console.log("Error : ", err);
+        next(err);
     }
 
     try {
@@ -34,6 +37,7 @@ export const signup = async (
         }
     } catch (err) {
         console.log("Error : ", err);
+        next(err);
     }
 
     const newUser = new User({
@@ -46,7 +50,41 @@ export const signup = async (
         await newUser.save();
         return res.json({ message: "Join is Successful" });
     } catch (error: any) {
-        // res.status(500).json({ message: error.message });
+        return res.status(500).json({ message: error.message });
+    }
+};
+
+export const postLogin = async (
+    req: Request,
+    res: Response,
+    next: NextFunction
+) => {
+    const { email, password } = req.body;
+
+    try {
+        const validUser = await User.findOne<IUser>({ email });
+        if (!validUser) {
+            return res.status(404).json({ message: "User Not Found" });
+        }
+
+        const validPassword = await bcrypt.compare(
+            password,
+            validUser.password
+        );
+        if (!validPassword) {
+            return res.status(404).json({ message: "Invalid Password" });
+        }
+
+        const token = jwt.sign({ id: validUser._id }, process.env.JWT_SECRET!);
+        // Convert mongoose Object to JS Object
+        // & Hide password
+        const { password: pass, ...rest } = validUser._doc;
+
+        return res
+            .status(200)
+            .cookie("access_token", token, { httpOnly: true })
+            .json(rest);
+    } catch (error) {
         next(error);
     }
 };

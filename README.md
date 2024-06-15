@@ -24,4 +24,6 @@ $ npm i mongoose
 $ npm i dotenv
 $ npm i -D @types/dotenv
 $ npm i @types/bcrypt
+$ npm i jsonwebtoken
+$ npm i --save @types/jsonwebtoken
 ```

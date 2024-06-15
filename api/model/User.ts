@@ -7,6 +7,9 @@ export interface IUser extends mongoose.Document {
     email: string;
     password: string;
     socialLogin?: boolean;
+    createdAt: Date;
+    updatedAt: Date;
+    _doc?: any;
 }
 
 const userSchema = new mongoose.Schema<IUser>(
