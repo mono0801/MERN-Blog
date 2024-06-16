@@ -62,7 +62,10 @@ export const postLogin = async (
     const { email, password } = req.body;
 
     try {
-        const validUser = await User.findOne<IUser>({ email });
+        const validUser = await User.findOne<IUser>({
+            email,
+            socialLogin: false,
+        });
         if (!validUser) {
             return res.status(404).json({ message: "User Not Found" });
         }
@@ -79,6 +82,44 @@ export const postLogin = async (
         // Convert mongoose Object to JS Object
         // & Hide password
         const { password: pass, ...rest } = validUser._doc;
+
+        return res
+            .status(200)
+            .cookie("access_token", token, { httpOnly: true })
+            .json(rest);
+    } catch (error) {
+        next(error);
+    }
+};
+
+export const postGoogle = async (
+    req: Request,
+    res: Response,
+    next: NextFunction
+) => {
+    const { nickname, email, profileUrl } = req.body;
+
+    try {
+        let user = await User.findOne<IUser>({ email });
+        if (!user) {
+            const randomPassword =
+                Math.random().toString(36).slice(-6) +
+                Math.random().toString(36).slice(-6);
+
+            user = new User({
+                nickname:
+                    nickname.toLowerCase().split(" ").join("") +
+                    Math.random().toString(9).slice(-4),
+                email,
+                password: randomPassword,
+                socialLogin: true,
+                profileUrl,
+            });
+
+            await user.save();
+        }
+        const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET!);
+        const { password: pass, ...rest } = user._doc;
 
         return res
             .status(200)

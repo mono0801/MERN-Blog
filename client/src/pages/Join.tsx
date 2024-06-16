@@ -13,6 +13,7 @@ import { signSchema } from "./yup";
 import { IJoin, fetchJoin } from "../utils";
 import styled from "styled-components";
 import { HiInformationCircle } from "react-icons/hi";
+import SocialLogIn from "../components/SocialLogIn";
 
 interface IForm extends IJoin {
     passwordConfirm: String;
@@ -191,6 +192,7 @@ const SignUp = () => {
                                 <SignInputBtn>Sign Up</SignInputBtn>
                             )}
                         </Button>
+                        <SocialLogIn />
                     </form>
 
                     {Object.keys(errMsg).length != 0 && (

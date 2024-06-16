@@ -2,13 +2,13 @@ import mongoose from "mongoose";
 import bcrypt from "bcrypt";
 
 export interface IUser extends mongoose.Document {
-    username: string;
     nickname: string;
     email: string;
     password: string;
-    socialLogin?: boolean;
+    socialLogin: boolean;
     createdAt: Date;
     updatedAt: Date;
+    profileUrl: string;
     _doc?: any;
 }
 
@@ -23,6 +23,11 @@ const userSchema = new mongoose.Schema<IUser>(
             },
         },
         socialLogin: { type: Boolean, default: false },
+        profileUrl: {
+            type: String,
+            default:
+                "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png",
+        },
     },
     // 생성 & 업데이트 시간 자동 입력
     { timestamps: true }

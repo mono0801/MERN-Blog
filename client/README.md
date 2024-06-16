@@ -26,6 +26,7 @@ $ npm i react-hook-form
 $ npm i @hookform/resolvers yup
 $ npm i @reduxjs/toolkit react-redux
 $ npm i redux-persist @types/redux-persist
+$ npm i firebase
 ```
 
 ## Expanding the ESLint configuration

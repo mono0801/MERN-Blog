@@ -20,6 +20,7 @@ import {
     logInSuccess,
 } from "../redux/user/userSlice";
 import { AppDispatch, RootState } from "../redux/store";
+import SocialLogIn from "../components/SocialLogIn";
 
 const JoinLabel = styled.label``;
 
@@ -150,6 +151,7 @@ const LogIn = () => {
                                 <SignInputBtn>Log In</SignInputBtn>
                             )}
                         </Button>
+                        <SocialLogIn />
                     </form>
 
                     {errMsg && (
