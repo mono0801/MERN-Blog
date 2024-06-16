@@ -13,6 +13,13 @@ import { logInSchema } from "./yup";
 import { ILogIn, fetchLogIn } from "../utils";
 import styled from "styled-components";
 import { HiInformationCircle } from "react-icons/hi";
+import { useDispatch, useSelector } from "react-redux";
+import {
+    logInFailure,
+    logInStart,
+    logInSuccess,
+} from "../redux/user/userSlice";
+import { AppDispatch, RootState } from "../redux/store";
 
 const JoinLabel = styled.label``;
 
@@ -27,8 +34,10 @@ const LogIn = () => {
         email: "",
         password: "",
     });
-    const [errMsg, setErrMsg] = useState<any>({});
-    const [loading, setLoading] = useState(false);
+    const dispatch = useDispatch<AppDispatch>();
+    const { loading, error: errMsg } = useSelector(
+        (state: RootState) => state.user
+    );
 
     const handleValid = async (formData: ILogIn) => {
         const signData: ILogIn = {
@@ -39,21 +48,18 @@ const LogIn = () => {
     };
 
     useEffect(() => {
-        console.log(data);
         if (data.email != "" && data.password != "") {
-            setLoading(true);
-            setErrMsg({});
+            dispatch(logInStart());
             fetchLogIn(data)
                 .then((msg) => {
-                    setErrMsg(msg?.data);
-                    setLoading(false);
+                    dispatch(logInFailure(msg?.data.message));
                     if (msg?.response.ok) {
+                        dispatch(logInSuccess(msg.data));
                         navigate("/");
                     }
                 })
                 .catch((err) => {
-                    setErrMsg(err);
-                    setLoading(false);
+                    dispatch(logInFailure(err));
                 });
         }
     }, [data]);
@@ -146,13 +152,13 @@ const LogIn = () => {
                         </Button>
                     </form>
 
-                    {Object.keys(errMsg).length != 0 && (
+                    {errMsg && (
                         <Alert
                             className="mt-3"
                             color={"failure"}
                             icon={HiInformationCircle}
                         >
-                            {errMsg.message}
+                            {errMsg}
                         </Alert>
                     )}
 
