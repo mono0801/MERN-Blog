@@ -1,7 +1,11 @@
 import { Link, useNavigate } from "react-router-dom";
 import { LogoSpan } from "../styles/components/header.style";
 import { Alert, Button, Spinner, TextInput } from "flowbite-react";
-import { SignInputBtn, SignInputValue } from "../styles/components/sign.style";
+import {
+    BlogDescriptSpan,
+    SignInputBtn,
+    SignInputValue,
+} from "../styles/components/sign.style";
 import { useForm } from "react-hook-form";
 import { useEffect, useState } from "react";
 import { yupResolver } from "@hookform/resolvers/yup/src/yup.js";
@@ -74,12 +78,12 @@ const SignUp = () => {
                         <LogoSpan>Blog</LogoSpan>
                     </Link>
 
-                    <p className="text-sm mt-5 font-semibold">
+                    <BlogDescriptSpan>
                         This is MERN Stack Blog clone coding.
                         <br />
                         You can sign up with your E-mail and Password or Social
                         Account.
-                    </p>
+                    </BlogDescriptSpan>
                 </div>
 
                 {/* Right Side */}
