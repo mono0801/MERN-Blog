@@ -25,6 +25,7 @@ $ npm i react-hook-form
 # React-Hook-Form에 사용할 Input Schema 설정
 $ npm i @hookform/resolvers yup
 $ npm i @reduxjs/toolkit react-redux
+$ npm i redux-persist @types/redux-persist
 ```
 
 ## Expanding the ESLint configuration
