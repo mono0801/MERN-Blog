@@ -1,15 +1,15 @@
 import { Button } from "flowbite-react";
-import { SignInputBtn } from "../styles/components/sign.style";
+import { SignInputBtn } from "../../styles/components/sign.style";
 import { AiFillGoogleCircle } from "react-icons/ai";
 import { GoogleAuthProvider, getAuth, signInWithPopup } from "firebase/auth";
-import { app } from "../firebase";
-import { IJoinSocial, fetchJoinSocial } from "../utils";
+import { app } from "../../firebase";
+import { IJoinSocial, fetchGoogle } from "../../utils";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
-import { AppDispatch } from "../redux/store";
-import { logInSuccess } from "../redux/user/userSlice";
+import { AppDispatch } from "../../redux/store";
+import { logInSuccess } from "../../redux/user/userSlice";
 
-const SocialLogIn = () => {
+const GoogleLogin = () => {
     const navigate = useNavigate();
     const dispatch = useDispatch<AppDispatch>();
     const handleGoogleClick = async () => {
@@ -25,7 +25,7 @@ const SocialLogIn = () => {
                 email: resultsFromGoogle.user.email!,
                 profileUrl: resultsFromGoogle.user.photoURL!,
             };
-            fetchJoinSocial(signData)
+            fetchGoogle(signData)
                 .then((msg) => {
                     if (msg?.response.ok) {
                         dispatch(logInSuccess(msg.data));
@@ -53,4 +53,4 @@ const SocialLogIn = () => {
     );
 };
 
-export default SocialLogIn;
+export default GoogleLogin;
