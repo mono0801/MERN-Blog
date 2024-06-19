@@ -12,7 +12,6 @@ export const postJoin = async (
     const { nickname, email, password } = req.body;
 
     if (!email || !nickname || nickname == "" || email == "") {
-        // next(new HttpException(400, "All Fields are Required"));
         return res.status(400).json({ message: "All Fields are Required" });
     }
 
