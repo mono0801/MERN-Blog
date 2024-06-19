@@ -1,6 +1,6 @@
 import styled from "styled-components";
 
-export const LinkSpan = styled.span`
+export const LinkP = styled.p`
     font-weight: bold;
     font-size: 1rem;
 `;

@@ -1,6 +1,6 @@
 import { Avatar, Button, Dropdown, Navbar, TextInput } from "flowbite-react";
 import { Link, useLocation } from "react-router-dom";
-import { LinkSpan, LogoSpan } from "../styles/components/header.style";
+import { LinkP, LogoSpan } from "../styles/components/header.style";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../redux/store";
 import { toggleTheme } from "../redux/theme/themeSlice";
@@ -82,7 +82,7 @@ const Header = () => {
                 ) : (
                     <Link to={"/login"}>
                         <Button outline gradientDuoTone={"purpleToBlue"}>
-                            <LinkSpan>Log In</LinkSpan>
+                            <LinkP>Log In</LinkP>
                         </Button>
                     </Link>
                 )}
@@ -93,17 +93,17 @@ const Header = () => {
             <Navbar.Collapse>
                 <Navbar.Link active={path === "/"} as={"div"}>
                     <Link to={"/"}>
-                        <LinkSpan>Home</LinkSpan>
+                        <LinkP>Home</LinkP>
                     </Link>
                 </Navbar.Link>
                 <Navbar.Link active={path === "/about"} as={"div"}>
                     <Link to={"/about"}>
-                        <LinkSpan>About</LinkSpan>
+                        <LinkP>About</LinkP>
                     </Link>
                 </Navbar.Link>
                 <Navbar.Link active={path === "/projects"} as={"div"}>
                     <Link to={"/projects"}>
-                        <LinkSpan>Project</LinkSpan>
+                        <LinkP>Project</LinkP>
                     </Link>
                 </Navbar.Link>
             </Navbar.Collapse>
