@@ -1,31 +1,23 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 interface IUser {
-    username: string;
     nickname: string;
     email: string;
     password: string;
     socialLogin: boolean;
-    createdAt: any;
-    updatedAt: any;
+    createdAt: Date;
+    updatedAt: Date;
+    profileUrl: string;
 }
 
 export interface IUserToken {
-    currentUser: IUser;
+    currentUser: IUser | null;
     error?: any;
     loading: boolean;
 }
 
 const initialState: IUserToken = {
-    currentUser: {
-        username: "",
-        nickname: "",
-        email: "",
-        password: "",
-        socialLogin: false,
-        createdAt: "",
-        updatedAt: "",
-    },
+    currentUser: null,
     error: null,
     loading: false,
 };
