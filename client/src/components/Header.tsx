@@ -1,14 +1,18 @@
 import { Avatar, Button, Dropdown, Navbar, TextInput } from "flowbite-react";
-import { AiOutlineSearch } from "react-icons/ai";
-import { FaMoon } from "react-icons/fa";
 import { Link, useLocation } from "react-router-dom";
 import { LinkSpan, LogoSpan } from "../styles/components/header.style";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../redux/store";
+import { toggleTheme } from "../redux/theme/themeSlice";
+import { AiOutlineSearch } from "react-icons/ai";
+import { FaMoon, FaSun, FaUser } from "react-icons/fa";
+import { LuLogOut } from "react-icons/lu";
 
 const Header = () => {
     const path = useLocation().pathname;
+    const dispatch = useDispatch();
     const { currentUser } = useSelector((state: RootState) => state.user);
+    const { theme } = useSelector((state: RootState) => state.theme);
 
     return (
         <Navbar className="border-b-2">
@@ -40,8 +44,9 @@ const Header = () => {
                     className="w-12 h-10 hidden sm:inline"
                     color="gray"
                     pill
+                    onClick={() => dispatch(toggleTheme())}
                 >
-                    <FaMoon />
+                    {theme === "light" ? <FaSun /> : <FaMoon />}
                 </Button>
 
                 {currentUser ? (
@@ -65,11 +70,13 @@ const Header = () => {
                             </span>
                         </Dropdown.Header>
                         <Link to={"/dashboard?tab=profile"}>
-                            <Dropdown.Item>Profile</Dropdown.Item>
+                            <Dropdown.Item icon={FaUser}>Profile</Dropdown.Item>
                         </Link>
                         <Dropdown.Divider />
                         <Link to={"/"}>
-                            <Dropdown.Item>Log Out</Dropdown.Item>
+                            <Dropdown.Item icon={LuLogOut}>
+                                Log Out
+                            </Dropdown.Item>
                         </Link>
                     </Dropdown>
                 ) : (

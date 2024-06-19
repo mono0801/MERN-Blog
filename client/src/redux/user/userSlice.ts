@@ -10,7 +10,7 @@ interface IUser {
     profileUrl: string;
 }
 
-export interface IUserToken {
+interface IUserToken {
     currentUser: IUser | null;
     error?: any;
     loading: boolean;

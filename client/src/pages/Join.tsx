@@ -65,14 +65,11 @@ const SignUp = () => {
     }, [data]);
 
     return (
-        <div className="min-h-screen mt-20">
+        <div className="min-h-screen mt-20 dark:text-white">
             <div className="flex p-3 max-w-3xl mx-auto flex-col md:flex-row md:items-center gap-5">
                 {/* Left Side */}
                 <div className="flex-1">
-                    <Link
-                        to={"/"}
-                        className="sm:text-4xl font-bold dark:text-white"
-                    >
+                    <Link to={"/"} className="sm:text-4xl font-bold">
                         <span className="px-2 py-1 bg-gradient-to-r from-purple-500 via-indigo-500 to-blue-500 rounded-lg text-white">
                             Sellen's
                         </span>
