@@ -10,6 +10,8 @@ import FooterComponent from "./components/Footer";
 import GithubCallback from "./pages/login/Github";
 import KakaoCallback from "./pages/login/Kakao";
 import NaverCallback from "./pages/login/Naver";
+import PrivateRoute from "./components/Protect/PrivateRoute";
+import ProtectLogIn from "./components/Protect/ProtectLogIn";
 
 const LoginRoutes = () => {
     return (
@@ -29,9 +31,16 @@ const App = () => {
             <Routes>
                 <Route path="/" element={<Home />} />
                 <Route path="/about" element={<About />} />
-                <Route path="/login/*" element={<LoginRoutes />} />
-                <Route path="/join" element={<Join />} />
-                <Route path="/dashboard" element={<Dashboard />} />
+
+                <Route element={<ProtectLogIn />}>
+                    <Route path="/login/*" element={<LoginRoutes />} />
+                    <Route path="/join" element={<Join />} />
+                </Route>
+
+                <Route element={<PrivateRoute />}>
+                    <Route path="/dashboard" element={<Dashboard />} />
+                </Route>
+
                 <Route path="/projects" element={<Projects />} />
             </Routes>
             <FooterComponent />
