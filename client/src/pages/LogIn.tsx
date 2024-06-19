@@ -20,10 +20,7 @@ import {
     logInSuccess,
 } from "../redux/user/userSlice";
 import { AppDispatch, RootState } from "../redux/store";
-import GoogleLogin from "../components/socialLogin/GoogleLogin";
-import GitHubLogin from "../components/socialLogin/GitHubLogin";
-import KakaoLogin from "../components/socialLogin/KakaoLogin";
-import NaverLogin from "../components/socialLogin/NaverLogin";
+import SocialLogin from "../components/socialLogin/SocialLogin";
 
 const JoinLabel = styled.label``;
 
@@ -156,10 +153,7 @@ const LogIn = () => {
                         </Button>
 
                         <hr />
-                        <GoogleLogin />
-                        <GitHubLogin />
-                        <KakaoLogin />
-                        <NaverLogin />
+                        <SocialLogin />
                     </form>
 
                     {errMsg && (
