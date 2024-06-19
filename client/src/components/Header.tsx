@@ -63,9 +63,9 @@ const Header = () => {
                     >
                         <Dropdown.Header>
                             <span className="block text-sm font-semibold">
-                                @{currentUser.nickname}
+                                {currentUser.nickname}
                             </span>
-                            <span className="block text-sm font-medium truncate">
+                            <span className="block text-xs font-medium truncate">
                                 {currentUser.email}
                             </span>
                         </Dropdown.Header>
