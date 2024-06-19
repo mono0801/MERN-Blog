@@ -5,14 +5,7 @@ import { Navigate, Outlet } from "react-router-dom";
 const PrivateRoute = () => {
     const { currentUser } = useSelector((state: RootState) => state.user);
 
-    return currentUser ? (
-        <Outlet />
-    ) : (
-        <>
-            {alert("You should Log In First")}
-            <Navigate to="/login" />;
-        </>
-    );
+    return currentUser ? <Outlet /> : <Navigate to="/login" />;
 };
 
 export default PrivateRoute;
