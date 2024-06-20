@@ -2,6 +2,7 @@ import { Sidebar } from "flowbite-react";
 import { useEffect, useState } from "react";
 import { FaUser } from "react-icons/fa";
 import { LuLogOut } from "react-icons/lu";
+import { MdDriveFolderUpload } from "react-icons/md";
 import { RiLockPasswordLine } from "react-icons/ri";
 import { Link, useLocation } from "react-router-dom";
 
@@ -29,6 +30,7 @@ const DashSidebar = () => {
                             label={"User"}
                             labelColor="dark"
                             className="font-semibold"
+                            as="div"
                         >
                             Profile
                         </Sidebar.Item>
@@ -38,8 +40,19 @@ const DashSidebar = () => {
                             active={tab === "password"}
                             icon={RiLockPasswordLine}
                             className="font-semibold mt-2"
+                            as="div"
                         >
                             Password
+                        </Sidebar.Item>
+                    </Link>
+                    <Link to="/dashboard?tab=upload">
+                        <Sidebar.Item
+                            active={tab === "upload"}
+                            icon={MdDriveFolderUpload}
+                            className="font-semibold mt-2"
+                            as="div"
+                        >
+                            Upload
                         </Sidebar.Item>
                     </Link>
                     <Sidebar.Item

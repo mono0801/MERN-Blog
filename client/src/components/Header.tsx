@@ -7,6 +7,8 @@ import { toggleTheme } from "../redux/theme/themeSlice";
 import { AiOutlineSearch } from "react-icons/ai";
 import { FaMoon, FaSun, FaUser } from "react-icons/fa";
 import { LuLogOut } from "react-icons/lu";
+import { MdDriveFolderUpload } from "react-icons/md";
+import { RiLockPasswordLine } from "react-icons/ri";
 
 const Header = () => {
     const path = useLocation().pathname;
@@ -71,6 +73,18 @@ const Header = () => {
                         </Dropdown.Header>
                         <Link to={"/dashboard?tab=profile"}>
                             <Dropdown.Item icon={FaUser}>Profile</Dropdown.Item>
+                        </Link>
+                        <Dropdown.Divider />
+                        <Link to={"/dashboard?tab=password"}>
+                            <Dropdown.Item icon={RiLockPasswordLine}>
+                                Password
+                            </Dropdown.Item>
+                        </Link>
+                        <Dropdown.Divider />
+                        <Link to={"/dashboard?tab=upload"}>
+                            <Dropdown.Item icon={MdDriveFolderUpload}>
+                                Upload
+                            </Dropdown.Item>
                         </Link>
                         <Dropdown.Divider />
                         <Link to={"/"}>

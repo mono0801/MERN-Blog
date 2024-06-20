@@ -2,17 +2,20 @@ import { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 import DashSidebar from "../components/dashboard/DashSidebar";
 import DashProfile from "../components/dashboard/DashProfile";
-import DashPassword from "../components/dashboard/DashPassword";
 
 const Dashboard = () => {
     const location = useLocation();
-    const [tab, setTab] = useState("");
+    const [tab, setTab] = useState<"profile" | "password" | "upload" | "">("");
 
     useEffect(() => {
         const searchParams = new URLSearchParams(location.search);
         const tabParam = searchParams.get("tab");
 
-        if (tabParam) {
+        if (
+            tabParam === "profile" ||
+            tabParam === "password" ||
+            tabParam === "upload"
+        ) {
             setTab(tabParam);
         }
     }, [location.search]);
@@ -24,8 +27,8 @@ const Dashboard = () => {
                 <DashSidebar />
             </div>
             {/* Profile... */}
-            {tab === "profile" && <DashProfile />}
-            {tab === "password" && <DashPassword />}
+            {tab && tab != "upload" && <DashProfile tab={tab} />}
+            {tab === "upload" && <p>Upload</p>}
         </div>
     );
 };

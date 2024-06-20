@@ -1,86 +1,86 @@
-import { editPasswordSchema } from "../../pages/yup";
-import { useForm } from "react-hook-form";
-import { useState } from "react";
-import { yupResolver } from "@hookform/resolvers/yup/src/yup.js";
+import { useSelector } from "react-redux";
+import { RootState } from "../../redux/store";
+import { Alert, Button, TextInput } from "flowbite-react";
 import {
     SignInputBtn,
     SignInputValue,
 } from "../../styles/components/sign.style";
-import { Alert, Button, TextInput } from "flowbite-react";
+import { useForm } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup/src/yup.js";
+import { editAccountSchema } from "../../pages/yup";
 import { HiInformationCircle } from "react-icons/hi";
+import { useState } from "react";
 
 interface IForm {
-    password: string;
+    nickname: String;
+    email: String;
 }
 
-interface IPassword extends IForm {
-    passwordConfirm: String;
-}
-
-const DashPassword = () => {
+const DashAccount = () => {
+    const { currentUser } = useSelector((state: RootState) => state.user);
     const {
         register,
         handleSubmit,
         formState: { errors },
-    } = useForm<IPassword>({
-        resolver: yupResolver<IPassword>(editPasswordSchema),
-    });
+    } = useForm<IForm>({ resolver: yupResolver<IForm>(editAccountSchema) });
 
     const [data, setData] = useState<IForm>({
-        password: "",
+        nickname: "",
+        email: "",
     });
     const [errMsg, setErrMsg] = useState<any>({});
     const [loading, setLoading] = useState(false);
 
     const handleValid = async (formData: IForm) => {
-        const newPassword: IForm = {
-            password: formData.password,
+        const signData: IForm = {
+            nickname: formData.nickname,
+            email: formData.email,
         };
-        setData(newPassword);
+        setData(signData);
     };
 
     return (
-        <form className="flex flex-col" onSubmit={handleSubmit(handleValid)}>
+        <form className="flex flex-col " onSubmit={handleSubmit(handleValid)}>
             <div className="flex flex-col gap-2">
                 <SignInputValue>
-                    <label htmlFor="password">&nbsp; Your Password</label>
+                    <label htmlFor="nickname">&nbsp; Your Nickname</label>
                     <TextInput
-                        {...register("password")}
-                        id="password"
-                        type="password"
-                        placeholder="Password"
+                        {...register("nickname")}
+                        id="nickname"
+                        type="text"
+                        placeholder="Nickname"
+                        defaultValue={currentUser?.nickname}
                         maxLength={10}
                         className="mt-1"
                     />
-                    {errors.password?.message && (
+                    {errors.nickname?.message && (
                         <Alert
                             className="mt-3"
                             color={"failure"}
                             icon={HiInformationCircle}
                         >
-                            {errors.password?.message}
+                            {errors.nickname?.message}
                         </Alert>
                     )}
                 </SignInputValue>
                 <SignInputValue>
-                    <label htmlFor="passwordConfirm">
-                        &nbsp; Password Confirm
-                    </label>
+                    <label htmlFor="email">&nbsp; Your Email</label>
                     <TextInput
-                        {...register("passwordConfirm")}
-                        id="passwordConfirm"
-                        type="password"
-                        placeholder="Password Confirm"
+                        {...register("email")}
+                        id="email"
+                        type="text"
+                        placeholder="Email"
+                        defaultValue={currentUser?.email}
                         maxLength={10}
                         className="mt-1"
                     />
-                    {errors.passwordConfirm?.message && (
+                    {errors.email?.message && (
                         <Alert
                             className="mt-3"
                             color={"failure"}
                             icon={HiInformationCircle}
                         >
-                            {errors.passwordConfirm?.message}
+                            {errors.email?.message}
                         </Alert>
                     )}
                 </SignInputValue>
@@ -91,11 +91,11 @@ const DashPassword = () => {
                     type="submit"
                     className="mt-4"
                 >
-                    <SignInputBtn>Edit Password</SignInputBtn>
+                    <SignInputBtn>Edit Profile</SignInputBtn>
                 </Button>
             </div>
         </form>
     );
 };
 
-export default DashPassword;
+export default DashAccount;

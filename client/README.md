@@ -27,6 +27,7 @@ $ npm i @hookform/resolvers yup
 $ npm i @reduxjs/toolkit react-redux
 $ npm i redux-persist @types/redux-persist
 $ npm i firebase
+$ npm i --save react-circular-progressbar
 ```
 
 ## Expanding the ESLint configuration
