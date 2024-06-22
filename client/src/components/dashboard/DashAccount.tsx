@@ -9,7 +9,8 @@ import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup/src/yup.js";
 import { editAccountSchema } from "../../pages/yup";
 import { HiInformationCircle } from "react-icons/hi";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { IErrMsg } from "../../utils/interface";
 
 interface IForm {
     nickname: String;
@@ -28,7 +29,7 @@ const DashAccount = () => {
         nickname: "",
         email: "",
     });
-    const [errMsg, setErrMsg] = useState<any>({});
+    const [errMsg, setErrMsg] = useState<IErrMsg>({ message: "" });
     const [loading, setLoading] = useState(false);
 
     const handleValid = async (formData: IForm) => {
@@ -39,6 +40,8 @@ const DashAccount = () => {
         setData(signData);
     };
 
+    useEffect(() => {}, [data]);
+
     return (
         <form className="flex flex-col " onSubmit={handleSubmit(handleValid)}>
             <div className="flex flex-col gap-2">
@@ -48,7 +51,7 @@ const DashAccount = () => {
                         {...register("nickname")}
                         id="nickname"
                         type="text"
-                        placeholder="Nickname"
+                        placeholder={currentUser?.nickname}
                         defaultValue={currentUser?.nickname}
                         maxLength={10}
                         className="mt-1"
@@ -69,9 +72,8 @@ const DashAccount = () => {
                         {...register("email")}
                         id="email"
                         type="text"
-                        placeholder="Email"
+                        placeholder={currentUser?.email}
                         defaultValue={currentUser?.email}
-                        maxLength={10}
                         className="mt-1"
                     />
                     {errors.email?.message && (
@@ -93,6 +95,15 @@ const DashAccount = () => {
                 >
                     <SignInputBtn>Edit Profile</SignInputBtn>
                 </Button>
+                {errMsg.message != "" && (
+                    <Alert
+                        className="mt-3 font-semibold"
+                        color={"failure"}
+                        icon={HiInformationCircle}
+                    >
+                        {errMsg.message}
+                    </Alert>
+                )}
             </div>
         </form>
     );

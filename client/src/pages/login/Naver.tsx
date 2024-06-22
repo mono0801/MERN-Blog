@@ -2,7 +2,7 @@ import { useDispatch } from "react-redux";
 import { AppDispatch } from "../../redux/store";
 import { useNavigate } from "react-router-dom";
 import { logInSuccess } from "../../redux/user/userSlice";
-import { fetchNaver } from "../../utils";
+import { fetchNaver } from "../../utils/utils";
 import Loading from "../../components/Loading";
 
 const NaverCallback = () => {

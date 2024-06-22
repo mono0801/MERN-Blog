@@ -8,6 +8,7 @@ import {
 } from "../../styles/components/sign.style";
 import { Alert, Button, TextInput } from "flowbite-react";
 import { HiInformationCircle } from "react-icons/hi";
+import { IErrMsg } from "../../utils/interface";
 
 interface IForm {
     password: string;
@@ -29,7 +30,7 @@ const DashPassword = () => {
     const [data, setData] = useState<IForm>({
         password: "",
     });
-    const [errMsg, setErrMsg] = useState<any>({});
+    const [errMsg, setErrMsg] = useState<IErrMsg>({ message: "" });
     const [loading, setLoading] = useState(false);
 
     const handleValid = async (formData: IForm) => {

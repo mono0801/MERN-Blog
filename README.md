@@ -26,4 +26,6 @@ $ npm i -D @types/dotenv
 $ npm i @types/bcrypt
 $ npm i jsonwebtoken
 $ npm i --save @types/jsonwebtoken
+$ npm i cookie-parser
+$ npm i --save @types/cookie-parser
 ```

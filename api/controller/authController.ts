@@ -1,8 +1,8 @@
 import { NextFunction, Request, Response } from "express";
 import User, { IUser } from "../model/User";
-import { IGitHub, randomNicknameTag, randomPassword } from "../utils";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
+import { randomNicknameTag, randomPassword } from "../utils/utils";
 
 export const postJoin = async (
     req: Request,
@@ -148,15 +148,13 @@ const existNickname = async (name: string) => {
 };
 export const githubLoginCallback = async (req: Request, res: Response) => {
     const baseUrl = "https://github.com/login/oauth/access_token";
-    const config: IGitHub = {
+    const config: { [key: string]: string } = {
         client_id: process.env.GITHUB_CLIENT_ID!,
         client_secret: process.env.GITHUB_CLIENT_SECRET!,
         code: req.body.code,
     };
 
-    const params = new URLSearchParams(
-        Object.entries(config).map(([key, value]) => [key, String(value)])
-    ).toString();
+    const params = new URLSearchParams(config).toString();
     const githubUrl = `${baseUrl}?${params}`;
 
     const tokenReq = await (

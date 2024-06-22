@@ -10,7 +10,8 @@ import { useForm } from "react-hook-form";
 import { useEffect, useState } from "react";
 import { yupResolver } from "@hookform/resolvers/yup/src/yup.js";
 import { signSchema } from "./yup";
-import { IJoin, fetchJoin } from "../utils";
+import { fetchJoin } from "../utils/utils";
+import { IErrMsg, IJoin } from "../utils/interface";
 import styled from "styled-components";
 import { HiInformationCircle } from "react-icons/hi";
 import SocialLogin from "../components/socialLogin/SocialLogin";
@@ -33,7 +34,7 @@ const SignUp = () => {
         email: "",
         password: "",
     });
-    const [errMsg, setErrMsg] = useState<any>({});
+    const [errMsg, setErrMsg] = useState<IErrMsg>({ message: "" });
     const [loading, setLoading] = useState(false);
 
     const handleValid = async (formData: IForm) => {
@@ -48,7 +49,7 @@ const SignUp = () => {
     useEffect(() => {
         if (data.nickname != "" && data.email != "" && data.password != "") {
             setLoading(true);
-            setErrMsg({});
+            setErrMsg({ message: "" });
             fetchJoin(data)
                 .then((msg) => {
                     setErrMsg(msg?.data);
@@ -193,7 +194,7 @@ const SignUp = () => {
                         <SocialLogin />
                     </form>
 
-                    {Object.keys(errMsg).length != 0 && (
+                    {errMsg.message != "" && (
                         <Alert
                             className="mt-3"
                             color={"failure"}

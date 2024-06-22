@@ -5,7 +5,6 @@ import DashAccount from "./DashAccount";
 import DashPassword from "./DashPassword";
 import { app } from "../../firebase";
 import {
-    deleteObject,
     getDownloadURL,
     getStorage,
     ref,
@@ -78,7 +77,7 @@ const DashProfile: FC<ITab> = ({ tab }): JSX.Element => {
 
                 setImgUploadProgress(Number(progress.toFixed(0)));
             },
-            (error) => {
+            (_error) => {
                 setImgUploadError(
                     "Could not Upload Image (File must be less than 2MB)"
                 );

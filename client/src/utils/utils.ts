@@ -1,17 +1,4 @@
-export interface ILogIn {
-    email: string;
-    password: string;
-}
-
-export interface IJoin extends ILogIn {
-    nickname: string;
-}
-
-export interface IJoinSocial {
-    nickname: string;
-    email: string;
-    profileUrl: string;
-}
+import { IJoin, IJoinSocial, ILogIn } from "./interface";
 
 export async function fetchJoin(formData: IJoin) {
     try {

@@ -1,11 +1,13 @@
 import express, { NextFunction, Request, Response } from "express";
 import userRouter from "./router/userRoute";
 import authRouter from "./router/authRoute";
-import { HttpException } from "./utils";
+import { HttpException } from "./utils/interface";
+import cookieParser from "cookie-parser";
 
 const app = express();
 
 app.use(express.json());
+app.use(cookieParser());
 
 app.use("/users", userRouter);
 app.use("/auth", authRouter);
