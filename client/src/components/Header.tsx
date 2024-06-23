@@ -120,6 +120,13 @@ const Header = () => {
                         <LinkP>Project</LinkP>
                     </Link>
                 </Navbar.Link>
+                {!currentUser && (
+                    <Navbar.Link active={path === "/join"} as={"div"}>
+                        <Link to={"/join"}>
+                            <LinkP>Sign In</LinkP>
+                        </Link>
+                    </Navbar.Link>
+                )}
             </Navbar.Collapse>
         </Navbar>
     );

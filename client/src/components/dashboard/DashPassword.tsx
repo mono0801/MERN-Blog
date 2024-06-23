@@ -97,7 +97,7 @@ const DashPassword = () => {
                     />
                     {errors.password?.message && (
                         <Alert
-                            className="mt-3"
+                            className="mt-3 font-semibold"
                             color={"failure"}
                             icon={HiInformationCircle}
                         >
@@ -117,7 +117,7 @@ const DashPassword = () => {
                     />
                     {errors.password?.message && (
                         <Alert
-                            className="mt-3"
+                            className="mt-3 font-semibold"
                             color={"failure"}
                             icon={HiInformationCircle}
                         >
@@ -139,7 +139,7 @@ const DashPassword = () => {
                     />
                     {errors.passwordConfirm?.message && (
                         <Alert
-                            className="mt-3"
+                            className="mt-3 font-semibold"
                             color={"failure"}
                             icon={HiInformationCircle}
                         >

@@ -1,6 +1,6 @@
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "../../redux/store";
-import React, { FC, useEffect, useRef, useState } from "react";
+import React, { ChangeEvent, FC, useEffect, useRef, useState } from "react";
 import DashAccount from "./DashAccount";
 import DashPassword from "./DashPassword";
 import { app } from "../../firebase";
@@ -10,18 +10,27 @@ import {
     ref,
     uploadBytesResumable,
 } from "firebase/storage";
-import { Alert } from "flowbite-react";
+import { Alert, Button, Modal, TextInput } from "flowbite-react";
 import { CircularProgressbar } from "react-circular-progressbar";
 import "react-circular-progressbar/dist/styles.css";
-import { updateToken } from "../../redux/user/userSlice";
+import {
+    deleteUserFailure,
+    deleteUserStart,
+    deleteUserSuccess,
+    errorReset,
+    updateToken,
+} from "../../redux/user/userSlice";
 import { updateProfile } from "../../utils/utils";
+import { HiOutlineExclamationCircle } from "react-icons/hi";
 
 interface ITab {
     tab: "profile" | "password" | "upload" | "";
 }
 
 const DashProfile: FC<ITab> = ({ tab }): JSX.Element => {
-    const { currentUser } = useSelector((state: RootState) => state.user);
+    const { currentUser, error } = useSelector(
+        (state: RootState) => state.user
+    );
     const dispatch = useDispatch<AppDispatch>();
 
     const [imgFile, setImgFile] = useState<globalThis.File | null>(null);
@@ -33,6 +42,12 @@ const DashProfile: FC<ITab> = ({ tab }): JSX.Element => {
     const [imgUploadError, setImgUploadError] = useState<string | null>(null);
     const [profile, setProfile] = useState<string | null>(null);
     const [loading, setLoading] = useState<boolean>(false);
+    const [showModal, setShowModal] = useState<boolean>(false);
+    const [deleteAccountBtn, setDeleteAccountBtn] = useState<boolean>(true);
+
+    useEffect(() => {
+        dispatch(errorReset());
+    }, []);
 
     const handleImgChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         let file;
@@ -131,6 +146,33 @@ const DashProfile: FC<ITab> = ({ tab }): JSX.Element => {
         }
     }, [profile]);
 
+    const handleDeleteUser = async () => {
+        setShowModal(false);
+        try {
+            dispatch(deleteUserStart());
+            const res = await fetch(`/users/delete/${currentUser?._id}`, {
+                method: "DELETE",
+            });
+            const data = await res.json();
+            if (!res.ok) {
+                dispatch(deleteUserFailure(data));
+            } else {
+                dispatch(deleteUserSuccess(data));
+            }
+        } catch (error: any) {
+            dispatch(deleteUserFailure(error.message));
+        }
+    };
+
+    const handleDeleteConfirm = (event: ChangeEvent<HTMLInputElement>) => {
+        console.log(event.target.value);
+        if (event.target.value === currentUser?.email) {
+            setDeleteAccountBtn(false);
+        } else {
+            setDeleteAccountBtn(true);
+        }
+    };
+
     return (
         <div className="max-w-lg mx-auto p-3 w-full px-12">
             <h1 className="my-7 text-center font-semibold text-3xl">Profile</h1>
@@ -193,9 +235,75 @@ const DashProfile: FC<ITab> = ({ tab }): JSX.Element => {
             {tab === "password" && <DashPassword />}
 
             <div className="text-red-500 flex justify-between mt-5 font-bold">
-                <span className="cursor-pointer">Delete Account</span>
+                <span
+                    onClick={() => {
+                        setShowModal(true);
+                        setDeleteAccountBtn(true);
+                    }}
+                    className="cursor-pointer"
+                >
+                    Delete Account
+                </span>
                 <span className="cursor-pointer">Log Out</span>
             </div>
+
+            {error && (
+                <Alert className="font-semibold mb-4" color={"failure"}>
+                    {error}
+                </Alert>
+            )}
+
+            <Modal
+                show={showModal}
+                onClose={() => setShowModal(false)}
+                popup
+                size={"md"}
+            >
+                <Modal.Header />
+                <Modal.Body>
+                    <div className="text-center">
+                        <HiOutlineExclamationCircle className="h-14 w-14 text-gray-400 dark:text-gray-200 mb-4 mx-auto" />
+
+                        <h3 className="mb-3 text-lg font-semibold text-gray-500 dark:text-gray-400">
+                            Are You sure you want to Delete your Account?
+                        </h3>
+
+                        <p className="text-sm text-gray-500 dark:text-gray-400">
+                            Please Enter Your E-mail
+                        </p>
+                        <p className="mb-2 text-xs font-light text-gray-500 dark:text-gray-400">
+                            {currentUser?.email}
+                        </p>
+
+                        <TextInput
+                            onInput={handleDeleteConfirm}
+                            id="deleteConfirm"
+                            type="email"
+                            placeholder={currentUser?.email}
+                            required
+                            className="mb-5"
+                        />
+
+                        <div className="flex justify-between">
+                            <Button
+                                color="failure"
+                                onClick={handleDeleteUser}
+                                className="font-semibold"
+                                disabled={deleteAccountBtn}
+                            >
+                                Yes, I'm Sure
+                            </Button>
+                            <Button
+                                color="success"
+                                onClick={() => setShowModal(false)}
+                                className="font-semibold"
+                            >
+                                No, I don't Want
+                            </Button>
+                        </div>
+                    </div>
+                </Modal.Body>
+            </Modal>
         </div>
     );
 };

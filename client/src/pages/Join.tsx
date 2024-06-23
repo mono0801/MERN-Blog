@@ -102,7 +102,7 @@ const SignUp = () => {
                             />
                             {errors.nickname?.message && (
                                 <Alert
-                                    className="mt-3"
+                                    className="mt-3 font-semibold"
                                     color={"failure"}
                                     icon={HiInformationCircle}
                                 >
@@ -120,7 +120,7 @@ const SignUp = () => {
                             />
                             {errors.email?.message && (
                                 <Alert
-                                    className="mt-3"
+                                    className="mt-3 font-semibold"
                                     color={"failure"}
                                     icon={HiInformationCircle}
                                 >
@@ -141,7 +141,7 @@ const SignUp = () => {
                             />
                             {errors.password?.message && (
                                 <Alert
-                                    className="mt-3"
+                                    className="mt-3 font-semibold"
                                     color={"failure"}
                                     icon={HiInformationCircle}
                                 >
@@ -162,7 +162,7 @@ const SignUp = () => {
                             />
                             {errors.passwordConfirm?.message && (
                                 <Alert
-                                    className="mt-3"
+                                    className="mt-3 font-semibold"
                                     color={"failure"}
                                     icon={HiInformationCircle}
                                 >
@@ -193,7 +193,7 @@ const SignUp = () => {
 
                     {errMsg.message != "" && (
                         <Alert
-                            className="mt-3"
+                            className="mt-3 font-semibold"
                             color={"failure"}
                             icon={HiInformationCircle}
                         >

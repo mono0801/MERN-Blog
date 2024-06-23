@@ -82,7 +82,7 @@ const DashAccount = () => {
                     />
                     {errors?.nickname?.message && (
                         <Alert
-                            className="mt-3"
+                            className="mt-3 font-semibold"
                             color={"failure"}
                             icon={HiInformationCircle}
                         >
@@ -102,7 +102,7 @@ const DashAccount = () => {
                     />
                     {errors?.email?.message && (
                         <Alert
-                            className="mt-3"
+                            className="mt-3 font-semibold"
                             color={"failure"}
                             icon={HiInformationCircle}
                         >

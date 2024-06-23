@@ -16,6 +16,7 @@ import styled from "styled-components";
 import { HiInformationCircle } from "react-icons/hi";
 import { useDispatch, useSelector } from "react-redux";
 import {
+    errorReset,
     logInFailure,
     logInStart,
     logInSuccess,
@@ -40,6 +41,10 @@ const LogIn = () => {
     const { loading, error: errMsg } = useSelector(
         (state: RootState) => state.user
     );
+
+    useEffect(() => {
+        dispatch(errorReset());
+    }, []);
 
     const handleValid = async (formData: ILogIn) => {
         const signData: ILogIn = {
@@ -103,7 +108,7 @@ const LogIn = () => {
                             />
                             {errors.email?.message && (
                                 <Alert
-                                    className="mt-3"
+                                    className="mt-3 font-semibold"
                                     color={"failure"}
                                     icon={HiInformationCircle}
                                 >
@@ -124,7 +129,7 @@ const LogIn = () => {
                             />
                             {errors.password?.message && (
                                 <Alert
-                                    className="mt-3"
+                                    className="mt-3 font-semibold"
                                     color={"failure"}
                                     icon={HiInformationCircle}
                                 >
@@ -156,7 +161,7 @@ const LogIn = () => {
 
                     {errMsg && (
                         <Alert
-                            className="mt-3"
+                            className="mt-3 font-semibold"
                             color={"failure"}
                             icon={HiInformationCircle}
                         >
