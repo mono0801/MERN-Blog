@@ -29,11 +29,7 @@ const SignUp = () => {
         handleSubmit,
         formState: { errors },
     } = useForm<IForm>({ resolver: yupResolver<IForm>(signSchema) });
-    const [data, setData] = useState<IJoin>({
-        nickname: "",
-        email: "",
-        password: "",
-    });
+    const [data, setData] = useState<IJoin | null>(null);
     const [errMsg, setErrMsg] = useState<IErrMsg>({ message: "" });
     const [loading, setLoading] = useState(false);
 
@@ -46,8 +42,9 @@ const SignUp = () => {
         setData(signData);
     };
 
+    // TODO E-mail 확인하는 기능 추가
     useEffect(() => {
-        if (data.nickname != "" && data.email != "" && data.password != "") {
+        if (data != null) {
             setLoading(true);
             setErrMsg({ message: "" });
             fetchJoin(data)

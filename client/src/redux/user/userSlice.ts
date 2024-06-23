@@ -1,9 +1,9 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 interface IUser {
+    _id: number;
     nickname: string;
     email: string;
-    password: string;
     socialLogin: boolean;
     createdAt: Date;
     updatedAt: Date;
@@ -39,9 +39,15 @@ const userSlice = createSlice({
             state.loading = false;
             state.error = action.payload;
         },
+        updateToken: (state, action) => {
+            state.currentUser = action.payload;
+            state.loading = false;
+            state.error = null;
+        },
     },
 });
 
-export const { logInStart, logInSuccess, logInFailure } = userSlice.actions;
+export const { logInStart, logInSuccess, logInFailure, updateToken } =
+    userSlice.actions;
 
 export default userSlice.reducer;

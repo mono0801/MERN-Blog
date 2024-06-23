@@ -16,6 +16,8 @@ $ cd client
 $ npm init -y
 $ npm i express
 $ npm i -D nodemon
+$ npm i morgan
+$ npm i --save @types/morgan
 # TypeScript에서 express 인식
 $ tsc --init
 # TypeScript가 Node.js에서 실행하도록 설정

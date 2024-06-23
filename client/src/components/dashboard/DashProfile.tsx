@@ -1,5 +1,5 @@
-import { useSelector } from "react-redux";
-import { RootState } from "../../redux/store";
+import { useDispatch, useSelector } from "react-redux";
+import { AppDispatch, RootState } from "../../redux/store";
 import React, { FC, useEffect, useRef, useState } from "react";
 import DashAccount from "./DashAccount";
 import DashPassword from "./DashPassword";
@@ -13,6 +13,8 @@ import {
 import { Alert } from "flowbite-react";
 import { CircularProgressbar } from "react-circular-progressbar";
 import "react-circular-progressbar/dist/styles.css";
+import { updateToken } from "../../redux/user/userSlice";
+import { updateProfile } from "../../utils/utils";
 
 interface ITab {
     tab: "profile" | "password" | "upload" | "";
@@ -20,6 +22,7 @@ interface ITab {
 
 const DashProfile: FC<ITab> = ({ tab }): JSX.Element => {
     const { currentUser } = useSelector((state: RootState) => state.user);
+    const dispatch = useDispatch<AppDispatch>();
 
     const [imgFile, setImgFile] = useState<globalThis.File | null>(null);
     const [imgFileUrl, setImgFileUrl] = useState<string | null>(null);
@@ -28,6 +31,8 @@ const DashProfile: FC<ITab> = ({ tab }): JSX.Element => {
         null
     );
     const [imgUploadError, setImgUploadError] = useState<string | null>(null);
+    const [profile, setProfile] = useState<string | null>(null);
+    const [loading, setLoading] = useState<boolean>(false);
 
     const handleImgChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         let file;
@@ -89,6 +94,7 @@ const DashProfile: FC<ITab> = ({ tab }): JSX.Element => {
                 getDownloadURL(uploadTask.snapshot.ref).then(
                     (downloadUrl: string) => {
                         setImgFileUrl(downloadUrl);
+                        setProfile(downloadUrl);
                     }
                 );
             }
@@ -98,6 +104,32 @@ const DashProfile: FC<ITab> = ({ tab }): JSX.Element => {
     if (imgUploadProgress == 100) {
         setTimeout(() => setImgUploadProgress(null), 450);
     }
+    useEffect(() => {
+        if (loading) {
+            return;
+        }
+        if (profile != null) {
+            try {
+                setLoading(true);
+                updateProfile(currentUser?._id!, profile)
+                    .then((msg) => {
+                        if (msg?.response.status == 200) {
+                            dispatch(updateToken(msg?.data));
+                            setLoading(false);
+                            setImgUploadError(null);
+                            alert("User Profile updated Successfully");
+                        } else {
+                            setImgUploadError(msg?.data);
+                            setLoading(false);
+                        }
+                    })
+                    .catch((err) => {
+                        setImgUploadError(err);
+                        setLoading(false);
+                    });
+            } catch (err) {}
+        }
+    }, [profile]);
 
     return (
         <div className="max-w-lg mx-auto p-3 w-full px-12">
@@ -111,6 +143,7 @@ const DashProfile: FC<ITab> = ({ tab }): JSX.Element => {
                     ref={imgPickerRef}
                     hidden
                 />
+
                 <div
                     className="w-32 h-32 mb-4 relative self-center cursor-pointer shadow-md overflow-hidden rounded-full"
                     onClick={() => imgPickerRef.current?.click()}
@@ -137,6 +170,7 @@ const DashProfile: FC<ITab> = ({ tab }): JSX.Element => {
                                 }}
                             />
                         )}
+
                     <img
                         src={imgFileUrl || currentUser?.profileUrl}
                         alt="user"
@@ -148,11 +182,13 @@ const DashProfile: FC<ITab> = ({ tab }): JSX.Element => {
                     />
                 </div>
             </form>
+
             {imgUploadError && (
                 <Alert className="font-semibold mb-4" color={"failure"}>
                     {imgUploadError}
                 </Alert>
             )}
+
             {tab === "profile" && <DashAccount />}
             {tab === "password" && <DashPassword />}
 

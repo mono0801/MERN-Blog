@@ -1,6 +1,6 @@
 import { editPasswordSchema } from "../../pages/yup";
 import { useForm } from "react-hook-form";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { yupResolver } from "@hookform/resolvers/yup/src/yup.js";
 import {
     SignInputBtn,
@@ -8,43 +8,105 @@ import {
 } from "../../styles/components/sign.style";
 import { Alert, Button, TextInput } from "flowbite-react";
 import { HiInformationCircle } from "react-icons/hi";
-import { IErrMsg } from "../../utils/interface";
+import { updatePassword } from "../../utils/utils";
+import { useDispatch, useSelector } from "react-redux";
+import { AppDispatch, RootState } from "../../redux/store";
+import { updateToken } from "../../redux/user/userSlice";
 
 interface IForm {
+    currentPassword: string;
     password: string;
 }
 
 interface IPassword extends IForm {
-    passwordConfirm: String;
+    passwordConfirm: string;
 }
 
 const DashPassword = () => {
+    const { currentUser } = useSelector((state: RootState) => state.user);
+    const dispatch = useDispatch<AppDispatch>();
     const {
         register,
         handleSubmit,
+        setValue,
         formState: { errors },
     } = useForm<IPassword>({
         resolver: yupResolver<IPassword>(editPasswordSchema),
     });
 
-    const [data, setData] = useState<IForm>({
-        password: "",
-    });
-    const [errMsg, setErrMsg] = useState<IErrMsg>({ message: "" });
+    const [data, setData] = useState<IForm | null>(null);
+    const [errMsg, setErrMsg] = useState<string | null>(null);
     const [loading, setLoading] = useState(false);
 
     const handleValid = async (formData: IForm) => {
-        const newPassword: IForm = {
+        const password: IForm = {
+            currentPassword: formData.currentPassword,
             password: formData.password,
         };
-        setData(newPassword);
+        setData(password);
     };
+
+    useEffect(() => {
+        if (loading) {
+            return;
+        }
+        if (data != null) {
+            try {
+                setLoading(true);
+                updatePassword(
+                    currentUser?._id!,
+                    data.currentPassword,
+                    data.password
+                )
+                    .then((msg) => {
+                        if (msg?.response.status == 200) {
+                            dispatch(updateToken(msg?.data));
+                            setLoading(false);
+                            setErrMsg(null);
+                            alert("User Password updated Successfully");
+                            setValue("currentPassword", "");
+                            setValue("password", "");
+                            setValue("passwordConfirm", "");
+                        } else {
+                            setErrMsg(msg?.data);
+                            setLoading(false);
+                        }
+                    })
+                    .catch((err) => {
+                        setErrMsg(err);
+                        setLoading(false);
+                    });
+            } catch (err) {}
+        }
+    }, [data]);
 
     return (
         <form className="flex flex-col" onSubmit={handleSubmit(handleValid)}>
             <div className="flex flex-col gap-2">
                 <SignInputValue>
-                    <label htmlFor="password">&nbsp; Your Password</label>
+                    <label htmlFor="currentPassword">
+                        &nbsp; Current Password
+                    </label>
+                    <TextInput
+                        {...register("currentPassword")}
+                        id="currentPassword"
+                        type="password"
+                        placeholder="Current Password"
+                        maxLength={10}
+                        className="mt-1"
+                    />
+                    {errors.password?.message && (
+                        <Alert
+                            className="mt-3"
+                            color={"failure"}
+                            icon={HiInformationCircle}
+                        >
+                            {errors.password?.message}
+                        </Alert>
+                    )}
+                </SignInputValue>
+                <SignInputValue>
+                    <label htmlFor="password">&nbsp; New Password</label>
                     <TextInput
                         {...register("password")}
                         id="password"
@@ -94,6 +156,16 @@ const DashPassword = () => {
                 >
                     <SignInputBtn>Edit Password</SignInputBtn>
                 </Button>
+
+                {errMsg && (
+                    <Alert
+                        className="mt-3 font-semibold"
+                        color={"failure"}
+                        icon={HiInformationCircle}
+                    >
+                        {errMsg}
+                    </Alert>
+                )}
             </div>
         </form>
     );

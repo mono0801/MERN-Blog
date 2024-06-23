@@ -31,6 +31,11 @@ export const editAccountSchema = yup.object().shape({
 });
 
 export const editPasswordSchema = yup.object().shape({
+    currentPassword: yup
+        .string()
+        .min(6, "Password must be at least 6 Characters")
+        .matches(/^[a-zA-Z0-9!@#$%^*+=-]*$/, "Invalid Password")
+        .required("Please write Password"),
     password: yup
         .string()
         .min(6, "Password must be at least 6 Characters")

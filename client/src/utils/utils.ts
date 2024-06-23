@@ -76,3 +76,53 @@ export async function fetchNaver(code: string, state: string) {
         return data;
     } catch (err) {}
 }
+
+export async function updateProfile(id: number, img: string) {
+    const jsonData = { profileUrl: img };
+    try {
+        const response = await fetch(`/users/profile/${id}`, {
+            method: "PUT",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(jsonData),
+        });
+        const data = await response.json();
+        return { response, data };
+    } catch (err) {}
+}
+
+export async function updateAccount(
+    id: number,
+    nickname: string,
+    email: string
+) {
+    const jsonData = { nickname: nickname, email: email };
+    try {
+        const response = await fetch(`/users/account/${id}`, {
+            method: "PUT",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(jsonData),
+        });
+        const data = await response.json();
+        return { response, data };
+    } catch (err) {}
+}
+
+export async function updatePassword(
+    id: number,
+    currentPassword: string,
+    newPassword: string
+) {
+    const jsonData = {
+        currentPassword: currentPassword,
+        newPassword: newPassword,
+    };
+    try {
+        const response = await fetch(`/users/password/${id}`, {
+            method: "PUT",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(jsonData),
+        });
+        const data = await response.json();
+        return { response, data };
+    } catch (err) {}
+}

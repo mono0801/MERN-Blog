@@ -7,16 +7,14 @@ export const updateProfile = async (req: Request, res: Response) => {
     const { profileUrl } = req.body;
     let updateUser;
 
-    const user = await User.findOne<IUser>({
-        id: _id,
-    });
+    const user = await User.findById<IUser>(_id);
     if (!user) {
-        return res.status(404).json({ message: "User Not Found" });
+        return res.status(404).json("User Not Found");
     }
     updateUser = await User.findByIdAndUpdate(
         _id,
         {
-            profileUrl: profileUrl ? profileUrl : user.profileUrl,
+            profileUrl,
         },
         { new: true }
     );
@@ -34,20 +32,20 @@ export const updateAccount = async (req: Request, res: Response) => {
     const user = await User.findById<IUser>(_id);
 
     if (!user) {
-        return res.status(404).json({ message: "User Not Found" });
+        return res.status(404).json("User Not Found");
     }
 
     if (nickname != user.nickname) {
         const nicknameExist = await User.exists({ nickname });
         if (nicknameExist) {
-            return res.status(400).json({ message: `${nickname} is exist` });
+            return res.status(401).json(`${nickname} is exist`);
         }
     }
 
     if (email != user.email) {
         const emailExist = await User.exists({ email });
         if (emailExist) {
-            return res.status(400).json({ message: `${email} is exist` });
+            return res.status(401).json(`${email} is exist`);
         }
     }
 
@@ -67,18 +65,23 @@ export const updateAccount = async (req: Request, res: Response) => {
 
 export const updatePassword = async (req: Request, res: Response) => {
     const _id = req.params.userId;
-    const newPassword = req.body.password;
+    const { currentPassword, newPassword } = req.body;
 
     const user = await User.findById<IUser>(_id);
 
     if (!user) {
-        return res.status(404).json({ message: "User Not Found" });
+        return res.status(404).json("User Not Found");
+    }
+
+    const pwMatch = await bcrypt.compare(currentPassword, user.password);
+    if (!pwMatch) {
+        return res.status(401).json("Please Enter your Password Correctly");
     }
 
     try {
         const pwMatch = await bcrypt.compare(newPassword, user.password);
         if (pwMatch) {
-            return res.status(400).json({ message: "The Password is Same" });
+            return res.status(401).json("The Password is Same");
         }
     } catch (err) {
         console.log("Error : ", err);

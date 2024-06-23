@@ -1,4 +1,5 @@
 import express, { NextFunction, Request, Response } from "express";
+import morgan from "morgan";
 import userRouter from "./router/userRoute";
 import authRouter from "./router/authRoute";
 import { HttpException } from "./utils/interface";
@@ -6,6 +7,7 @@ import cookieParser from "cookie-parser";
 
 const app = express();
 
+app.use(morgan("dev"));
 app.use(express.json());
 app.use(cookieParser());
 

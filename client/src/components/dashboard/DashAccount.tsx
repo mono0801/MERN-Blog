@@ -1,5 +1,5 @@
-import { useSelector } from "react-redux";
-import { RootState } from "../../redux/store";
+import { useDispatch, useSelector } from "react-redux";
+import { AppDispatch, RootState } from "../../redux/store";
 import { Alert, Button, TextInput } from "flowbite-react";
 import {
     SignInputBtn,
@@ -10,27 +10,26 @@ import { yupResolver } from "@hookform/resolvers/yup/src/yup.js";
 import { editAccountSchema } from "../../pages/yup";
 import { HiInformationCircle } from "react-icons/hi";
 import { useEffect, useState } from "react";
-import { IErrMsg } from "../../utils/interface";
+import { updateToken } from "../../redux/user/userSlice";
+import { updateAccount } from "../../utils/utils";
 
 interface IForm {
-    nickname: String;
-    email: String;
+    nickname: string;
+    email: string;
 }
 
 const DashAccount = () => {
     const { currentUser } = useSelector((state: RootState) => state.user);
+    const dispatch = useDispatch<AppDispatch>();
     const {
         register,
         handleSubmit,
         formState: { errors },
     } = useForm<IForm>({ resolver: yupResolver<IForm>(editAccountSchema) });
 
-    const [data, setData] = useState<IForm>({
-        nickname: "",
-        email: "",
-    });
-    const [errMsg, setErrMsg] = useState<IErrMsg>({ message: "" });
-    const [loading, setLoading] = useState(false);
+    const [data, setData] = useState<IForm | null>(null);
+    const [errMsg, setErrMsg] = useState<string | null>(null);
+    const [loading, setLoading] = useState<boolean>(false);
 
     const handleValid = async (formData: IForm) => {
         const signData: IForm = {
@@ -40,7 +39,32 @@ const DashAccount = () => {
         setData(signData);
     };
 
-    useEffect(() => {}, [data]);
+    useEffect(() => {
+        if (loading) {
+            return;
+        }
+        if (data != null) {
+            try {
+                setLoading(true);
+                updateAccount(currentUser?._id!, data.nickname, data.email)
+                    .then((msg) => {
+                        if (msg?.response.status == 200) {
+                            dispatch(updateToken(msg?.data));
+                            setLoading(false);
+                            setErrMsg(null);
+                            alert("User Account updated Successfully");
+                        } else {
+                            setErrMsg(msg?.data);
+                            setLoading(false);
+                        }
+                    })
+                    .catch((err) => {
+                        setErrMsg(err);
+                        setLoading(false);
+                    });
+            } catch (err) {}
+        }
+    }, [data]);
 
     return (
         <form className="flex flex-col " onSubmit={handleSubmit(handleValid)}>
@@ -56,13 +80,13 @@ const DashAccount = () => {
                         maxLength={10}
                         className="mt-1"
                     />
-                    {errors.nickname?.message && (
+                    {errors?.nickname?.message && (
                         <Alert
                             className="mt-3"
                             color={"failure"}
                             icon={HiInformationCircle}
                         >
-                            {errors.nickname?.message}
+                            {errors.nickname.message}
                         </Alert>
                     )}
                 </SignInputValue>
@@ -76,13 +100,13 @@ const DashAccount = () => {
                         defaultValue={currentUser?.email}
                         className="mt-1"
                     />
-                    {errors.email?.message && (
+                    {errors?.email?.message && (
                         <Alert
                             className="mt-3"
                             color={"failure"}
                             icon={HiInformationCircle}
                         >
-                            {errors.email?.message}
+                            {errors.email.message}
                         </Alert>
                     )}
                 </SignInputValue>
@@ -95,13 +119,14 @@ const DashAccount = () => {
                 >
                     <SignInputBtn>Edit Profile</SignInputBtn>
                 </Button>
-                {errMsg.message != "" && (
+
+                {errMsg && (
                     <Alert
                         className="mt-3 font-semibold"
                         color={"failure"}
                         icon={HiInformationCircle}
                     >
-                        {errMsg.message}
+                        {errMsg}
                     </Alert>
                 )}
             </div>
