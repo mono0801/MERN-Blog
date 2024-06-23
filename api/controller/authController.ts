@@ -357,3 +357,14 @@ export const naverLoginCallback = async (req: Request, res: Response) => {
         return res.json("Something Problem is occured");
     }
 };
+
+export const logout = (req: Request, res: Response) => {
+    try {
+        return res
+            .clearCookie("access_token")
+            .status(200)
+            .json("User is Logged Out");
+    } catch (error) {
+        console.log("Error : ", error);
+    }
+};

@@ -4,6 +4,7 @@ import {
     githubLoginCallback,
     kakaoLogin,
     kakaoLoginCallback,
+    logout,
     naverLogin,
     naverLoginCallback,
     postGoogle,
@@ -25,5 +26,7 @@ authRouter.route("/kakao/callback").post(kakaoLoginCallback);
 
 authRouter.route("/naver").get(naverLogin);
 authRouter.route("/naver/callback").post(naverLoginCallback);
+
+authRouter.route("/logout").post(logout);
 
 export default authRouter;

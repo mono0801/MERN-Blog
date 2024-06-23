@@ -9,12 +9,29 @@ import { FaMoon, FaSun, FaUser } from "react-icons/fa";
 import { LuLogOut } from "react-icons/lu";
 import { MdDriveFolderUpload } from "react-icons/md";
 import { RiLockPasswordLine } from "react-icons/ri";
+import { logoutSuccess } from "../redux/user/userSlice";
 
 const Header = () => {
     const path = useLocation().pathname;
     const dispatch = useDispatch();
     const { currentUser } = useSelector((state: RootState) => state.user);
     const { theme } = useSelector((state: RootState) => state.theme);
+
+    const handleLogOut = async () => {
+        try {
+            const res = await fetch("/auth/logout", {
+                method: "POST",
+            });
+            const data = res.json();
+            if (!res.ok) {
+                console.log(data);
+            } else {
+                dispatch(logoutSuccess());
+            }
+        } catch (error) {
+            console.log(error);
+        }
+    };
 
     return (
         <Navbar className="border-b-2">
@@ -87,11 +104,9 @@ const Header = () => {
                             </Dropdown.Item>
                         </Link>
                         <Dropdown.Divider />
-                        <Link to={"/"}>
-                            <Dropdown.Item icon={LuLogOut}>
-                                Log Out
-                            </Dropdown.Item>
-                        </Link>
+                        <Dropdown.Item icon={LuLogOut} onClick={handleLogOut}>
+                            Log Out
+                        </Dropdown.Item>
                     </Dropdown>
                 ) : (
                     <Link to={"/login"}>

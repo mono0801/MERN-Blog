@@ -5,10 +5,14 @@ import { LuLogOut } from "react-icons/lu";
 import { MdDriveFolderUpload } from "react-icons/md";
 import { RiLockPasswordLine } from "react-icons/ri";
 import { Link, useLocation } from "react-router-dom";
+import { logoutSuccess } from "../../redux/user/userSlice";
+import { useDispatch } from "react-redux";
+import { AppDispatch } from "../../redux/store";
 
 const DashSidebar = () => {
     const location = useLocation();
     const [tab, setTab] = useState("");
+    const dispatch = useDispatch<AppDispatch>();
 
     useEffect(() => {
         const searchParams = new URLSearchParams(location.search);
@@ -18,6 +22,22 @@ const DashSidebar = () => {
             setTab(tabParam);
         }
     }, [location.search]);
+
+    const handleLogOut = async () => {
+        try {
+            const res = await fetch("/auth/logout", {
+                method: "POST",
+            });
+            const data = res.json();
+            if (!res.ok) {
+                console.log(data);
+            } else {
+                dispatch(logoutSuccess());
+            }
+        } catch (error) {
+            console.log(error);
+        }
+    };
 
     return (
         <Sidebar className="w-full md:w-56">
@@ -56,6 +76,7 @@ const DashSidebar = () => {
                         </Sidebar.Item>
                     </Link>
                     <Sidebar.Item
+                        onClick={handleLogOut}
                         icon={LuLogOut}
                         className="cursor-pointer font-semibold"
                     >

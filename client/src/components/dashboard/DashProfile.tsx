@@ -18,6 +18,7 @@ import {
     deleteUserStart,
     deleteUserSuccess,
     errorReset,
+    logoutSuccess,
     updateToken,
 } from "../../redux/user/userSlice";
 import { updateProfile } from "../../utils/utils";
@@ -173,6 +174,22 @@ const DashProfile: FC<ITab> = ({ tab }): JSX.Element => {
         }
     };
 
+    const handleLogOut = async () => {
+        try {
+            const res = await fetch("/auth/logout", {
+                method: "POST",
+            });
+            const data = res.json();
+            if (!res.ok) {
+                console.log(data);
+            } else {
+                dispatch(logoutSuccess());
+            }
+        } catch (error) {
+            console.log(error);
+        }
+    };
+
     return (
         <div className="max-w-lg mx-auto p-3 w-full px-12">
             <h1 className="my-7 text-center font-semibold text-3xl">Profile</h1>
@@ -244,7 +261,9 @@ const DashProfile: FC<ITab> = ({ tab }): JSX.Element => {
                 >
                     Delete Account
                 </span>
-                <span className="cursor-pointer">Log Out</span>
+                <span onClick={handleLogOut} className="cursor-pointer">
+                    Log Out
+                </span>
             </div>
 
             {error && (
