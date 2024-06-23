@@ -94,3 +94,14 @@ export const updatePassword = async (req: Request, res: Response) => {
 
     res.status(200).json(rest);
 };
+
+export const deleteUser = async (req: Request, res: Response) => {
+    const _id = req.params.userId;
+
+    const user = await User.findById<IUser>(_id);
+    if (!user) {
+        return res.status(404).json("User Not Found");
+    }
+
+    return res.end();
+};

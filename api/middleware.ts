@@ -20,3 +20,16 @@ export const verifyToken = (
         next();
     });
 };
+
+export const protectAccessUser = (
+    req: Request,
+    res: Response,
+    next: NextFunction
+) => {
+    const _id = req.params.userId;
+
+    if (req.user?.id != _id) {
+        return res.status(403).json("You're not Allowed to Access This User");
+    }
+    next();
+};

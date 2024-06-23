@@ -8,3 +8,13 @@ export class HttpException extends Error {
         this.message = message;
     }
 }
+
+export interface IUserToken {
+    id: string;
+    nickname: string;
+    email: string;
+    socialLogin: boolean;
+    createdAt: Date;
+    updatedAt: Date;
+    profileUrl: string;
+}
