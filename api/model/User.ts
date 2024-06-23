@@ -9,6 +9,7 @@ export interface IUser extends mongoose.Document {
     createdAt: Date;
     updatedAt: Date;
     profileUrl: string;
+    admin: boolean;
     _doc?: any;
 }
 
@@ -28,6 +29,7 @@ const userSchema = new mongoose.Schema<IUser>(
             default:
                 "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png",
         },
+        admin: { type: Boolean, default: false },
     },
     // 생성 & 업데이트 시간 자동 입력
     { timestamps: true }

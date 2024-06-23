@@ -77,7 +77,10 @@ export const postLogin = async (
             return res.status(404).json({ message: "Invalid Password" });
         }
 
-        const token = jwt.sign({ id: validUser._id }, process.env.JWT_SECRET!);
+        const token = jwt.sign(
+            { id: validUser._id, admin: validUser.admin },
+            process.env.JWT_SECRET!
+        );
         // Convert mongoose Object to JS Object
         // & Hide password
         const { password: pass, ...rest } = validUser._doc;
@@ -111,7 +114,10 @@ export const postGoogle = async (
 
             await user.save();
         }
-        const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET!);
+        const token = jwt.sign(
+            { id: user._id, admin: user.admin },
+            process.env.JWT_SECRET!
+        );
         const { password: pass, ...rest } = user._doc;
 
         return res
@@ -205,7 +211,10 @@ export const githubLoginCallback = async (req: Request, res: Response) => {
             });
         }
 
-        const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET!);
+        const token = jwt.sign(
+            { id: user._id, admin: user.admin },
+            process.env.JWT_SECRET!
+        );
         const { password: pass, ...rest } = user._doc;
         return res
             .status(200)
@@ -274,7 +283,10 @@ export const kakaoLoginCallback = async (req: Request, res: Response) => {
             });
         }
 
-        const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET!);
+        const token = jwt.sign(
+            { id: user._id, admin: user.admin },
+            process.env.JWT_SECRET!
+        );
         const { password: pass, ...rest } = user._doc;
         return res
             .status(200)
@@ -347,7 +359,10 @@ export const naverLoginCallback = async (req: Request, res: Response) => {
             });
         }
 
-        const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET!);
+        const token = jwt.sign(
+            { id: user._id, admin: user.admin },
+            process.env.JWT_SECRET!
+        );
         const { password: pass, ...rest } = user._doc;
         return res
             .status(200)
