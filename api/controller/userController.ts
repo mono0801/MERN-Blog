@@ -103,5 +103,10 @@ export const deleteUser = async (req: Request, res: Response) => {
         return res.status(404).json("User Not Found");
     }
 
-    return res.end();
+    try {
+        await User.findByIdAndDelete(_id);
+        res.status(200).json("User Account is Deleted");
+    } catch (error) {
+        return console.log("Error : ", error);
+    }
 };

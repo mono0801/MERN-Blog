@@ -20,6 +20,6 @@ userRouter
     .put(verifyToken, protectAccessUser, updatePassword);
 userRouter
     .route("/delete/:userId")
-    .put(verifyToken, protectAccessUser, deleteUser);
+    .delete(verifyToken, protectAccessUser, deleteUser);
 
 export default userRouter;
