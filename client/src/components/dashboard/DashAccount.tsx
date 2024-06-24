@@ -67,7 +67,7 @@ const DashAccount = () => {
     }, [data]);
 
     return (
-        <form className="flex flex-col " onSubmit={handleSubmit(handleValid)}>
+        <form className="flex flex-col" onSubmit={handleSubmit(handleValid)}>
             <div className="flex flex-col gap-2">
                 <SignInputValue>
                     <label htmlFor="nickname">&nbsp; Your Nickname</label>

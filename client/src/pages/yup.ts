@@ -52,6 +52,11 @@ export const editPasswordSchema = yup.object().shape({
 export const editCategorySchema = yup.object().shape({
     category: yup
         .string()
-        .min(2, "category must be at least 2 Characters")
+        .min(2, "Category must be at least 2 Characters")
         .required("Please write category"),
+});
+
+export const uploadPostSchema = yup.object().shape({
+    title: yup.string().required("Please write Title"),
+    hashTags: yup.string(),
 });

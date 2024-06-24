@@ -28,6 +28,8 @@ $ npm i @reduxjs/toolkit react-redux
 $ npm i redux-persist @types/redux-persist
 $ npm i firebase
 $ npm i --save react-circular-progressbar
+# Text 편집기
+$ npm i --save react-quill
 ```
 
 ## Expanding the ESLint configuration

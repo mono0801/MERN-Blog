@@ -120,7 +120,8 @@ const DashCategory = () => {
                         disabled={
                             loading ||
                             item == "JavaScript" ||
-                            item == "React JS"
+                            item == "React JS" ||
+                            item == "UnCategorized"
                         }
                         key={item}
                         onClick={handleCategory}
