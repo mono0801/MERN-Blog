@@ -10,6 +10,7 @@ import { LuLogOut } from "react-icons/lu";
 import { MdDriveFolderUpload } from "react-icons/md";
 import { RiLockPasswordLine } from "react-icons/ri";
 import { logoutSuccess } from "../redux/user/userSlice";
+import { TbCategoryPlus } from "react-icons/tb";
 
 const Header = () => {
     const path = useLocation().pathname;
@@ -98,6 +99,17 @@ const Header = () => {
                             </Dropdown.Item>
                         </Link>
                         <Dropdown.Divider />
+                        {currentUser?.admin && (
+                            <>
+                                <Link to={"/dashboard?tab=category"}>
+                                    <Dropdown.Item icon={TbCategoryPlus}>
+                                        Category
+                                    </Dropdown.Item>
+                                </Link>
+                                <Dropdown.Divider />
+                            </>
+                        )}
+
                         <Link to={"/dashboard?tab=upload"}>
                             <Dropdown.Item icon={MdDriveFolderUpload}>
                                 Upload
@@ -139,6 +151,13 @@ const Header = () => {
                     <Navbar.Link active={path === "/join"} as={"div"}>
                         <Link to={"/join"}>
                             <LinkP>Sign In</LinkP>
+                        </Link>
+                    </Navbar.Link>
+                )}
+                {currentUser?.admin && (
+                    <Navbar.Link active={path === "/uploadpost"} as={"div"}>
+                        <Link to={"/uploadpost"}>
+                            <LinkP>Upload</LinkP>
                         </Link>
                     </Navbar.Link>
                 )}

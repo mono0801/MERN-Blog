@@ -1,0 +1,24 @@
+export async function getCategory() {
+    try {
+        const response = await fetch(`/post/category`, {
+            method: "GET",
+        });
+        const data = await response.json();
+        return { response, data };
+    } catch (err) {}
+}
+
+export async function postCategory(category: string) {
+    const jsonData = {
+        category: category,
+    };
+    try {
+        const response = await fetch(`/post/category`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(jsonData),
+        });
+        const data = await response.json();
+        return { response, data };
+    } catch (err) {}
+}

@@ -153,6 +153,7 @@ const DashPassword = () => {
                     outline
                     type="submit"
                     className="mt-4"
+                    disabled={loading}
                 >
                     <SignInputBtn>Edit Password</SignInputBtn>
                 </Button>

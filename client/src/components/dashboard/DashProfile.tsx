@@ -23,9 +23,11 @@ import {
 } from "../../redux/user/userSlice";
 import { updateProfile } from "../../utils/utils";
 import { HiOutlineExclamationCircle } from "react-icons/hi";
+import { Link } from "react-router-dom";
+import { SignInputBtn } from "../../styles/components/sign.style";
 
 interface ITab {
-    tab: "profile" | "password" | "upload" | "";
+    tab: "profile" | "password" | "upload" | "category" | "";
 }
 
 const DashProfile: FC<ITab> = ({ tab }): JSX.Element => {
@@ -250,6 +252,18 @@ const DashProfile: FC<ITab> = ({ tab }): JSX.Element => {
 
             {tab === "profile" && <DashAccount />}
             {tab === "password" && <DashPassword />}
+
+            {currentUser?.admin && (
+                <Link to={"/uploadpost"}>
+                    <Button
+                        type="button"
+                        gradientDuoTone={"purpleToPink"}
+                        className="w-full mt-4"
+                    >
+                        <SignInputBtn>Upload Post</SignInputBtn>
+                    </Button>
+                </Link>
+            )}
 
             <div className="text-red-500 flex justify-between mt-5 font-bold">
                 <span

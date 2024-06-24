@@ -12,6 +12,8 @@ import KakaoCallback from "./pages/login/Kakao";
 import NaverCallback from "./pages/login/Naver";
 import PrivateRoute from "./components/Protect/PrivateRoute";
 import ProtectLogIn from "./components/Protect/ProtectLogIn";
+import UploadPost from "./pages/UploadPost";
+import OnlyAdmin from "./components/Protect/OnlyAdmin";
 
 const LoginRoutes = () => {
     return (
@@ -42,6 +44,10 @@ const App = () => {
                 </Route>
 
                 <Route path="/projects" element={<Projects />} />
+
+                <Route element={<OnlyAdmin />}>
+                    <Route path="/uploadpost" element={<UploadPost />} />
+                </Route>
             </Routes>
             <FooterComponent />
         </BrowserRouter>

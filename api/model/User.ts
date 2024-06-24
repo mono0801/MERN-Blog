@@ -5,11 +5,11 @@ export interface IUser extends mongoose.Document {
     nickname: string;
     email: string;
     password: string;
+    profileUrl: string;
     socialLogin: boolean;
+    admin: boolean;
     createdAt: Date;
     updatedAt: Date;
-    profileUrl: string;
-    admin: boolean;
     _doc?: any;
 }
 

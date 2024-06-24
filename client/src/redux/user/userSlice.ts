@@ -4,10 +4,11 @@ interface IUser {
     _id: number;
     nickname: string;
     email: string;
+    profileUrl: string;
     socialLogin: boolean;
+    admin: boolean;
     createdAt: Date;
     updatedAt: Date;
-    profileUrl: string;
 }
 
 interface IUserToken {

@@ -4,6 +4,7 @@ import userRouter from "./router/userRoute";
 import authRouter from "./router/authRoute";
 import { HttpException } from "./utils/interface";
 import cookieParser from "cookie-parser";
+import postRouter from "./router/postRouter";
 
 const app = express();
 
@@ -13,6 +14,7 @@ app.use(cookieParser());
 
 app.use("/users", userRouter);
 app.use("/auth", authRouter);
+app.use("/post", postRouter);
 
 app.use(
     (err: HttpException, req: Request, res: Response, next: NextFunction) => {

@@ -48,3 +48,10 @@ export const editPasswordSchema = yup.object().shape({
         .matches(/^[a-zA-Z0-9!@#$%^*+=-]*$/, "Invalid Password")
         .required("Please write Password Confirm"),
 });
+
+export const editCategorySchema = yup.object().shape({
+    category: yup
+        .string()
+        .min(2, "category must be at least 2 Characters")
+        .required("Please write category"),
+});

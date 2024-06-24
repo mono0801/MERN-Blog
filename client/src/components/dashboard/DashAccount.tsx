@@ -116,6 +116,7 @@ const DashAccount = () => {
                     outline
                     type="submit"
                     className="mt-4"
+                    disabled={loading}
                 >
                     <SignInputBtn>Edit Profile</SignInputBtn>
                 </Button>

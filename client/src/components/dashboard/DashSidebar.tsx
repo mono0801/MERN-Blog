@@ -6,13 +6,15 @@ import { MdDriveFolderUpload } from "react-icons/md";
 import { RiLockPasswordLine } from "react-icons/ri";
 import { Link, useLocation } from "react-router-dom";
 import { logoutSuccess } from "../../redux/user/userSlice";
-import { useDispatch } from "react-redux";
-import { AppDispatch } from "../../redux/store";
+import { useDispatch, useSelector } from "react-redux";
+import { AppDispatch, RootState } from "../../redux/store";
+import { TbCategoryPlus } from "react-icons/tb";
 
 const DashSidebar = () => {
     const location = useLocation();
     const [tab, setTab] = useState("");
     const dispatch = useDispatch<AppDispatch>();
+    const { currentUser } = useSelector((state: RootState) => state.user);
 
     useEffect(() => {
         const searchParams = new URLSearchParams(location.search);
@@ -47,7 +49,7 @@ const DashSidebar = () => {
                         <Sidebar.Item
                             active={tab === "profile"}
                             icon={FaUser}
-                            label={"User"}
+                            label={currentUser?.admin ? "Admin" : "User"}
                             labelColor="dark"
                             className="font-semibold"
                             as="div"
@@ -65,16 +67,30 @@ const DashSidebar = () => {
                             Password
                         </Sidebar.Item>
                     </Link>
-                    <Link to="/dashboard?tab=upload">
-                        <Sidebar.Item
-                            active={tab === "upload"}
-                            icon={MdDriveFolderUpload}
-                            className="font-semibold mt-2"
-                            as="div"
-                        >
-                            Upload
-                        </Sidebar.Item>
-                    </Link>
+                    {currentUser?.admin ? (
+                        <>
+                            <Link to="/dashboard?tab=category">
+                                <Sidebar.Item
+                                    active={tab === "category"}
+                                    icon={TbCategoryPlus}
+                                    className="font-semibold mt-2"
+                                    as="div"
+                                >
+                                    Category
+                                </Sidebar.Item>
+                            </Link>
+                            <Link to="/dashboard?tab=upload">
+                                <Sidebar.Item
+                                    active={tab === "upload"}
+                                    icon={MdDriveFolderUpload}
+                                    className="font-semibold mt-2"
+                                    as="div"
+                                >
+                                    Upload
+                                </Sidebar.Item>
+                            </Link>
+                        </>
+                    ) : null}
                     <Sidebar.Item
                         onClick={handleLogOut}
                         icon={LuLogOut}
