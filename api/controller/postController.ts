@@ -1,5 +1,6 @@
 import { Request, Response } from "express";
 import Category, { ICategory } from "../model/Category";
+import Post from "../model/Post";
 
 export const getCategory = async (req: Request, res: Response) => {
     try {
@@ -35,6 +36,29 @@ export const deleteCategory = async (req: Request, res: Response) => {
     try {
         const category = await Category.find<ICategory>({});
         return res.status(200).json(category);
+    } catch (error) {
+        console.log("Error : ", error);
+    }
+};
+
+export const postUpload = async (req: Request, res: Response) => {
+    const { title } = req.body;
+
+    const existPost = await Post.findOne({ title });
+    if (existPost) {
+        return res.status(400).json({ message: `[${title}] is Already Exist` });
+    }
+    const newPost = new Post({
+        ...req.body,
+        userId: req.user?.id,
+    });
+
+    try {
+        const savedPost = await newPost.save();
+        res.status(201).json({
+            message: "Upload Post is Successfully",
+            post: savedPost,
+        });
     } catch (error) {
         console.log("Error : ", error);
     }

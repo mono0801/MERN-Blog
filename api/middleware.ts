@@ -33,3 +33,17 @@ export const protectAccessUser = (
     }
     next();
 };
+
+export const protectAdminUpload = (
+    req: Request,
+    res: Response,
+    next: NextFunction
+) => {
+    if (!req.user?.admin) {
+        return res.status(403).json("You're not Allowed to Access Post");
+    }
+    if (!req.body.title || !req.body.content) {
+        return res.status(403).json("Please Provide All Required Fields");
+    }
+    next();
+};

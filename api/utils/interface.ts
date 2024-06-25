@@ -13,8 +13,9 @@ export interface IUserToken {
     id: string;
     nickname: string;
     email: string;
+    profileUrl: string;
     socialLogin: boolean;
+    admin: boolean;
     createdAt: Date;
     updatedAt: Date;
-    profileUrl: string;
 }
