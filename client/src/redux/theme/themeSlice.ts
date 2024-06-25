@@ -9,7 +9,7 @@ const initialState: ITheme = {
 };
 
 const themeSlice = createSlice({
-    name: "user",
+    name: "theme",
     initialState,
     reducers: {
         toggleTheme: (state: ITheme) => {

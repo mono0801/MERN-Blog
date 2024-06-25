@@ -1,24 +1,35 @@
 import { combineReducers, configureStore } from "@reduxjs/toolkit";
 import userReducer from "./user/userSlice";
 import themeReducer from "./theme/themeSlice";
-import storage from "redux-persist/lib/storage";
+import localStorage from "redux-persist/lib/storage";
+import sessionStorage from "redux-persist/lib/storage/session";
 import { persistReducer, persistStore } from "redux-persist";
 
-const rootReducer = combineReducers({
-    user: userReducer,
-    theme: themeReducer,
-});
-
-const persistConfig = {
-    key: "root",
-    storage,
+const userPersistConfig = {
+    key: "user",
+    storage: sessionStorage,
     version: 1,
 };
 
-const persistanceReducer = persistReducer(persistConfig, rootReducer);
+const themePersistConfig = {
+    key: "theme",
+    storage: localStorage,
+    version: 1,
+};
+
+const persistanceUserReducer = persistReducer(userPersistConfig, userReducer);
+const persistanceThemeReducer = persistReducer(
+    themePersistConfig,
+    themeReducer
+);
+
+const rootReducer = combineReducers({
+    user: persistanceUserReducer,
+    theme: persistanceThemeReducer,
+});
 
 export const store = configureStore({
-    reducer: persistanceReducer,
+    reducer: rootReducer,
     middleware: (getDefaultMiddleware) =>
         getDefaultMiddleware({ serializableCheck: false }),
 });
