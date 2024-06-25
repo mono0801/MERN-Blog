@@ -17,6 +17,13 @@ interface IForm {
     category: string;
 }
 
+const disableCategory = [
+    "JavaScript",
+    "React JS",
+    "TypeScript",
+    "UnCategorized",
+];
+
 const DashCategory = () => {
     const {
         register,
@@ -117,12 +124,7 @@ const DashCategory = () => {
                         gradientDuoTone={"purpleToBlue"}
                         outline={true}
                         className="font-semibold"
-                        disabled={
-                            loading ||
-                            item == "JavaScript" ||
-                            item == "React JS" ||
-                            item == "UnCategorized"
-                        }
+                        disabled={loading || disableCategory.includes(item)}
                         key={item}
                         onClick={handleCategory}
                     >

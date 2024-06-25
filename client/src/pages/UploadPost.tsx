@@ -11,11 +11,11 @@ import { HiInformationCircle } from "react-icons/hi";
 
 interface IForm {
     title: string;
-    hashTags?: string;
 }
 
 const UploadPost = () => {
     const [category, setCategory] = useState<string[] | null>(null);
+    const [selectedCategory, setSelectedCategory] = useState<string[]>([]);
     const [data, setData] = useState<IForm | null>(null);
     const [errMsg, setErrMsg] = useState<string | null>(null);
     const [loading, setLoading] = useState<boolean>(false);
@@ -28,7 +28,6 @@ const UploadPost = () => {
 
     const handleValid = async (formData: IForm) => {
         setData(formData);
-        console.log(formData);
     };
 
     useEffect(() => {
@@ -43,6 +42,18 @@ const UploadPost = () => {
             }
         });
     }, []);
+
+    const handleSeletCategory = (option: string) => {
+        if (!selectedCategory.includes(option) && option != "") {
+            setSelectedCategory([...selectedCategory, option]);
+        }
+    };
+
+    const handleRemoveCategory = (option: string) => {
+        setSelectedCategory(
+            selectedCategory.filter((selected) => selected !== option)
+        );
+    };
 
     return (
         <div className="p-3 max-w-3xl mx-auto min-h-screen">
@@ -62,25 +73,36 @@ const UploadPost = () => {
                         placeholder="Title"
                         className="flex-1"
                     />
-                    <Select>
-                        <option value={""} disabled>
-                            {"Select a Category"}
-                        </option>
+                    <Select
+                        onChange={(e) =>
+                            handleSeletCategory(e.target.value as string)
+                        }
+                    >
+                        <option value={""}>{"Select a Category"}</option>
                         {category?.map((item) => (
-                            <option value={item} key={item}>
+                            <option
+                                value={item}
+                                key={item}
+                                disabled={selectedCategory.includes(item)}
+                            >
                                 {item}
                             </option>
                         ))}
                     </Select>
                 </div>
 
-                <TextInput
-                    {...register("hashTags")}
-                    id="hashTags"
-                    type="text"
-                    placeholder="HashTags - Separated by Comma or #"
-                    className="flex-1 font-semibold"
-                />
+                <div className="grid grid-cols-5 gap-2">
+                    {selectedCategory.map((item) => (
+                        <Button
+                            gradientDuoTone={"purpleToBlue"}
+                            // outline
+                            onClick={() => handleRemoveCategory(item)}
+                            className="font-semibold"
+                        >
+                            {item}
+                        </Button>
+                    ))}
+                </div>
 
                 <div className="flex gap-4 items-center justify-between border-4 border-teal-500 border-dotted p-3">
                     <FileInput itemType="file" accept="image/*" />
