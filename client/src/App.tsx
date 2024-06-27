@@ -14,6 +14,7 @@ import PrivateRoute from "./components/Protect/PrivateRoute";
 import ProtectLogIn from "./components/Protect/ProtectLogIn";
 import UploadPost from "./pages/UploadPost";
 import OnlyAdmin from "./components/Protect/OnlyAdmin";
+import Post from "./pages/Post";
 
 const LoginRoutes = () => {
     return (
@@ -33,6 +34,8 @@ const App = () => {
             <Routes>
                 <Route path="/" element={<Home />} />
                 <Route path="/about" element={<About />} />
+                <Route path="/projects" element={<Projects />} />
+                <Route path="/post/:id" element={<Post />} />
 
                 <Route element={<ProtectLogIn />}>
                     <Route path="/login/*" element={<LoginRoutes />} />
@@ -42,8 +45,6 @@ const App = () => {
                 <Route element={<PrivateRoute />}>
                     <Route path="/dashboard" element={<Dashboard />} />
                 </Route>
-
-                <Route path="/projects" element={<Projects />} />
 
                 <Route element={<OnlyAdmin />}>
                     <Route path="/uploadpost" element={<UploadPost />} />

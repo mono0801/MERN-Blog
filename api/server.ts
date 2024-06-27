@@ -12,9 +12,9 @@ app.use(morgan("dev"));
 app.use(express.json());
 app.use(cookieParser());
 
-app.use("/users", userRouter);
-app.use("/auth", authRouter);
-app.use("/post", postRouter);
+app.use("/api/users", userRouter);
+app.use("/api/auth", authRouter);
+app.use("/api/post", postRouter);
 
 app.use(
     (err: HttpException, req: Request, res: Response, next: NextFunction) => {

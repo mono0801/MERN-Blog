@@ -153,7 +153,7 @@ const DashProfile: FC<ITab> = ({ tab }): JSX.Element => {
         setShowModal(false);
         try {
             dispatch(deleteUserStart());
-            const res = await fetch(`/users/delete/${currentUser?._id}`, {
+            const res = await fetch(`/api/users/delete/${currentUser?._id}`, {
                 method: "DELETE",
             });
             const data = await res.json();
@@ -178,7 +178,7 @@ const DashProfile: FC<ITab> = ({ tab }): JSX.Element => {
 
     const handleLogOut = async () => {
         try {
-            const res = await fetch("/auth/logout", {
+            const res = await fetch("/api/auth/logout", {
                 method: "POST",
             });
             const data = res.json();

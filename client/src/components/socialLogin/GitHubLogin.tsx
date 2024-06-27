@@ -5,7 +5,7 @@ import { SignInputBtn } from "../../styles/components/sign.style";
 const GitHubLogin = () => {
     const handleGitHubClick = async () => {
         try {
-            const response = await fetch("/auth/github");
+            const response = await fetch("/api/auth/github");
             const data = await response.json();
             document.location.href = data;
         } catch (error) {

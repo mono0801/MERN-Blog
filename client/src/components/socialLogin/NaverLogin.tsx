@@ -5,7 +5,7 @@ import { SiNaver } from "react-icons/si";
 const NaverLogin = () => {
     const handleNaverClick = async () => {
         try {
-            const response = await fetch("/auth/naver");
+            const response = await fetch("/api/auth/naver");
             const data = await response.json();
             document.location.href = data;
         } catch (error) {

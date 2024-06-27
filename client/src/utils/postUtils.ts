@@ -2,7 +2,7 @@ import { IUpload } from "./interface";
 
 export async function getCategory() {
     try {
-        const response = await fetch(`/post/category`, {
+        const response = await fetch(`/api/post/category`, {
             method: "GET",
         });
         const data = await response.json();
@@ -15,7 +15,7 @@ export async function postCategory(category: string) {
         category: category,
     };
     try {
-        const response = await fetch(`/post/category`, {
+        const response = await fetch(`/api/post/category`, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify(jsonData),
@@ -27,7 +27,7 @@ export async function postCategory(category: string) {
 
 export async function postUpload(jsonData: IUpload) {
     try {
-        const response = await fetch("/post/upload", {
+        const response = await fetch("/api/post/upload", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify(jsonData),

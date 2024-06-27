@@ -62,7 +62,7 @@ const DashCategory = () => {
         const jsonData = {
             category: selectCategory,
         };
-        const response = await fetch("/post/category", {
+        const response = await fetch("/api/post/category", {
             method: "DELETE",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify(jsonData),

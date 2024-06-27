@@ -2,7 +2,7 @@ import { IJoin, IJoinSocial, ILogIn } from "./interface";
 
 export async function fetchJoin(formData: IJoin) {
     try {
-        const response = await fetch("/auth/join", {
+        const response = await fetch("/api/auth/join", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify(formData),
@@ -14,7 +14,7 @@ export async function fetchJoin(formData: IJoin) {
 
 export async function fetchLogIn(formData: ILogIn) {
     try {
-        const response = await fetch("/auth/login", {
+        const response = await fetch("/api/auth/login", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify(formData),
@@ -26,7 +26,7 @@ export async function fetchLogIn(formData: ILogIn) {
 
 export async function fetchGoogle(formData: IJoinSocial) {
     try {
-        const response = await fetch("/auth/google", {
+        const response = await fetch("/api/auth/google", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify(formData),
@@ -39,7 +39,7 @@ export async function fetchGoogle(formData: IJoinSocial) {
 export async function fetchGithub(code: string) {
     const jsonCode = { code: code };
     try {
-        const response = await fetch("/auth/github/callback", {
+        const response = await fetch("/api/auth/github/callback", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify(jsonCode),
@@ -53,7 +53,7 @@ export async function fetchKakao(code: string) {
     const abortController = new AbortController();
     const jsonCode = { code: code };
     try {
-        const response = await fetch("/auth/kakao/callback", {
+        const response = await fetch("/api/auth/kakao/callback", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify(jsonCode),
@@ -67,7 +67,7 @@ export async function fetchKakao(code: string) {
 export async function fetchNaver(code: string, state: string) {
     const jsonCode = { code: code, state: state };
     try {
-        const response = await fetch("/auth/naver/callback", {
+        const response = await fetch("/api/auth/naver/callback", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify(jsonCode),
@@ -80,7 +80,7 @@ export async function fetchNaver(code: string, state: string) {
 export async function updateProfile(id: number, img: string) {
     const jsonData = { profileUrl: img };
     try {
-        const response = await fetch(`/users/profile/${id}`, {
+        const response = await fetch(`/api/users/profile/${id}`, {
             method: "PUT",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify(jsonData),
@@ -97,7 +97,7 @@ export async function updateAccount(
 ) {
     const jsonData = { nickname: nickname, email: email };
     try {
-        const response = await fetch(`/users/account/${id}`, {
+        const response = await fetch(`/api/users/account/${id}`, {
             method: "PUT",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify(jsonData),
@@ -117,7 +117,7 @@ export async function updatePassword(
         newPassword: newPassword,
     };
     try {
-        const response = await fetch(`/users/password/${id}`, {
+        const response = await fetch(`/api/users/password/${id}`, {
             method: "PUT",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify(jsonData),

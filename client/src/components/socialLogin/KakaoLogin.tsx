@@ -5,7 +5,7 @@ import { RiKakaoTalkFill } from "react-icons/ri";
 const KakaoLogin = () => {
     const handleKaKaoClick = async () => {
         try {
-            const response = await fetch("/auth/kakao");
+            const response = await fetch("/api/auth/kakao");
             const data = await response.json();
             document.location.href = data;
         } catch (error) {
