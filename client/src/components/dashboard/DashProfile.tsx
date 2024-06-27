@@ -168,7 +168,6 @@ const DashProfile: FC<ITab> = ({ tab }): JSX.Element => {
     };
 
     const handleDeleteConfirm = (event: ChangeEvent<HTMLInputElement>) => {
-        console.log(event.target.value);
         if (event.target.value === currentUser?.email) {
             setDeleteAccountBtn(false);
         } else {

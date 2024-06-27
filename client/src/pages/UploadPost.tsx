@@ -64,10 +64,7 @@ const UploadPost = () => {
 
         const uploadDate: IUpload = {
             title: formData.title,
-            category:
-                selectedCategory[0] == ""
-                    ? ["UnCategorized"]
-                    : selectedCategory,
+            category: selectedCategory,
             imgUrl,
             content,
         };
@@ -88,6 +85,9 @@ const UploadPost = () => {
     }, []);
 
     const handleSeletCategory = (option: string) => {
+        if (selectedCategory.length >= 1 && option == "UnCategorized") {
+            return;
+        }
         if (!selectedCategory.includes(option) && option != "") {
             setSelectedCategory([...selectedCategory, option]);
         }
@@ -107,6 +107,15 @@ const UploadPost = () => {
     useEffect(() => {
         if (selectedCategory.length == 0) {
             setSelectedCategory([...selectedCategory, "UnCategorized"]);
+        } else if (
+            selectedCategory.length > 1 &&
+            selectedCategory.includes("UnCategorized")
+        ) {
+            setSelectedCategory(
+                selectedCategory.filter(
+                    (selected) => selected !== "UnCategorized"
+                )
+            );
         }
     }, [selectedCategory]);
 
@@ -204,7 +213,11 @@ const UploadPost = () => {
                             <option
                                 value={item}
                                 key={item}
-                                disabled={selectedCategory.includes(item)}
+                                disabled={
+                                    selectedCategory.includes(item) ||
+                                    (selectedCategory.length >= 1 &&
+                                        item == "UnCategorized")
+                                }
                             >
                                 {item}
                             </option>

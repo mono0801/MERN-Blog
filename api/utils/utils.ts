@@ -11,3 +11,14 @@ export const randomNicknameTag = (nickname: string) => {
         Math.random().toString(9).slice(-4)
     );
 };
+
+export const oneMonthAgo = () => {
+    const now = new Date();
+    const oneMonth = new Date(
+        now.getFullYear(),
+        now.getMonth() - 1,
+        now.getDate()
+    );
+
+    return oneMonth;
+};

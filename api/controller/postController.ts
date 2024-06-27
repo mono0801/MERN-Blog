@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
 import Category, { ICategory } from "../model/Category";
-import Post from "../model/Post";
+import Post, { IPost } from "../model/Post";
+import { oneMonthAgo } from "../utils/utils";
 
 export const getCategory = async (req: Request, res: Response) => {
     try {
@@ -8,6 +9,7 @@ export const getCategory = async (req: Request, res: Response) => {
         return res.status(200).json(category);
     } catch (error) {
         console.log("Error : ", error);
+        return res.end();
     }
 };
 
@@ -24,20 +26,21 @@ export const postCategory = async (req: Request, res: Response) => {
         return res.status(200).json(category);
     } catch (error) {
         console.log("Error : ", error);
+        return res.end();
     }
 };
 
 export const deleteCategory = async (req: Request, res: Response) => {
     const selectCategory = req.body.category;
 
-    const result = await Category.deleteOne({ category: selectCategory });
-    console.log(result);
-
     try {
+        await Category.deleteOne({ category: selectCategory });
+
         const category = await Category.find<ICategory>({});
         return res.status(200).json(category);
     } catch (error) {
         console.log("Error : ", error);
+        return res.end();
     }
 };
 
@@ -61,5 +64,48 @@ export const postUpload = async (req: Request, res: Response) => {
         });
     } catch (error) {
         console.log("Error : ", error);
+        return res.end();
+    }
+};
+
+export const getPostList = async (req: Request, res: Response) => {
+    const startIndex = Number(req.query.startIndex) || 0;
+    const limit = Number(req.query.limit) || 9;
+    const sortDirection = req.query.order === "asc" ? 1 : -1;
+    try {
+        const postList = await Post.find({
+            ...(req.query.userId && { userId: req.query.userId }),
+            ...(req.query.category && { category: req.query.category }),
+            ...(req.query.title && { title: req.query.title }),
+            ...(req.query.postId && { _id: req.query.postId }),
+            ...(req.query.keyword && {
+                $or: [
+                    { title: { $regex: req.query.keyword, $options: "i" } },
+                    {
+                        content: {
+                            $regex: req.query.keyword,
+                            $options: "i",
+                        },
+                    },
+                ],
+            }),
+        })
+            .sort({ updatedAt: sortDirection })
+            .skip(startIndex)
+            .limit(limit);
+
+        const totalPostList = await Post.countDocuments();
+        const lastMonthPostCount = await Post.countDocuments({
+            createdAt: { $gte: oneMonthAgo() },
+        });
+
+        res.status(200).json({
+            postList,
+            totalPostList,
+            lastMonthPostCount,
+        });
+    } catch (error) {
+        console.log("Error : ", error);
+        return res.end();
     }
 };

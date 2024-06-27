@@ -11,8 +11,6 @@ const NaverCallback = () => {
     const urlParams = new URLSearchParams(window.location.search);
     const code = urlParams.get("code");
     const state = urlParams.get("state");
-    console.log("Code : ", code);
-    console.log("State : ", state);
 
     if (code && state) {
         fetchNaver(code, state)

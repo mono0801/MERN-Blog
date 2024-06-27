@@ -85,6 +85,7 @@ export const updatePassword = async (req: Request, res: Response) => {
         }
     } catch (err) {
         console.log("Error : ", err);
+        return res.end();
     }
 
     user.password = newPassword;
@@ -107,6 +108,7 @@ export const deleteUser = async (req: Request, res: Response) => {
         await User.findByIdAndDelete(_id);
         res.status(200).json("User Account is Deleted");
     } catch (error) {
-        return console.log("Error : ", error);
+        console.log("Error : ", error);
+        return res.end();
     }
 };

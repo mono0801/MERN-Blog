@@ -3,9 +3,11 @@ import mongoose from "mongoose";
 export interface IPost extends mongoose.Document {
     userId: mongoose.Schema.Types.ObjectId;
     title: string;
+    category: string[];
     content: string;
     image: string;
-    category: string[];
+    createdAt: Date;
+    updatedAt: Date;
     _doc?: any;
 }
 

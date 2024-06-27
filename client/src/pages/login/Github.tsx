@@ -14,7 +14,6 @@ const GithubCallback = () => {
     if (code) {
         fetchGithub(code)
             .then((res) => {
-                console.log(res);
                 dispatch(logInSuccess(res));
                 navigate("/");
             })
