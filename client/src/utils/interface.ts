@@ -16,3 +16,10 @@ export interface IJoinSocial {
 export interface IErrMsg {
     message: string;
 }
+
+export interface IUpload {
+    title: string;
+    category: string[];
+    content: string;
+    imgUrl?: string;
+}

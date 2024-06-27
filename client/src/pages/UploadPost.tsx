@@ -1,6 +1,13 @@
 import { useEffect, useState } from "react";
-import { getCategory } from "../utils/postUtils";
-import { Alert, Button, FileInput, Select, TextInput } from "flowbite-react";
+import { getCategory, postUpload } from "../utils/postUtils";
+import {
+    Alert,
+    Button,
+    FileInput,
+    Select,
+    Spinner,
+    TextInput,
+} from "flowbite-react";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
 import { SignInputBtn } from "../styles/components/sign.style";
@@ -19,29 +26,27 @@ import { useSelector } from "react-redux";
 import { RootState } from "../redux/store";
 import { CircularProgressbar } from "react-circular-progressbar";
 import "react-circular-progressbar/dist/styles.css";
+import { IUpload } from "../utils/interface";
+import { useNavigate } from "react-router-dom";
 
 interface IForm {
     title: string;
 }
 
-interface IUpload {
-    title: string;
-    category: string[];
-    imgUrl?: string;
-}
-
 const UploadPost = () => {
     const { currentUser } = useSelector((state: RootState) => state.user);
+    const navigate = useNavigate();
 
     const [category, setCategory] = useState<string[] | null>(null);
-    const [selectedCategory, setSelectedCategory] = useState<string[]>([]);
-
+    const [selectedCategory, setSelectedCategory] = useState<string[]>([
+        "UnCategorized",
+    ]);
     const [file, setFile] = useState<File | null>(null);
     const [imgUploadProgress, setImgUploadProgress] = useState<number | null>(
         null
     );
     const [imgUrl, setImgUrl] = useState<string | undefined>(undefined);
-
+    const [content, setContent] = useState<string | null>(null);
     const [data, setData] = useState<IUpload | null>(null);
 
     const [errMsg, setErrMsg] = useState<string | null>(null);
@@ -50,14 +55,21 @@ const UploadPost = () => {
         register,
         handleSubmit,
         formState: { errors },
-        setValue,
     } = useForm<IForm>({ resolver: yupResolver<IForm>(uploadPostSchema) });
 
     const handleValid = async (formData: IForm) => {
+        if (!content) {
+            return setErrMsg("Please Input Content");
+        }
+
         const uploadDate: IUpload = {
             title: formData.title,
-            category: selectedCategory,
+            category:
+                selectedCategory[0] == ""
+                    ? ["UnCategorized"]
+                    : selectedCategory,
             imgUrl,
+            content,
         };
         setData(uploadDate);
     };
@@ -82,10 +94,21 @@ const UploadPost = () => {
     };
 
     const handleRemoveCategory = (option: string) => {
+        if (selectedCategory.length == 1 && option == "UnCategorized") {
+            alert("[Option: UnCategorized] is Default");
+            return;
+        }
+
         setSelectedCategory(
             selectedCategory.filter((selected) => selected !== option)
         );
     };
+
+    useEffect(() => {
+        if (selectedCategory.length == 0) {
+            setSelectedCategory([...selectedCategory, "UnCategorized"]);
+        }
+    }, [selectedCategory]);
 
     const handleUploadImg = async () => {
         try {
@@ -124,7 +147,6 @@ const UploadPost = () => {
         } catch (error) {
             setErrMsg("Image Upload Failed");
             setImgUploadProgress(null);
-            console.log(error);
         }
     };
 
@@ -134,6 +156,25 @@ const UploadPost = () => {
         }
         return;
     }, [file]);
+
+    useEffect(() => {
+        if (data) {
+            setLoading(true);
+            postUpload(data).then((msg) => {
+                if (!msg.response?.ok) {
+                    setErrMsg(msg?.data.message);
+                    alert(msg?.data.message);
+                    setLoading(false);
+                } else {
+                    setLoading(false);
+                    setErrMsg(null);
+                    alert(msg?.data.message);
+                    navigate(`/post/${msg.data.post._id}`);
+                }
+            });
+        }
+        setLoading(false);
+    }, [data]);
 
     return (
         <div className="p-3 max-w-3xl mx-auto min-h-screen">
@@ -175,6 +216,7 @@ const UploadPost = () => {
                     {selectedCategory.map((item) => (
                         <Button
                             gradientDuoTone={"purpleToBlue"}
+                            key={item}
                             // outline
                             onClick={() => handleRemoveCategory(item)}
                             className="font-semibold"
@@ -227,10 +269,27 @@ const UploadPost = () => {
                     theme="snow"
                     placeholder="Write Something..."
                     className="h-96 mb-12"
+                    onChange={(value) => {
+                        setErrMsg(null);
+                        setContent(value);
+                    }}
                 />
 
-                <Button type="submit" gradientDuoTone={"purpleToPink"}>
-                    <SignInputBtn>Publish</SignInputBtn>
+                <Button
+                    type="submit"
+                    gradientDuoTone={"purpleToPink"}
+                    disabled={loading}
+                >
+                    {loading ? (
+                        <>
+                            <Spinner size="sm"></Spinner>
+                            <SignInputBtn className="pl-3">
+                                Uploading ...
+                            </SignInputBtn>
+                        </>
+                    ) : (
+                        <SignInputBtn>Publish</SignInputBtn>
+                    )}
                 </Button>
 
                 {errors?.title?.message && (
