@@ -7,10 +7,10 @@ import { toggleTheme } from "../redux/theme/themeSlice";
 import { AiOutlineSearch } from "react-icons/ai";
 import { FaMoon, FaSun, FaUser } from "react-icons/fa";
 import { LuLogOut } from "react-icons/lu";
-import { MdDriveFolderUpload } from "react-icons/md";
 import { RiLockPasswordLine } from "react-icons/ri";
 import { logoutSuccess } from "../redux/user/userSlice";
 import { TbCategoryPlus } from "react-icons/tb";
+import { HiDocumentText } from "react-icons/hi";
 
 const Header = () => {
     const path = useLocation().pathname;
@@ -98,23 +98,22 @@ const Header = () => {
                                 Password
                             </Dropdown.Item>
                         </Link>
-                        <Dropdown.Divider />
                         {currentUser?.admin && (
                             <>
+                                <Dropdown.Divider />
                                 <Link to={"/dashboard?tab=category"}>
                                     <Dropdown.Item icon={TbCategoryPlus}>
                                         Category
                                     </Dropdown.Item>
                                 </Link>
                                 <Dropdown.Divider />
+                                <Link to={"/dashboard?tab=post"}>
+                                    <Dropdown.Item icon={HiDocumentText}>
+                                        Post
+                                    </Dropdown.Item>
+                                </Link>
                             </>
                         )}
-
-                        <Link to={"/dashboard?tab=upload"}>
-                            <Dropdown.Item icon={MdDriveFolderUpload}>
-                                Upload
-                            </Dropdown.Item>
-                        </Link>
                         <Dropdown.Divider />
                         <Dropdown.Item icon={LuLogOut} onClick={handleLogOut}>
                             Log Out

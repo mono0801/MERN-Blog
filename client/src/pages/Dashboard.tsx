@@ -5,13 +5,14 @@ import DashProfile from "../components/dashboard/DashProfile";
 import DashCategory from "../components/dashboard/DashCategory";
 import { useSelector } from "react-redux";
 import { RootState } from "../redux/store";
+import DashPost from "../components/dashboard/DashPost";
 
 const Dashboard = () => {
     const { currentUser } = useSelector((state: RootState) => state.user);
     const location = useLocation();
     const navigate = useNavigate();
     const [tab, setTab] = useState<
-        "profile" | "password" | "upload" | "category" | ""
+        "profile" | "password" | "post" | "category" | ""
     >("");
 
     useEffect(() => {
@@ -22,13 +23,13 @@ const Dashboard = () => {
             tabParam === "profile" ||
             tabParam === "password" ||
             tabParam === "category" ||
-            tabParam === "upload"
+            tabParam === "post"
         ) {
             setTab(tabParam);
         }
     }, [location.search]);
 
-    if (tab === "category" && !currentUser?.admin) {
+    if ((tab === "category" || tab === "post") && !currentUser?.admin) {
         navigate("/");
     }
 
@@ -43,7 +44,7 @@ const Dashboard = () => {
                 <DashProfile tab={tab} />
             )}
             {tab === "category" && <DashCategory />}
-            {tab === "upload" && <p>Upload</p>}
+            {tab === "post" && <DashPost />}
         </div>
     );
 };

@@ -2,13 +2,13 @@ import { Sidebar } from "flowbite-react";
 import { useEffect, useState } from "react";
 import { FaUser } from "react-icons/fa";
 import { LuLogOut } from "react-icons/lu";
-import { MdDriveFolderUpload } from "react-icons/md";
 import { RiLockPasswordLine } from "react-icons/ri";
 import { Link, useLocation } from "react-router-dom";
 import { logoutSuccess } from "../../redux/user/userSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "../../redux/store";
 import { TbCategoryPlus } from "react-icons/tb";
+import { HiDocumentText } from "react-icons/hi";
 
 const DashSidebar = () => {
     const location = useLocation();
@@ -44,7 +44,7 @@ const DashSidebar = () => {
     return (
         <Sidebar className="w-full md:w-56">
             <Sidebar.Items>
-                <Sidebar.ItemGroup>
+                <Sidebar.ItemGroup className="flex flex-col gap-1">
                     <Link to="/dashboard?tab=profile">
                         <Sidebar.Item
                             active={tab === "profile"}
@@ -61,7 +61,7 @@ const DashSidebar = () => {
                         <Sidebar.Item
                             active={tab === "password"}
                             icon={RiLockPasswordLine}
-                            className="font-semibold mt-2"
+                            className="font-semibold"
                             as="div"
                         >
                             Password
@@ -73,20 +73,20 @@ const DashSidebar = () => {
                                 <Sidebar.Item
                                     active={tab === "category"}
                                     icon={TbCategoryPlus}
-                                    className="font-semibold mt-2"
+                                    className="font-semibold"
                                     as="div"
                                 >
                                     Category
                                 </Sidebar.Item>
                             </Link>
-                            <Link to="/dashboard?tab=upload">
+                            <Link to="/dashboard?tab=post">
                                 <Sidebar.Item
-                                    active={tab === "upload"}
-                                    icon={MdDriveFolderUpload}
-                                    className="font-semibold mt-2"
+                                    active={tab === "post"}
+                                    icon={HiDocumentText}
+                                    className="font-semibold"
                                     as="div"
                                 >
-                                    Upload
+                                    Post
                                 </Sidebar.Item>
                             </Link>
                         </>
