@@ -9,6 +9,7 @@ import { Link } from "react-router-dom";
 const DashPost = () => {
     const { currentUser } = useSelector((state: RootState) => state.user);
     const [userPosts, setUserPosts] = useState<IPost[]>([]);
+    const [showMore, setShowMore] = useState<boolean>(true);
     const [total, setTotal] = useState<number | null>(null);
     const [lastMonthTotal, setLastMonthTotal] = useState<number | null>(null);
 
@@ -21,11 +22,33 @@ const DashPost = () => {
                 setUserPosts(msg.data.postList);
                 setTotal(msg.data.total);
                 setLastMonthTotal(msg.data.lastMonthPostCount);
+
+                if (msg.data.postList.length < 9) {
+                    setShowMore(false);
+                }
             } else {
                 console.log(msg.data);
             }
         });
     }, [currentUser?._id]);
+
+    const handleShowMore = () => {
+        const startIndex = userPosts.length;
+
+        getPostList(
+            `?userId=${currentUser?._id}&startIndex=${startIndex}`
+        ).then((msg) => {
+            if (msg.response?.ok) {
+                setUserPosts((prev) => [...prev, ...msg.data.postList]);
+
+                if (msg.data.postList.length < 9) {
+                    setShowMore(false);
+                }
+            } else {
+                console.log(msg.data);
+            }
+        });
+    };
 
     return (
         <div className="table-auto overflow-x-scroll md:mx-auto p-3 scrollbar scrollbar-track-slate-100 scrollbar-thumb-slate-300 dark:scrollbar-track-slate-700 dark:scrollbar-thumb-slate-500">
@@ -104,6 +127,14 @@ const DashPost = () => {
                             </Table.Body>
                         ))}
                     </Table>
+                    {showMore && (
+                        <button
+                            onClick={handleShowMore}
+                            className="w-full text-teal-500 self-center text-sm py-7"
+                        >
+                            show more
+                        </button>
+                    )}
                 </>
             ) : (
                 <p>There is no Post Uploaded Yet!</p>

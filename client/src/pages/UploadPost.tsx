@@ -45,7 +45,7 @@ const UploadPost = () => {
     const [imgUploadProgress, setImgUploadProgress] = useState<number | null>(
         null
     );
-    const [imgUrl, setImgUrl] = useState<string | undefined>(undefined);
+    const [image, setImage] = useState<string | undefined>(undefined);
     const [content, setContent] = useState<string | null>(null);
     const [data, setData] = useState<IUpload | null>(null);
 
@@ -65,7 +65,7 @@ const UploadPost = () => {
         const uploadDate: IUpload = {
             title: formData.title,
             category: selectedCategory,
-            imgUrl,
+            image,
             content,
         };
         setData(uploadDate);
@@ -148,7 +148,7 @@ const UploadPost = () => {
                         (downloadURL) => {
                             setImgUploadProgress(null);
                             setErrMsg(null);
-                            setImgUrl(downloadURL);
+                            setImage(downloadURL);
                         }
                     );
                 }
@@ -270,9 +270,9 @@ const UploadPost = () => {
                     </Button>
                 </div>
 
-                {imgUrl && (
+                {image && (
                     <img
-                        src={imgUrl}
+                        src={image}
                         alt="upload"
                         className="w-full h-72 object-cover"
                     />

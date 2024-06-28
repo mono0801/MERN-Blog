@@ -21,7 +21,7 @@ export interface IUpload {
     title: string;
     category: string[];
     content: string;
-    imgUrl?: string;
+    image?: string;
 }
 
 export interface IPost {
