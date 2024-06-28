@@ -1,7 +1,13 @@
 import express from "express";
-import { protectAdminUpload, verifyToken } from "../middleware";
+import {
+    protectAdminUpload,
+    verifyAdmin,
+    verifyToken,
+    verifyUser,
+} from "../middleware";
 import {
     deleteCategory,
+    deletePost,
     getCategory,
     getPostList,
     postCategory,
@@ -19,5 +25,9 @@ postRouter
 postRouter.route("/list").get(getPostList);
 
 postRouter.route("/upload").post(verifyToken, protectAdminUpload, postUpload);
+
+postRouter
+    .route("/:postId([0-9a-f]{24})")
+    .delete(verifyToken, verifyAdmin, verifyUser, deletePost);
 
 export default postRouter;

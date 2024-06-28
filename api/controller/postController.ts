@@ -110,3 +110,13 @@ export const getPostList = async (req: Request, res: Response) => {
         return res.end();
     }
 };
+
+export const deletePost = async (req: Request, res: Response) => {
+    try {
+        await Post.findByIdAndDelete(req.params.postId);
+        return res.status(200).json(`${req.body.title} is Deleted`);
+    } catch (error) {
+        console.log("Error : ", error);
+        return res.end();
+    }
+};
