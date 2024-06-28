@@ -1,4 +1,4 @@
-import { IUpload } from "./interface";
+import { IPostList, IUpload } from "./interface";
 
 export async function getCategory() {
     try {
@@ -33,6 +33,16 @@ export async function postUpload(jsonData: IUpload) {
             body: JSON.stringify(jsonData),
         });
         const data = await response.json();
+        return { response, data };
+    } catch (err) {
+        return { data: "Something is Worng" };
+    }
+}
+
+export async function getPostList(urlQuery?: string) {
+    try {
+        const response = await fetch(`/api/post/list${urlQuery}`);
+        const data: IPostList = await response.json();
         return { response, data };
     } catch (err) {
         return { data: "Something is Worng" };

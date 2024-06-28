@@ -30,6 +30,7 @@ $ npm i firebase
 $ npm i --save react-circular-progressbar
 # Text 편집기
 $ npm i --save react-quill
+$ npm i --save-dev tailwind-scrollbar
 ```
 
 ## Expanding the ESLint configuration
@@ -72,6 +73,7 @@ export default {
     plugins: [
         // Flowbite-React Configuration
         require("flowbite/plugin"),
+        require("tailwind-scrollbar"),
     ],
 };
 ```

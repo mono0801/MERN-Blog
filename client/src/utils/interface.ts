@@ -23,3 +23,20 @@ export interface IUpload {
     content: string;
     imgUrl?: string;
 }
+
+export interface IPost {
+    _id: string;
+    userId: string;
+    title: string;
+    category: string[];
+    content: string;
+    image: string;
+    createdAt: Date;
+    updatedAt: Date;
+}
+
+export interface IPostList {
+    postList: IPost[];
+    total: number;
+    lastMonthPostCount: number;
+}

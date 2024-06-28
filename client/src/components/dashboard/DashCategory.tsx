@@ -118,7 +118,7 @@ const DashCategory = () => {
                 - Category List -
             </h1>
 
-            <div className="mb-4 grid grid-cols-3 gap-3">
+            <div className="mb-4 flex flex-wrap justify-center gap-3">
                 {category?.map((item) => (
                     <Button
                         gradientDuoTone={"purpleToBlue"}

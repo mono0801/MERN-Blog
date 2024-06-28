@@ -225,7 +225,7 @@ const UploadPost = () => {
                     </Select>
                 </div>
 
-                <div className="grid grid-cols-5 gap-2">
+                <div className="flex justify-start flex-wrap gap-2">
                     {selectedCategory.map((item) => (
                         <Button
                             gradientDuoTone={"purpleToBlue"}

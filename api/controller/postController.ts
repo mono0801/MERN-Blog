@@ -72,6 +72,7 @@ export const getPostList = async (req: Request, res: Response) => {
     const startIndex = Number(req.query.startIndex) || 0;
     const limit = Number(req.query.limit) || 9;
     const sortDirection = req.query.order === "asc" ? 1 : -1;
+
     try {
         const postList = await Post.find({
             ...(req.query.userId && { userId: req.query.userId }),
@@ -94,14 +95,14 @@ export const getPostList = async (req: Request, res: Response) => {
             .skip(startIndex)
             .limit(limit);
 
-        const totalPostList = await Post.countDocuments();
+        const total = await Post.countDocuments();
         const lastMonthPostCount = await Post.countDocuments({
             createdAt: { $gte: oneMonthAgo() },
         });
 
         res.status(200).json({
             postList,
-            totalPostList,
+            total,
             lastMonthPostCount,
         });
     } catch (error) {
