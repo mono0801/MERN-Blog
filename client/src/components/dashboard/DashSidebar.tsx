@@ -8,7 +8,7 @@ import { logoutSuccess } from "../../redux/user/userSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "../../redux/store";
 import { TbCategoryPlus } from "react-icons/tb";
-import { HiDocumentText } from "react-icons/hi";
+import { HiDocumentText, HiOutlineUserGroup } from "react-icons/hi";
 
 const DashSidebar = () => {
     const location = useLocation();
@@ -87,6 +87,16 @@ const DashSidebar = () => {
                                     as="div"
                                 >
                                     Post
+                                </Sidebar.Item>
+                            </Link>
+                            <Link to="/dashboard?tab=user">
+                                <Sidebar.Item
+                                    active={tab === "user"}
+                                    icon={HiOutlineUserGroup}
+                                    className="font-semibold"
+                                    as="div"
+                                >
+                                    User
                                 </Sidebar.Item>
                             </Link>
                         </>

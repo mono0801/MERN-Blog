@@ -41,3 +41,22 @@ export interface IPostList {
     total: number;
     lastMonthPostCount: number;
 }
+
+export interface IUser {
+    _id: string;
+    nickname: string;
+    email: string;
+    password: string;
+    profileUrl: string;
+    socialLogin: boolean;
+    admin: boolean;
+    createdAt: Date;
+    updatedAt: Date;
+    _doc?: any;
+}
+
+export interface IUserList {
+    users: IUser[];
+    total: number;
+    lastMonthUserCount: number;
+}

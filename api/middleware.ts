@@ -28,11 +28,13 @@ export const protectAccessUser = (
     next: NextFunction
 ) => {
     const _id = req.params.userId;
-
-    if (req.user?.id != _id) {
+    if (req.user?.admin) {
+        next();
+    } else if (req.user?.id != _id) {
         return res.status(403).json("You're not Allowed to Access This User");
+    } else {
+        next();
     }
-    next();
 };
 
 export const verifyAdminforUser = (

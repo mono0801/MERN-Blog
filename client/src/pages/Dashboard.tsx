@@ -6,8 +6,9 @@ import DashCategory from "../components/dashboard/DashCategory";
 import { useSelector } from "react-redux";
 import { RootState } from "../redux/store";
 import DashPost from "../components/dashboard/DashPost";
+import DashUsers from "../components/dashboard/DashUsers";
 
-type TabType = "profile" | "password" | "post" | "users" | "category" | "";
+type TabType = "profile" | "password" | "post" | "user" | "category" | "";
 
 const Dashboard = () => {
     const { currentUser } = useSelector((state: RootState) => state.user);
@@ -40,7 +41,7 @@ const Dashboard = () => {
             )}
             {tab === "category" && <DashCategory />}
             {tab === "post" && <DashPost />}
-            {tab === "users" && <p>Users</p>}
+            {tab === "user" && <DashUsers />}
         </div>
     );
 };

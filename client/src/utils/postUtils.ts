@@ -40,6 +40,7 @@ export async function uploadPost(jsonData: IUpload) {
 }
 
 export async function getPostList(urlQuery?: string) {
+    urlQuery = urlQuery ? urlQuery : "";
     try {
         const response = await fetch(`/api/post${urlQuery}`);
         const data: IPostList = await response.json();
@@ -50,6 +51,7 @@ export async function getPostList(urlQuery?: string) {
 }
 
 export async function updatePost(urlQuery: string, jsonData: IUpload) {
+    urlQuery = urlQuery ? urlQuery : "";
     try {
         const response = await fetch(`/api/post/${urlQuery}`, {
             method: "PUT",

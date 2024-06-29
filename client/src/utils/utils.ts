@@ -1,4 +1,4 @@
-import { IJoin, IJoinSocial, ILogIn } from "./interface";
+import { IJoin, IJoinSocial, ILogIn, IUserList } from "./interface";
 
 export async function fetchJoin(formData: IJoin) {
     try {
@@ -125,4 +125,15 @@ export async function updatePassword(
         const data = await response.json();
         return { response, data };
     } catch (err) {}
+}
+
+export async function getUserList(urlQuery?: string) {
+    urlQuery = urlQuery ? urlQuery : "";
+    try {
+        const response = await fetch(`/api/users${urlQuery}`);
+        const data: IUserList = await response.json();
+        return { response, data };
+    } catch (err) {
+        return { data: "Something is Worng" };
+    }
 }
