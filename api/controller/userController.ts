@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
 import User, { IUser } from "../model/User";
 import bcrypt from "bcrypt";
+import { oneMonthAgo } from "../utils/utils";
 
 export const updateProfile = async (req: Request, res: Response) => {
     const _id = req.params.userId;
@@ -107,6 +108,38 @@ export const deleteUser = async (req: Request, res: Response) => {
     try {
         await User.findByIdAndDelete(_id);
         res.status(200).json("User Account is Deleted");
+    } catch (error) {
+        console.log("Error : ", error);
+        return res.end();
+    }
+};
+
+export const getUsers = async (req: Request, res: Response) => {
+    const startIndex = Number(req.query.startIndex) || 0;
+    const limit = Number(req.query.limit) || 9;
+    const sortDirection = req.query.sort === "asc" ? 1 : -1;
+
+    try {
+        const users = await User.find()
+            .sort({ createdAt: sortDirection })
+            .skip(startIndex)
+            .limit(limit);
+
+        const usersWithoutPassword = users.map((user) => {
+            const { password, ...rest } = user._doc;
+            return rest;
+        });
+
+        const total = await User.countDocuments();
+        const lastMonthUserCount = await User.countDocuments({
+            createdAt: { $gte: oneMonthAgo() },
+        });
+
+        res.status(200).json({
+            users: usersWithoutPassword,
+            total,
+            lastMonthUserCount,
+        });
     } catch (error) {
         console.log("Error : ", error);
         return res.end();

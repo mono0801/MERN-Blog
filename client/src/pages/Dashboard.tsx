@@ -7,25 +7,20 @@ import { useSelector } from "react-redux";
 import { RootState } from "../redux/store";
 import DashPost from "../components/dashboard/DashPost";
 
+type TabType = "profile" | "password" | "post" | "users" | "category" | "";
+
 const Dashboard = () => {
     const { currentUser } = useSelector((state: RootState) => state.user);
     const location = useLocation();
     const navigate = useNavigate();
-    const [tab, setTab] = useState<
-        "profile" | "password" | "post" | "category" | ""
-    >("");
+    const [tab, setTab] = useState<TabType>("");
 
     useEffect(() => {
         const searchParams = new URLSearchParams(location.search);
         const tabParam = searchParams.get("tab");
 
-        if (
-            tabParam === "profile" ||
-            tabParam === "password" ||
-            tabParam === "category" ||
-            tabParam === "post"
-        ) {
-            setTab(tabParam);
+        if (tabParam !== "" || tabParam !== null) {
+            setTab(tabParam as TabType);
         }
     }, [location.search]);
 
@@ -45,6 +40,7 @@ const Dashboard = () => {
             )}
             {tab === "category" && <DashCategory />}
             {tab === "post" && <DashPost />}
+            {tab === "users" && <p>Users</p>}
         </div>
     );
 };

@@ -35,7 +35,18 @@ export const protectAccessUser = (
     next();
 };
 
-export const protectAdminUpload = (
+export const verifyAdminforUser = (
+    req: Request,
+    res: Response,
+    next: NextFunction
+) => {
+    if (!req.user?.admin) {
+        return res.status(403).json("You're not Allowed to Access User");
+    }
+    next();
+};
+
+export const protectAdminUploadPost = (
     req: Request,
     res: Response,
     next: NextFunction
@@ -49,7 +60,7 @@ export const protectAdminUpload = (
     next();
 };
 
-export const verifyAdmin = (
+export const verifyAdminforPost = (
     req: Request,
     res: Response,
     next: NextFunction
@@ -60,7 +71,11 @@ export const verifyAdmin = (
     next();
 };
 
-export const verifyUser = (req: Request, res: Response, next: NextFunction) => {
+export const verifyUserforPost = (
+    req: Request,
+    res: Response,
+    next: NextFunction
+) => {
     if (req.user?.id !== req.body.userId) {
         return res.status(403).json("You're not Allowed to Access Post");
     }

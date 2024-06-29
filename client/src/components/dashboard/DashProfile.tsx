@@ -153,7 +153,7 @@ const DashProfile: FC<ITab> = ({ tab }): JSX.Element => {
         setShowModal(false);
         try {
             dispatch(deleteUserStart());
-            const res = await fetch(`/api/users/delete/${currentUser?._id}`, {
+            const res = await fetch(`/api/users/${currentUser?._id}`, {
                 method: "DELETE",
             });
             const data = await res.json();

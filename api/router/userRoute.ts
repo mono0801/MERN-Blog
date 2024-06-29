@@ -1,25 +1,33 @@
 import express from "express";
 import {
     deleteUser,
+    getUsers,
     updateAccount,
     updatePassword,
     updateProfile,
 } from "../controller/userController";
-import { protectAccessUser, verifyToken } from "../middleware";
+import {
+    protectAccessUser,
+    verifyAdminforUser,
+    verifyToken,
+} from "../middleware";
 
 const userRouter = express.Router();
 
 userRouter
-    .route("/profile/:userId")
+    .route("/profile/:userId([0-9a-f]{24})")
     .put(verifyToken, protectAccessUser, updateProfile);
 userRouter
-    .route("/account/:userId")
+    .route("/account/:userId([0-9a-f]{24})")
     .put(verifyToken, protectAccessUser, updateAccount);
 userRouter
-    .route("/password/:userId")
+    .route("/password/:userId([0-9a-f]{24})")
     .put(verifyToken, protectAccessUser, updatePassword);
+
 userRouter
-    .route("/delete/:userId")
+    .route("/:userId([0-9a-f]{24})")
     .delete(verifyToken, protectAccessUser, deleteUser);
+
+userRouter.route("/").get(verifyToken, verifyAdminforUser, getUsers);
 
 export default userRouter;
