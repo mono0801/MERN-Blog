@@ -154,8 +154,8 @@ const Header = () => {
                     </Navbar.Link>
                 )}
                 {currentUser?.admin && (
-                    <Navbar.Link active={path === "/uploadpost"} as={"div"}>
-                        <Link to={"/uploadpost"}>
+                    <Navbar.Link active={path === "/post/upload"} as={"div"}>
+                        <Link to={"/post/upload"}>
                             <LinkP>Upload</LinkP>
                         </Link>
                     </Navbar.Link>

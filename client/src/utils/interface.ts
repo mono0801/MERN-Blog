@@ -18,6 +18,7 @@ export interface IErrMsg {
 }
 
 export interface IUpload {
+    userId?: number;
     title: string;
     category: string[];
     content: string;

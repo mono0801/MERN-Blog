@@ -120,3 +120,32 @@ export const deletePost = async (req: Request, res: Response) => {
         return res.end();
     }
 };
+
+export const putPost = async (req: Request, res: Response) => {
+    const _id = req.params.postId;
+    const { title, category, content, image } = req.body;
+
+    let post = await Post.findById(_id);
+    if (!post) {
+        return res.status(404).json({ message: `${_id} Not Found` });
+    }
+    try {
+        post = await Post.findByIdAndUpdate(
+            _id,
+            {
+                title: title ? title : post.title,
+                category: category ? category : post.category,
+                content: content ? content : post.content,
+                image: image ? image : post.image,
+            },
+            { new: true }
+        );
+
+        return res
+            .status(200)
+            .json({ message: `[ ${req.body.title} ] is Updated`, post: post });
+    } catch (error) {
+        console.log("Error : ", error);
+        return res.end();
+    }
+};

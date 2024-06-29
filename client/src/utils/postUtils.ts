@@ -25,9 +25,9 @@ export async function postCategory(category: string) {
     } catch (err) {}
 }
 
-export async function postUpload(jsonData: IUpload) {
+export async function uploadPost(jsonData: IUpload) {
     try {
-        const response = await fetch("/api/post/upload", {
+        const response = await fetch("/api/post", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify(jsonData),
@@ -41,8 +41,22 @@ export async function postUpload(jsonData: IUpload) {
 
 export async function getPostList(urlQuery?: string) {
     try {
-        const response = await fetch(`/api/post/list${urlQuery}`);
+        const response = await fetch(`/api/post${urlQuery}`);
         const data: IPostList = await response.json();
+        return { response, data };
+    } catch (err) {
+        return { data: "Something is Worng" };
+    }
+}
+
+export async function updatePost(urlQuery: string, jsonData: IUpload) {
+    try {
+        const response = await fetch(`/api/post/${urlQuery}`, {
+            method: "PUT",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(jsonData),
+        });
+        const data = await response.json();
         return { response, data };
     } catch (err) {
         return { data: "Something is Worng" };

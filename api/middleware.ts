@@ -64,5 +64,6 @@ export const verifyUser = (req: Request, res: Response, next: NextFunction) => {
     if (req.user?.id !== req.body.userId) {
         return res.status(403).json("You're not Allowed to Access Post");
     }
+
     next();
 };

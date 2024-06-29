@@ -1,5 +1,16 @@
+import { useSelector } from "react-redux";
+import { useNavigate, useParams } from "react-router-dom";
+import { RootState } from "../redux/store";
 import { useEffect, useState } from "react";
-import { getCategory, uploadPost } from "../utils/postUtils";
+import { IPost, IUpload } from "../utils/interface";
+import { getCategory, getPostList, updatePost } from "../utils/postUtils";
+import {
+    getDownloadURL,
+    getStorage,
+    ref,
+    uploadBytesResumable,
+} from "firebase/storage";
+import { app } from "../firebase";
 import {
     Alert,
     Button,
@@ -8,35 +19,19 @@ import {
     Spinner,
     TextInput,
 } from "flowbite-react";
-import ReactQuill from "react-quill";
-import "react-quill/dist/quill.snow.css";
-import { SignInputBtn } from "../styles/components/sign.style";
-import { yupResolver } from "@hookform/resolvers/yup/src/yup.js";
-import { uploadPostSchema } from "./yup";
-import { useForm } from "react-hook-form";
-import { HiInformationCircle } from "react-icons/hi";
-import {
-    getDownloadURL,
-    getStorage,
-    ref,
-    uploadBytesResumable,
-} from "firebase/storage";
-import { app } from "../firebase";
-import { useSelector } from "react-redux";
-import { RootState } from "../redux/store";
 import { CircularProgressbar } from "react-circular-progressbar";
-import "react-circular-progressbar/dist/styles.css";
-import { IUpload } from "../utils/interface";
-import { useNavigate } from "react-router-dom";
+import ReactQuill from "react-quill";
+import { SignInputBtn } from "../styles/components/sign.style";
+import { HiInformationCircle } from "react-icons/hi";
 
-interface IForm {
-    title: string;
-}
-
-const UploadPost = () => {
+const PostEdit = () => {
+    const { postId } = useParams();
     const { currentUser } = useSelector((state: RootState) => state.user);
     const navigate = useNavigate();
 
+    const [post, setPost] = useState<IPost | null>(null);
+
+    const [title, setTitle] = useState<string | null>(null);
     const [category, setCategory] = useState<string[] | null>(null);
     const [selectedCategory, setSelectedCategory] = useState<string[]>([
         "UnCategorized",
@@ -47,42 +42,44 @@ const UploadPost = () => {
     );
     const [image, setImage] = useState<string | undefined>(undefined);
     const [content, setContent] = useState<string | null>(null);
-    const [data, setData] = useState<IUpload | null>(null);
 
     const [errMsg, setErrMsg] = useState<string | null>(null);
     const [loading, setLoading] = useState<boolean>(false);
-    const {
-        register,
-        handleSubmit,
-        formState: { errors },
-    } = useForm<IForm>({ resolver: yupResolver<IForm>(uploadPostSchema) });
-
-    const handleValid = async (formData: IForm) => {
-        if (!content) {
-            return setErrMsg("Please Input Content");
-        }
-
-        const uploadDate: IUpload = {
-            title: formData.title,
-            category: selectedCategory,
-            image,
-            content,
-        };
-        setData(uploadDate);
-    };
 
     useEffect(() => {
-        getCategory().then((msg) => {
-            if (msg?.response.status != 200) {
-                setErrMsg(msg?.data);
-            } else {
-                const categoryArray: string[] = msg.data.map(
-                    (item: { category: string }) => item.category
-                );
-                setCategory(categoryArray.sort());
-            }
-        });
+        getCategory()
+            .then((msg) => {
+                if (msg?.response.status != 200) {
+                    setErrMsg(msg?.data);
+                } else {
+                    const categoryArray: string[] = msg.data.map(
+                        (item: { category: string }) => item.category
+                    );
+                    setCategory(categoryArray.sort());
+                }
+            })
+            .catch((err) => console.log(err));
+
+        getPostList(`?postId=${postId}`)
+            .then((msg) => {
+                if (!msg.response?.ok) {
+                    setErrMsg(msg.data as string);
+                } else {
+                    setErrMsg(null);
+                    setPost(msg.data.postList[0]);
+                }
+            })
+            .catch((err) => console.log(err));
     }, []);
+
+    useEffect(() => {
+        if (post) {
+            setTitle(post.title);
+            setSelectedCategory(post.category);
+            setImage(post.image);
+            setContent(post.content);
+        }
+    }, [post]);
 
     const handleSeletCategory = (option: string) => {
         if (selectedCategory.length >= 1 && option == "UnCategorized") {
@@ -166,42 +163,55 @@ const UploadPost = () => {
         return;
     }, [file]);
 
-    useEffect(() => {
-        if (data) {
-            setLoading(true);
-            uploadPost(data).then((msg) => {
-                if (!msg.response?.ok) {
-                    setErrMsg(msg?.data.message);
-                    alert(msg?.data.message);
-                    setLoading(false);
-                } else {
-                    setLoading(false);
-                    setErrMsg(null);
-                    alert(msg?.data.message);
-                    navigate(`/post/${msg.data.post._id}`);
-                }
-            });
+    const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+        e.preventDefault();
+
+        if (!title) {
+            return setErrMsg("Please Input Title");
         }
+        if (!content) {
+            return setErrMsg("Please Input Content");
+        }
+
+        const uploadDate: IUpload = {
+            userId: currentUser?._id,
+            title,
+            category: selectedCategory,
+            image,
+            content,
+        };
+
+        setLoading(true);
+        updatePost(post?._id!, uploadDate).then((msg) => {
+            if (!msg.response?.ok) {
+                setErrMsg(msg?.data.message);
+                alert(msg?.data.message);
+                setLoading(false);
+            } else {
+                setLoading(false);
+                setErrMsg(null);
+                alert(msg?.data.message);
+                navigate(`/post/${msg.data.post._id}`);
+            }
+        });
         setLoading(false);
-    }, [data]);
+    };
 
     return (
         <div className="p-3 max-w-3xl mx-auto min-h-screen">
             <h1 className="text-center text-3xl my-7 font-semibold">
-                Create New Post
+                Update Post
             </h1>
 
-            <form
-                className="flex flex-col gap-4"
-                onSubmit={handleSubmit(handleValid)}
-            >
+            <form className="flex flex-col gap-4" onSubmit={handleSubmit}>
                 <div className="flex flex-col gap-4 sm:flex-row justify-between font-semibold">
                     <TextInput
-                        {...register("title")}
                         id="title"
                         type="text"
                         placeholder="Title"
                         className="flex-1"
+                        value={title || ""}
+                        onChange={(e) => setTitle(e.target.value)}
                     />
                     <Select
                         onChange={(e) =>
@@ -281,6 +291,7 @@ const UploadPost = () => {
                 <ReactQuill
                     theme="snow"
                     placeholder="Write Something..."
+                    value={content || ""}
                     className="h-96 mb-12"
                     onChange={(value) => {
                         setErrMsg(null);
@@ -301,19 +312,10 @@ const UploadPost = () => {
                             </SignInputBtn>
                         </>
                     ) : (
-                        <SignInputBtn>Publish</SignInputBtn>
+                        <SignInputBtn>Update Post</SignInputBtn>
                     )}
                 </Button>
 
-                {errors?.title?.message && (
-                    <Alert
-                        className="mt-3 font-semibold"
-                        color={"failure"}
-                        icon={HiInformationCircle}
-                    >
-                        {errors.title.message}
-                    </Alert>
-                )}
                 {errMsg && (
                     <Alert
                         className="mt-3 font-semibold"
@@ -328,4 +330,4 @@ const UploadPost = () => {
     );
 };
 
-export default UploadPost;
+export default PostEdit;

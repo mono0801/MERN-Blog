@@ -253,7 +253,7 @@ const DashProfile: FC<ITab> = ({ tab }): JSX.Element => {
             {tab === "password" && <DashPassword />}
 
             {currentUser?.admin && (
-                <Link to={"/uploadpost"}>
+                <Link to={"/post/upload"}>
                     <Button
                         type="button"
                         gradientDuoTone={"purpleToPink"}

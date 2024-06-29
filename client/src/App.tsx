@@ -15,6 +15,7 @@ import ProtectLogIn from "./components/Protect/ProtectLogIn";
 import UploadPost from "./pages/UploadPost";
 import OnlyAdmin from "./components/Protect/OnlyAdmin";
 import Post from "./pages/Post";
+import PostEdit from "./pages/PostEdit";
 
 const LoginRoutes = () => {
     return (
@@ -35,6 +36,7 @@ const App = () => {
                 <Route path="/" element={<Home />} />
                 <Route path="/about" element={<About />} />
                 <Route path="/projects" element={<Projects />} />
+
                 <Route path="/post/:id" element={<Post />} />
 
                 <Route element={<ProtectLogIn />}>
@@ -47,7 +49,8 @@ const App = () => {
                 </Route>
 
                 <Route element={<OnlyAdmin />}>
-                    <Route path="/uploadpost" element={<UploadPost />} />
+                    <Route path="/post/upload" element={<UploadPost />} />
+                    <Route path="/post/edit/:postId" element={<PostEdit />} />
                 </Route>
             </Routes>
             <FooterComponent />
