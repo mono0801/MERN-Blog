@@ -28,6 +28,7 @@ import { CircularProgressbar } from "react-circular-progressbar";
 import "react-circular-progressbar/dist/styles.css";
 import { IUpload } from "../utils/interface";
 import { useNavigate } from "react-router-dom";
+import { quillConfig } from "../utils/reactQuill";
 
 interface IForm {
     title: string;
@@ -282,6 +283,8 @@ const UploadPost = () => {
                     theme="snow"
                     placeholder="Write Something..."
                     className="h-96 mb-12"
+                    modules={quillConfig.modules}
+                    formats={quillConfig.formats}
                     onChange={(value) => {
                         setErrMsg(null);
                         setContent(value);

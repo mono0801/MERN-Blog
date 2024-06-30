@@ -23,6 +23,7 @@ import { CircularProgressbar } from "react-circular-progressbar";
 import ReactQuill from "react-quill";
 import { SignInputBtn } from "../styles/components/sign.style";
 import { HiInformationCircle } from "react-icons/hi";
+import { quillConfig } from "../utils/reactQuill";
 
 const PostEdit = () => {
     const { postId } = useParams();
@@ -292,6 +293,8 @@ const PostEdit = () => {
                     theme="snow"
                     placeholder="Write Something..."
                     value={content || ""}
+                    modules={quillConfig.modules}
+                    formats={quillConfig.formats}
                     className="h-96 mb-12"
                     onChange={(value) => {
                         setErrMsg(null);

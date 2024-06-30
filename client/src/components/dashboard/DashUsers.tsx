@@ -79,11 +79,6 @@ const DashUsers = () => {
         try {
             const res = await fetch(`/api/users/${selectedUser?.id}`, {
                 method: "DELETE",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({
-                    userId: currentUser?._id,
-                    nickname: selectedUser?.nickname,
-                }),
             });
             const data = await res.json();
             if (!res.ok) {
@@ -96,6 +91,9 @@ const DashUsers = () => {
 
                 if (total) {
                     setTotal(total - 1);
+                }
+                if (lastMonthUsers && lastMonthUsers > 0) {
+                    setLastMonthUsers(lastMonthUsers - 1);
                 }
             }
         } catch (error) {

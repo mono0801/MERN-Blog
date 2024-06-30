@@ -1,16 +1,20 @@
+import React from "react";
 import {
     Loader,
     LoaderContainer,
     LoadingSpan,
 } from "../styles/components/loader.style";
 
-const Loading = () => {
+interface ISpan {
+    string1: string;
+    string2: string;
+}
+
+const Loading: React.FC<ISpan> = ({ string1, string2 }) => {
     return (
         <LoaderContainer>
-            <LoadingSpan className="dark:text-white">Login Now</LoadingSpan>
-            <LoadingSpan className="dark:text-white">
-                Don't Reload This Page
-            </LoadingSpan>
+            <LoadingSpan className="dark:text-white">{string1}</LoadingSpan>
+            <LoadingSpan className="dark:text-white">{string2}</LoadingSpan>
             <Loader />
         </LoaderContainer>
     );

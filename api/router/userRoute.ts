@@ -27,7 +27,7 @@ userRouter
 
 userRouter
     .route("/:userId([0-9a-f]{24})")
-    .put(verifyToken, verifyAdminforUser, updateUserfromAdmin)
+    .put(verifyToken, protectAccessUser, updateUserfromAdmin)
     .delete(verifyToken, protectAccessUser, deleteUser);
 
 userRouter.route("/").get(verifyToken, verifyAdminforUser, getUsers);
