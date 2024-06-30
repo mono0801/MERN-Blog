@@ -5,6 +5,7 @@ import {
     updateAccount,
     updatePassword,
     updateProfile,
+    updateUserfromAdmin,
 } from "../controller/userController";
 import {
     protectAccessUser,
@@ -26,6 +27,7 @@ userRouter
 
 userRouter
     .route("/:userId([0-9a-f]{24})")
+    .put(verifyToken, verifyAdminforUser, updateUserfromAdmin)
     .delete(verifyToken, protectAccessUser, deleteUser);
 
 userRouter.route("/").get(verifyToken, verifyAdminforUser, getUsers);

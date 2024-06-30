@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 import User, { IUser } from "../model/User";
 import bcrypt from "bcrypt";
-import { oneMonthAgo } from "../utils/utils";
+import { oneMonthAgo, randomNicknameTag } from "../utils/utils";
 
 export const updateProfile = async (req: Request, res: Response) => {
     const _id = req.params.userId;
@@ -143,5 +143,51 @@ export const getUsers = async (req: Request, res: Response) => {
     } catch (error) {
         console.log("Error : ", error);
         return res.end();
+    }
+};
+
+const existNickname = async (name: string) => {
+    const randomNickname = randomNicknameTag(randomNicknameTag(name));
+    const nickname = `A${randomNickname}`;
+    let user = await User.exists({ nickname });
+    if (user) {
+        existNickname(name);
+    }
+    return nickname;
+};
+export const updateUserfromAdmin = async (req: Request, res: Response) => {
+    const _id = req.params.userId;
+    const { nickname, profile } = req.query;
+    let updateUser;
+
+    const user = await User.findById<IUser>(_id);
+
+    if (!user) {
+        return res.status(404).json("User Not Found");
+    }
+
+    const newNickname = await existNickname("nonymous_");
+
+    if (nickname) {
+        updateUser = await User.findByIdAndUpdate(
+            _id,
+            {
+                nickname: newNickname,
+            },
+            { new: true }
+        );
+        return res.status(200).json("Nickname is Changed");
+    } else if (profile) {
+        updateUser = await User.findByIdAndUpdate(
+            _id,
+            {
+                profileUrl:
+                    "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png",
+            },
+            { new: true }
+        );
+        return res.status(200).json("Profile is Changed");
+    } else {
+        return res.status(400).json("Please fill The Query");
     }
 };
