@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import Category, { ICategory } from "../model/Category";
-import Post, { IPost } from "../model/Post";
+import Post from "../model/Post";
 import { oneMonthAgo } from "../utils/utils";
 
 export const getCategory = async (req: Request, res: Response) => {

@@ -5,6 +5,7 @@ import { IPost } from "../utils/interface";
 import Loading from "../components/Loading";
 import { Button } from "flowbite-react";
 import Ad from "../components/Ad";
+import CommentSection from "../components/CommentSection";
 
 const Post = () => {
     const { id } = useParams();
@@ -77,6 +78,8 @@ const Post = () => {
                         <div className="max-w-4xl mx-auto w-full">
                             <Ad />
                         </div>
+
+                        <CommentSection postId={post._id} />
                     </main>
                 )
             )}

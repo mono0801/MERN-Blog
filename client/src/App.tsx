@@ -16,6 +16,7 @@ import UploadPost from "./pages/UploadPost";
 import OnlyAdmin from "./components/Protect/OnlyAdmin";
 import Post from "./pages/Post";
 import PostEdit from "./pages/PostEdit";
+import ScrollToTop from "./components/ScrollToTop";
 
 const LoginRoutes = () => {
     return (
@@ -31,6 +32,7 @@ const LoginRoutes = () => {
 const App = () => {
     return (
         <BrowserRouter>
+            <ScrollToTop />
             <Header />
             <Routes>
                 <Route path="/" element={<Home />} />

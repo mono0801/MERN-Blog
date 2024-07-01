@@ -84,3 +84,15 @@ export const verifyUserforPost = (
 
     next();
 };
+
+export const verifyUserComment = (
+    req: Request,
+    res: Response,
+    next: NextFunction
+) => {
+    if (req.user?.id !== req.body.userId) {
+        return res.status(403).json("You're not Allowed to Access Comment");
+    }
+
+    next();
+};

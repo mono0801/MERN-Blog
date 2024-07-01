@@ -20,7 +20,7 @@ const KakaoCallback = () => {
             .catch((err) => console.log(err));
     }
 
-    <Loading string1={"Login Now"} string2={"Don't Reload This Page"} />;
+    return <Loading string1={"Login Now"} string2={"Don't Reload This Page"} />;
 };
 
 export default KakaoCallback;

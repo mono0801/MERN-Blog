@@ -36,7 +36,7 @@ const Dashboard = () => {
                 <DashSidebar />
             </div>
             {/* Profile... */}
-            {tab && (tab == "profile" || tab == "password") && (
+            {(tab == "profile" || tab == "password") && (
                 <DashProfile tab={tab} />
             )}
             {tab === "category" && <DashCategory />}

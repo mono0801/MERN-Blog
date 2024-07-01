@@ -1,4 +1,3 @@
-import React from "react";
 import {
     Loader,
     LoaderContainer,
@@ -10,7 +9,7 @@ interface ISpan {
     string2: string;
 }
 
-const Loading: React.FC<ISpan> = ({ string1, string2 }) => {
+const Loading = ({ string1, string2 }: ISpan) => {
     return (
         <LoaderContainer>
             <LoadingSpan className="dark:text-white">{string1}</LoadingSpan>

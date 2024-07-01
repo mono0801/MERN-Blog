@@ -1,6 +1,6 @@
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "../../redux/store";
-import React, { ChangeEvent, FC, useEffect, useRef, useState } from "react";
+import React, { ChangeEvent, useEffect, useRef, useState } from "react";
 import DashAccount from "./DashAccount";
 import DashPassword from "./DashPassword";
 import { app } from "../../firebase";
@@ -27,10 +27,10 @@ import { Link } from "react-router-dom";
 import { SignInputBtn } from "../../styles/components/sign.style";
 
 interface ITab {
-    tab: "profile" | "password" | "upload" | "category" | "";
+    tab: "profile" | "password";
 }
 
-const DashProfile: FC<ITab> = ({ tab }): JSX.Element => {
+const DashProfile = ({ tab }: ITab) => {
     const { currentUser, error } = useSelector(
         (state: RootState) => state.user
     );
