@@ -1,3 +1,4 @@
+import hljs from "highlight.js";
 // TODO :React-Quill의 Code-Block 설정하기
 
 export const quillConfig = {

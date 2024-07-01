@@ -4,6 +4,7 @@ import { getPostList } from "../utils/postUtils";
 import { IPost } from "../utils/interface";
 import Loading from "../components/Loading";
 import { Button } from "flowbite-react";
+import Ad from "../components/Ad";
 
 const Post = () => {
     const { id } = useParams();
@@ -71,7 +72,11 @@ const Post = () => {
                         <div
                             className="p-3 max-w-2xl mx-auto w-full post-content"
                             dangerouslySetInnerHTML={{ __html: post.content }}
-                        ></div>
+                        />
+
+                        <div className="max-w-4xl mx-auto w-full">
+                            <Ad />
+                        </div>
                     </main>
                 )
             )}
