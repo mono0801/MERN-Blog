@@ -52,11 +52,26 @@ export interface IUser {
     admin: boolean;
     createdAt: Date;
     updatedAt: Date;
-    _doc?: any;
 }
 
 export interface IUserList {
     users: IUser[];
     total: number;
     lastMonthUserCount: number;
+}
+
+export interface IComment {
+    _id: string;
+    userId: {
+        _id: string;
+        nickname: string;
+        email: string;
+        profileUrl: string;
+    };
+    postId: string;
+    content: string;
+    likes: string[];
+    likesCount: number;
+    createdAt: Date;
+    updatedAt: Date;
 }

@@ -31,6 +31,8 @@ $ npm i --save react-circular-progressbar
 # Text 편집기
 $ npm i --save react-quill
 $ npm i --save-dev tailwind-scrollbar
+$ npm i highlight.js
+$ npm i dayjs
 ```
 
 ## Expanding the ESLint configuration

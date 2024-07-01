@@ -9,6 +9,7 @@ import commentRouter from "./router/commentRouter";
 
 const app = express();
 
+app.disable("x-powered-by");
 app.use(morgan("dev"));
 app.use(express.json());
 app.use(cookieParser());

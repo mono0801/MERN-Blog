@@ -5,7 +5,7 @@ import { IPost } from "../utils/interface";
 import Loading from "../components/Loading";
 import { Button } from "flowbite-react";
 import Ad from "../components/Ad";
-import CommentSection from "../components/CommentSection";
+import CommentSection from "../components/comment/CommentSection";
 
 const Post = () => {
     const { id } = useParams();

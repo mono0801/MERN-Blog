@@ -1,17 +1,36 @@
 import { useSelector } from "react-redux";
-import { RootState } from "../redux/store";
 import { Link } from "react-router-dom";
 import { Alert, Button, Textarea } from "flowbite-react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { HiInformationCircle } from "react-icons/hi";
+import { RootState } from "../../redux/store";
+import { IComment } from "../../utils/interface";
+import { getCommentList } from "../../utils/commentUtils";
+import Comment from "./Comment";
 
 const CommentSection = ({ postId }: { postId: string }) => {
     const { currentUser } = useSelector((state: RootState) => state.user);
     const [comment, setComment] = useState<string>("");
+    const [commentList, setCommentList] = useState<IComment[]>([]);
+    const [errCommentMsg, setErrCommentMsg] = useState<string | null>(null);
     const [errMsg, setErrMsg] = useState<string | null>(null);
+
+    useEffect(() => {
+        getCommentList(postId).then((msg) => {
+            if (!msg.response?.ok) {
+                setErrMsg(msg.data as string);
+            } else {
+                setCommentList(msg.data);
+            }
+        });
+    }, [postId]);
 
     const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
+
+        if (comment == "") {
+            return alert("Please Fill The Comment");
+        }
         if (comment.length > 200) {
             return alert("Comment is too Long");
         }
@@ -31,9 +50,10 @@ const CommentSection = ({ postId }: { postId: string }) => {
 
         if (res.ok) {
             setComment("");
-            setErrMsg(null);
+            setErrCommentMsg(null);
+            window.location.reload();
         } else {
-            setErrMsg(data);
+            setErrCommentMsg(data);
         }
     };
 
@@ -91,16 +111,34 @@ const CommentSection = ({ postId }: { postId: string }) => {
                         </Button>
                     </div>
 
-                    {errMsg && (
+                    {errCommentMsg && (
                         <Alert
                             color="failure"
                             className="mt-5"
                             icon={HiInformationCircle}
                         >
-                            {errMsg}
+                            {errCommentMsg}
                         </Alert>
                     )}
                 </form>
+            )}
+
+            {commentList.length === 0 ? (
+                <p className="text-sm my-5">No Comments Yet!</p>
+            ) : (
+                <>
+                    <div className=" text-medium my-5 flex items-center gap-1">
+                        <p className="mr-1">Comments</p>
+
+                        <div className="border border-gray-400 px-2 rounded-sm">
+                            <p>{commentList.length}</p>
+                        </div>
+                    </div>
+
+                    {commentList.map((comment) => (
+                        <Comment key={comment._id} comment={comment} />
+                    ))}
+                </>
             )}
         </div>
     );
