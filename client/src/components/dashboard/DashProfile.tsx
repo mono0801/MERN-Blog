@@ -21,7 +21,7 @@ import {
     logoutSuccess,
     updateToken,
 } from "../../redux/user/userSlice";
-import { updateProfile } from "../../utils/utils";
+import { updateProfile } from "../../utils/userUtils";
 import { HiOutlineExclamationCircle } from "react-icons/hi";
 import { Link } from "react-router-dom";
 import { SignInputBtn } from "../../styles/components/sign.style";

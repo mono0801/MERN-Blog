@@ -11,7 +11,7 @@ import { editAccountSchema } from "../../pages/yup";
 import { HiInformationCircle } from "react-icons/hi";
 import { useEffect, useState } from "react";
 import { updateToken } from "../../redux/user/userSlice";
-import { updateAccount } from "../../utils/utils";
+import { updateAccount } from "../../utils/userUtils";
 
 interface IForm {
     nickname: string;

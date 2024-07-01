@@ -8,7 +8,7 @@ import {
 } from "../../styles/components/sign.style";
 import { Alert, Button, TextInput } from "flowbite-react";
 import { HiInformationCircle } from "react-icons/hi";
-import { updatePassword } from "../../utils/utils";
+import { updatePassword } from "../../utils/userUtils";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "../../redux/store";
 import { updateToken } from "../../redux/user/userSlice";

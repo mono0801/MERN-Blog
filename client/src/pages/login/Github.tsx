@@ -1,7 +1,7 @@
 import { useDispatch } from "react-redux";
 import { AppDispatch } from "../../redux/store";
 import { useNavigate } from "react-router-dom";
-import { fetchGithub } from "../../utils/utils";
+import { fetchGithub } from "../../utils/userUtils";
 import { logInSuccess } from "../../redux/user/userSlice";
 import Loading from "../../components/Loading";
 

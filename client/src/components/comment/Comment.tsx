@@ -3,8 +3,8 @@ import { getTimeDiff } from "../../utils/utils";
 
 const Comment = ({ comment }: { comment: IComment }) => {
     return (
-        <div className="flex p-4 border-b dark:border-gray-600 text-sm">
-            <div className="flex-shrink-0 mr-3">
+        <div className="flex p-3 border-b dark:border-gray-600 text-sm">
+            <div className="flex-shrink-0 mr-4">
                 <img
                     src={comment.userId.profileUrl}
                     alt={comment.userId.nickname}
@@ -13,13 +13,15 @@ const Comment = ({ comment }: { comment: IComment }) => {
             </div>
 
             <div className="flex-1">
-                <div className="flex items-center mb-1">
-                    <span className="font-bold mr-2 text-sm truncate">
+                <div className="flex items-center">
+                    <span className="font-bold mr-2 pb-1 text-sm truncate">
                         {comment.userId
                             ? comment.userId.nickname
                             : "Deleted Account"}
                     </span>
-                    <span className="text-gray-500 font-medium mr-1">•</span>
+                    <span className="text-gray-500 font-medium mr-1 pb-1">
+                        •
+                    </span>
                     <span className="text-gray-500 text-xs">
                         {getTimeDiff(comment.createdAt)}
                     </span>

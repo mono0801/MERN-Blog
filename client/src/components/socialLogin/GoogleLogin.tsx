@@ -3,7 +3,7 @@ import { SignInputBtn } from "../../styles/components/sign.style";
 import { AiFillGoogleCircle } from "react-icons/ai";
 import { GoogleAuthProvider, getAuth, signInWithPopup } from "firebase/auth";
 import { app } from "../../firebase";
-import { fetchGoogle } from "../../utils/utils";
+import { fetchGoogle } from "../../utils/userUtils";
 import { IJoinSocial } from "../../utils/interface";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";

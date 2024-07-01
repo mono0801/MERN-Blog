@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { RootState } from "../../redux/store";
-import { getUserList } from "../../utils/utils";
+import { getUserList } from "../../utils/userUtils";
 import { Button, Checkbox, Modal, Table } from "flowbite-react";
 import { HiOutlineExclamationCircle } from "react-icons/hi";
 import { IUser } from "../../utils/interface";

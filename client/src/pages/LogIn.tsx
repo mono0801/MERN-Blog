@@ -10,7 +10,7 @@ import { useForm } from "react-hook-form";
 import { useEffect, useState } from "react";
 import { yupResolver } from "@hookform/resolvers/yup/src/yup.js";
 import { logInSchema } from "./yup";
-import { fetchLogIn } from "../utils/utils";
+import { fetchLogIn } from "../utils/userUtils";
 import { ILogIn } from "../utils/interface";
 import styled from "styled-components";
 import { HiInformationCircle } from "react-icons/hi";
