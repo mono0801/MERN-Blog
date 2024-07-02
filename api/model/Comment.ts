@@ -4,7 +4,7 @@ export interface IComment extends mongoose.Document {
     userId: mongoose.Schema.Types.ObjectId;
     postId: mongoose.Schema.Types.ObjectId;
     content: string;
-    likes: mongoose.Schema.Types.ObjectId[];
+    likes: string[];
     likesCount: number;
     createdAt: Date;
     updatedAt: Date;
@@ -21,7 +21,7 @@ const commentSchema = new mongoose.Schema<IComment>(
         postId: { type: mongoose.Schema.Types.ObjectId, required: true },
         content: { type: String, required: true },
         likes: {
-            type: [mongoose.Schema.Types.ObjectId],
+            type: [String],
             default: [],
         },
         likesCount: { type: Number, default: 0 },

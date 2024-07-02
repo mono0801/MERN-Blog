@@ -1,5 +1,5 @@
 import { useSelector } from "react-redux";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { Alert, Button, Textarea } from "flowbite-react";
 import { useEffect, useState } from "react";
 import { HiInformationCircle } from "react-icons/hi";
@@ -14,6 +14,7 @@ const CommentSection = ({ postId }: { postId: string }) => {
     const [commentList, setCommentList] = useState<IComment[]>([]);
     const [errCommentMsg, setErrCommentMsg] = useState<string | null>(null);
     const [errMsg, setErrMsg] = useState<string | null>(null);
+    const navigate = useNavigate();
 
     useEffect(() => {
         getCommentList(postId).then((msg) => {
@@ -54,6 +55,34 @@ const CommentSection = ({ postId }: { postId: string }) => {
             window.location.reload();
         } else {
             setErrCommentMsg(data);
+        }
+    };
+
+    const handleLike = async (commentId: string) => {
+        if (!currentUser) {
+            alert("Please Log in First");
+            return navigate("/login");
+        }
+        try {
+            const res = await fetch(`/api/comment/like/${commentId}`, {
+                method: "PUT",
+            });
+            if (res.ok) {
+                const data: IComment = await res.json();
+                setCommentList(
+                    commentList.map((comment) =>
+                        comment._id === commentId
+                            ? {
+                                  ...comment,
+                                  likes: data.likes,
+                                  likesCount: data.likes.length,
+                              }
+                            : comment
+                    )
+                );
+            }
+        } catch (err) {
+            console.log(err);
         }
     };
 
@@ -123,7 +152,17 @@ const CommentSection = ({ postId }: { postId: string }) => {
                 </form>
             )}
 
-            {commentList.length === 0 ? (
+            {errMsg ? (
+                errMsg && (
+                    <Alert
+                        color="failure"
+                        className="mt-5"
+                        icon={HiInformationCircle}
+                    >
+                        {errMsg}
+                    </Alert>
+                )
+            ) : commentList.length === 0 ? (
                 <p className="text-sm my-5">No Comments Yet!</p>
             ) : (
                 <>
@@ -136,7 +175,14 @@ const CommentSection = ({ postId }: { postId: string }) => {
                     </div>
 
                     {commentList.map((comment) => (
-                        <Comment key={comment._id} comment={comment} />
+                        <Comment
+                            key={comment._id}
+                            comment={comment}
+                            handleLike={handleLike}
+                            active={comment.likes.includes(
+                                String(currentUser?._id)
+                            )}
+                        />
                     ))}
                 </>
             )}
