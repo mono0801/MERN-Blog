@@ -70,3 +70,26 @@ export const putCommentLike = async (req: Request, res: Response) => {
         return res.end();
     }
 };
+
+export const putComment = async (req: Request, res: Response) => {
+    const { commentId } = req.params;
+
+    try {
+        const comment = await Comment.findById(commentId);
+        if (!comment) {
+            return res.status(404).json("Comment not Found");
+        }
+
+        const newComment = await Comment.findByIdAndUpdate(
+            commentId,
+            {
+                content: req.body.content,
+            },
+            { new: true }
+        );
+        return res.status(201).json(newComment);
+    } catch (err) {
+        console.log(err);
+        return res.end();
+    }
+};

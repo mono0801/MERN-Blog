@@ -3,7 +3,7 @@ import duration, { Duration } from "dayjs/plugin/duration";
 
 dayjs.extend(duration);
 
-export const getTimeDiff = (timeToCompare: Date): string => {
+export function getTimeDiff(timeToCompare: Date): string {
     const timeDiffDuration: Duration = dayjs.duration(
         dayjs().diff(timeToCompare)
     );
@@ -40,4 +40,4 @@ export const getTimeDiff = (timeToCompare: Date): string => {
     } else {
         return "Just now";
     }
-};
+}

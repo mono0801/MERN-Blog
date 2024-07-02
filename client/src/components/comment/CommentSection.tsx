@@ -86,6 +86,14 @@ const CommentSection = ({ postId }: { postId: string }) => {
         }
     };
 
+    const handleEdit = async (comment: IComment, editedContent: string) => {
+        setCommentList(
+            commentList.map((c) =>
+                c._id === comment._id ? { ...c, content: editedContent } : c
+            )
+        );
+    };
+
     return (
         <div className="max-w-2xl mx-auto w-full p-3">
             {currentUser ? (
@@ -182,6 +190,9 @@ const CommentSection = ({ postId }: { postId: string }) => {
                             active={comment.likes.includes(
                                 String(currentUser?._id)
                             )}
+                            currentUser={currentUser?._id}
+                            admin={currentUser?.admin}
+                            onEdit={handleEdit}
                         />
                     ))}
                 </>
