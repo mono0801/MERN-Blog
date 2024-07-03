@@ -32,3 +32,21 @@ export async function editComment(
         return { data: "Something is Worng" };
     }
 }
+
+export async function deleteComment(userId: number, commentId: string) {
+    try {
+        const response = await fetch(`/api/comment/edit/${commentId}`, {
+            method: "DELETE",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+                userId: userId,
+            }),
+        });
+        const data: string = await response.json();
+        return { response, data };
+    } catch (err) {
+        return { data: "Something is Worng" };
+    }
+}

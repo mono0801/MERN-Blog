@@ -1,11 +1,14 @@
 import { useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
-import { Alert, Button, Textarea } from "flowbite-react";
+import { Alert, Button, Modal, Textarea } from "flowbite-react";
 import { useEffect, useState } from "react";
-import { HiInformationCircle } from "react-icons/hi";
+import {
+    HiInformationCircle,
+    HiOutlineExclamationCircle,
+} from "react-icons/hi";
 import { RootState } from "../../redux/store";
 import { IComment } from "../../utils/interface";
-import { getCommentList } from "../../utils/commentUtils";
+import { deleteComment, getCommentList } from "../../utils/commentUtils";
 import Comment from "./Comment";
 
 const CommentSection = ({ postId }: { postId: string }) => {
@@ -14,6 +17,8 @@ const CommentSection = ({ postId }: { postId: string }) => {
     const [commentList, setCommentList] = useState<IComment[]>([]);
     const [errCommentMsg, setErrCommentMsg] = useState<string | null>(null);
     const [errMsg, setErrMsg] = useState<string | null>(null);
+    const [showModal, setShowModal] = useState<boolean>(false);
+    const [deletedComment, setDeletedComment] = useState<string | null>(null);
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -86,12 +91,31 @@ const CommentSection = ({ postId }: { postId: string }) => {
         }
     };
 
-    const handleEdit = async (comment: IComment, editedContent: string) => {
+    const handleEdit = (comment: IComment, editedContent: string) => {
         setCommentList(
             commentList.map((c) =>
                 c._id === comment._id ? { ...c, content: editedContent } : c
             )
         );
+    };
+
+    const handleDelete = () => {
+        setShowModal(false);
+        if (!currentUser || !deletedComment) {
+            return;
+        }
+        deleteComment(currentUser._id, deletedComment).then((msg) => {
+            if (!msg.response?.ok) {
+                return alert(msg.data);
+            } else {
+                setCommentList(
+                    commentList.filter(
+                        (comment) => comment._id !== deletedComment
+                    )
+                );
+                alert(msg.data);
+            }
+        });
     };
 
     return (
@@ -193,10 +217,49 @@ const CommentSection = ({ postId }: { postId: string }) => {
                             currentUser={currentUser?._id}
                             admin={currentUser?.admin}
                             onEdit={handleEdit}
+                            onDelete={(commentId: string) => {
+                                setShowModal(true);
+                                setDeletedComment(commentId);
+                            }}
                         />
                     ))}
                 </>
             )}
+
+            <Modal
+                show={showModal}
+                onClose={() => setShowModal(false)}
+                popup
+                size={"md"}
+            >
+                <Modal.Header />
+                <Modal.Body>
+                    <div className="text-center">
+                        <HiOutlineExclamationCircle className="h-14 w-14 text-gray-400 dark:text-gray-200 mb-4 mx-auto" />
+
+                        <h3 className="mb-3 text-lg font-semibold text-gray-500 dark:text-gray-400">
+                            Are You sure to Delete This Comment?
+                        </h3>
+
+                        <div className="flex justify-between">
+                            <Button
+                                color="failure"
+                                onClick={handleDelete}
+                                className="font-semibold"
+                            >
+                                Yes, I'm Sure
+                            </Button>
+                            <Button
+                                color="success"
+                                onClick={() => setShowModal(false)}
+                                className="font-semibold"
+                            >
+                                No, I don't Want
+                            </Button>
+                        </div>
+                    </div>
+                </Modal.Body>
+            </Modal>
         </div>
     );
 };

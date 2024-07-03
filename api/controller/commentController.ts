@@ -93,3 +93,20 @@ export const putComment = async (req: Request, res: Response) => {
         return res.end();
     }
 };
+
+export const deleteComment = async (req: Request, res: Response) => {
+    const { commentId } = req.params;
+
+    try {
+        const comment = await Comment.findById(commentId);
+        if (!comment) {
+            return res.status(404).json("Comment not Found");
+        }
+
+        await Comment.findByIdAndDelete(commentId);
+        return res.status(200).json("Delete Comment is Successfully");
+    } catch (err) {
+        console.log(err);
+        return res.end();
+    }
+};

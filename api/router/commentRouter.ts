@@ -1,5 +1,6 @@
 import express from "express";
 import {
+    deleteComment,
     getComments,
     postComment,
     putComment,
@@ -19,7 +20,8 @@ commentRouter
     .put(verifyToken, putCommentLike);
 commentRouter
     .route("/edit/:commentId([0-9a-f]{24})/")
-    .put(verifyToken, verifyAdminComment, putComment);
+    .put(verifyToken, verifyAdminComment, putComment)
+    .delete(verifyToken, verifyAdminComment, deleteComment);
 commentRouter.route("/:postId([0-9a-f]{24})").get(getComments);
 
 export default commentRouter;
