@@ -91,6 +91,17 @@ export const getPosts = async (req: Request, res: Response) => {
                 ],
             }),
         })
+            .populate({
+                path: "userId",
+                select: [
+                    "-password",
+                    "-email",
+                    "-admin",
+                    "-socialLogin",
+                    "-createdAt",
+                    "-updatedAt",
+                ],
+            })
             .sort({ updatedAt: sortDirection })
             .skip(startIndex)
             .limit(limit);

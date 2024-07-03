@@ -13,7 +13,11 @@ export interface IPost extends mongoose.Document {
 
 const postSchema = new mongoose.Schema<IPost>(
     {
-        userId: { type: mongoose.Schema.Types.ObjectId, required: true },
+        userId: {
+            type: mongoose.Schema.Types.ObjectId,
+            required: true,
+            ref: "User",
+        },
         title: { type: String, required: true, unique: true },
         category: { type: [String], trim: true, default: ["UnCategorized"] },
         content: { type: String, required: true },

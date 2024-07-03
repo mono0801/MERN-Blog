@@ -1,22 +1,34 @@
 import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import { getPostList } from "../utils/postUtils";
-import { IPost } from "../utils/interface";
+import { ICard, IImg, IPost } from "../utils/interface";
 import Loading from "../components/Loading";
 import { Button } from "flowbite-react";
 import Ad from "../components/Ad";
 import CommentSection from "../components/comment/CommentSection";
+import PostCard from "../components/post/PostCard";
+
+const card: ICard = {
+    cardHeight: "410px",
+    cardWidth: "360px",
+};
+
+const img: IImg = {
+    imgHeight: "230px",
+    hoverImgHeight: "170px",
+};
 
 const Post = () => {
     const { id } = useParams();
     const [post, setPost] = useState<IPost | null>(null);
+    const [recentPost, setRecentPost] = useState<IPost[] | null>(null);
+    // TODO : error 사용하기
     const [error, setError] = useState<boolean>(false);
     const [loading, setLoading] = useState<boolean>(true);
 
     useEffect(() => {
         getPostList(`?postId=${id}`).then((msg) => {
             if (!msg.response?.ok) {
-                console.log(msg.data);
                 setError(true);
             } else {
                 setPost(msg.data.postList[0]);
@@ -25,6 +37,18 @@ const Post = () => {
             setLoading(false);
         });
     }, [id]);
+
+    useEffect(() => {
+        getPostList(`?limit=3`).then((msg) => {
+            if (!msg.response?.ok) {
+                setError(true);
+            } else {
+                setRecentPost(msg.data.postList);
+                setError(false);
+            }
+            setLoading(false);
+        });
+    }, []);
 
     return (
         <>
@@ -80,6 +104,21 @@ const Post = () => {
                         </div>
 
                         <CommentSection postId={post._id} />
+
+                        <div className="flex flex-col justify-center items-center mb-5">
+                            <h1 className="text-xl mt-5">Recent Posts</h1>
+                            <div className="mt-5 flex flex-wrap justify-center gap-5">
+                                {recentPost &&
+                                    recentPost.map((post) => (
+                                        <PostCard
+                                            key={post._id}
+                                            post={post}
+                                            card={card}
+                                            img={img}
+                                        />
+                                    ))}
+                            </div>
+                        </div>
                     </main>
                 )
             )}

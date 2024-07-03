@@ -27,7 +27,11 @@ export interface IUpload {
 
 export interface IPost {
     _id: string;
-    userId: string;
+    userId: {
+        _id: string;
+        nickname: string;
+        profileUrl: string;
+    };
     title: string;
     category: string[];
     content: string;
@@ -74,4 +78,14 @@ export interface IComment {
     likesCount: number;
     createdAt: Date;
     updatedAt: Date;
+}
+
+export interface ICard {
+    cardWidth: string;
+    cardHeight: string;
+}
+
+export interface IImg {
+    imgHeight: string;
+    hoverImgHeight: string;
 }
