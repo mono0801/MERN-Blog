@@ -72,10 +72,19 @@ export interface IComment {
         email: string;
         profileUrl: string;
     };
-    postId: string;
+    postId: {
+        _id: string;
+        title: string;
+    };
     content: string;
     likes: string[];
     likesCount: number;
     createdAt: Date;
     updatedAt: Date;
+}
+
+export interface ICommentList {
+    comments: IComment[];
+    total: number;
+    lastMonthCommentsCount: number;
 }

@@ -1,39 +1,46 @@
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { RootState } from "../../redux/store";
-import { getPostList } from "../../utils/postUtils";
-import { IPost } from "../../utils/interface";
 import { Button, Modal, Table } from "flowbite-react";
-import { Link } from "react-router-dom";
 import { HiOutlineExclamationCircle } from "react-icons/hi";
+import { IComment } from "../../utils/interface";
+import { deleteComment, getDashboardComment } from "../../utils/commentUtils";
+import { Link, useNavigate } from "react-router-dom";
+import { FaThumbsUp } from "react-icons/fa";
 
-interface ISelectedPost {
+interface ISelectedComment {
     id: string;
-    title: string;
+    comment: string;
 }
 
-const DashPost = () => {
+const DashAdminComments = () => {
     const { currentUser } = useSelector((state: RootState) => state.user);
-    const [userPosts, setUserPosts] = useState<IPost[]>([]);
+    const navigate = useNavigate();
+
+    const [comments, setComments] = useState<IComment[]>([]);
+    const [total, setTotal] = useState<number>(0);
+    const [lastMonthTotal, setLastMonthTotal] = useState<number | null>(null);
+
     const [showMore, setShowMore] = useState<boolean>(true);
     const [showModal, setShowModal] = useState<boolean>(false);
-    const [selectedPost, setSelectedPost] = useState<ISelectedPost | null>(
-        null
-    );
-    const [total, setTotal] = useState<number | null>(null);
-    const [lastMonthTotal, setLastMonthTotal] = useState<number | null>(null);
+    const [selectedComment, setSelectedComment] =
+        useState<ISelectedComment | null>(null);
+
+    if (!currentUser?.admin) {
+        navigate("/");
+    }
 
     useEffect(() => {
         if (!currentUser?.admin) {
             return;
         }
-        getPostList(`?userId=${currentUser?._id}`).then((msg) => {
+        getDashboardComment().then((msg) => {
             if (msg.response?.ok) {
-                setUserPosts(msg.data.postList);
+                setComments(msg.data.comments);
                 setTotal(msg.data.total);
-                setLastMonthTotal(msg.data.lastMonthPostCount);
+                setLastMonthTotal(msg.data.lastMonthCommentsCount);
 
-                if (msg.data.postList.length < 9) {
+                if (msg.data.comments.length < 9) {
                     setShowMore(false);
                 }
             } else {
@@ -43,15 +50,13 @@ const DashPost = () => {
     }, [currentUser?._id]);
 
     const handleShowMore = () => {
-        const startIndex = userPosts.length;
+        const startIndex = comments.length;
 
-        getPostList(
-            `?userId=${currentUser?._id}&startIndex=${startIndex}`
-        ).then((msg) => {
+        getDashboardComment(`?startIndex=${startIndex}`).then((msg) => {
             if (msg.response?.ok) {
-                setUserPosts((prev) => [...prev, ...msg.data.postList]);
+                setComments((prev) => [...prev, ...msg.data.comments]);
 
-                if (msg.data.postList.length < 9) {
+                if (msg.data.comments.length < 9) {
                     setShowMore(false);
                 }
             } else {
@@ -60,35 +65,32 @@ const DashPost = () => {
         });
     };
 
-    const handleDeletePost = async () => {
+    const handleDeleteComment = async () => {
         setShowModal(false);
-
-        try {
-            const res = await fetch(`/api/post/${selectedPost?.id}`, {
-                method: "DELETE",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({
-                    userId: currentUser?._id,
-                    title: selectedPost?.title,
-                }),
-            });
-            const data = await res.json();
-            if (!res.ok) {
-                console.log(data);
-            } else {
-                alert(data);
-                setUserPosts((prev) =>
-                    prev.filter((post) => post._id !== selectedPost?.id)
-                );
-
-                if (total) {
-                    setTotal(total - 1);
-                }
-            }
-        } catch (error) {
-            console.log(error);
+        if (!currentUser || !selectedComment || !currentUser.admin) {
+            return;
         }
-        setSelectedPost(null);
+
+        deleteComment(currentUser?._id, selectedComment?.id)
+            .then((msg) => {
+                if (!msg.response?.ok) {
+                    console.log(msg.data);
+                } else {
+                    alert(msg.data);
+                    setComments((prev) =>
+                        prev.filter(
+                            (comment) => comment._id !== selectedComment?.id
+                        )
+                    );
+
+                    if (total) {
+                        setTotal(total - 1);
+                    }
+                }
+            })
+            .catch((error) => console.log(error));
+
+        setSelectedComment(null);
     };
 
     return (
@@ -98,87 +100,90 @@ const DashPost = () => {
                 <span>Last Month : {lastMonthTotal}</span>
             </div>
 
-            {currentUser?.admin && userPosts.length > 0 ? (
+            {currentUser?.admin && comments.length > 0 ? (
                 <>
-                    <Table hoverable className="shadow-md">
+                    <Table hoverable striped className="shadow-md">
                         <Table.Head>
                             <Table.HeadCell>Date Created</Table.HeadCell>
                             <Table.HeadCell>Date Updated</Table.HeadCell>
-                            <Table.HeadCell>Post Image</Table.HeadCell>
-                            <Table.HeadCell>Post Title</Table.HeadCell>
-                            <Table.HeadCell>Category</Table.HeadCell>
+                            <Table.HeadCell>Content</Table.HeadCell>
+                            <Table.HeadCell>Likes</Table.HeadCell>
+                            <Table.HeadCell>Nickname</Table.HeadCell>
+                            <Table.HeadCell>Profile</Table.HeadCell>
+                            <Table.HeadCell>Post</Table.HeadCell>
                             <Table.HeadCell>
                                 <span className="sr-only">Delete</span>
                             </Table.HeadCell>
-                            <Table.HeadCell>
-                                <span className="sr-only">Edit</span>
-                            </Table.HeadCell>
                         </Table.Head>
 
-                        {userPosts.map((post) => (
-                            <Table.Body key={post._id} className="divide-y">
+                        {comments.map((comment) => (
+                            <Table.Body key={comment._id} className="divide-y">
                                 <Table.Row className="bg-white dark:border-gray-700 dark:bg-gray-800 font-semibold">
                                     <Table.Cell>
                                         {new Date(
-                                            post.createdAt
+                                            comment.createdAt
                                         ).toLocaleDateString()}
                                     </Table.Cell>
 
                                     <Table.Cell>
                                         {new Date(
-                                            post.updatedAt
+                                            comment.updatedAt
                                         ).toLocaleDateString()}
                                     </Table.Cell>
 
+                                    <Table.Cell>{comment.content}</Table.Cell>
+
                                     <Table.Cell>
-                                        <Link to={`/post/${post._id}`}>
-                                            <img
-                                                src={post.image}
-                                                alt={post.title}
-                                                className="w-20 h-10 object-cover bg-gray-500"
+                                        <div className="flex items-center gap-2">
+                                            <FaThumbsUp
+                                                className={`text-sm ${
+                                                    comment.likesCount > 0
+                                                        ? "text-blue-500"
+                                                        : "text-gray-400"
+                                                }`}
                                             />
-                                        </Link>
+                                            {comment.likesCount}
+                                        </div>
+                                    </Table.Cell>
+
+                                    <Table.Cell className="dark:text-white text-black">
+                                        <span>{comment.userId.nickname}</span>
                                     </Table.Cell>
 
                                     <Table.Cell>
+                                        <img
+                                            src={comment.userId.profileUrl}
+                                            alt={comment.userId.nickname}
+                                            className="w-12 h-12 object-cover bg-gray-500 rounded-full"
+                                        />
+                                    </Table.Cell>
+
+                                    <Table.Cell className="hover:underline">
                                         <Link
-                                            to={`/post/${post._id}`}
-                                            className="text-gray-900 dark:text-white"
+                                            to={`/post/${comment.postId._id}?commentId=${comment._id}`}
                                         >
-                                            {post.title}
+                                            {comment.postId.title.length > 25
+                                                ? comment.postId.title.slice(
+                                                      0,
+                                                      25
+                                                  ) + " ..."
+                                                : comment.postId.title}
                                         </Link>
-                                    </Table.Cell>
-
-                                    <Table.Cell>
-                                        {post.category.map((item) => (
-                                            <p key={`${item}${post._id}`}>
-                                                {item}
-                                            </p>
-                                        ))}
                                     </Table.Cell>
 
                                     <Table.Cell>
                                         <span
                                             onClick={() => {
                                                 setShowModal(true);
-                                                setSelectedPost({
-                                                    id: post._id,
-                                                    title: post.title,
+                                                setSelectedComment({
+                                                    id: comment._id,
+                                                    comment: comment.content,
                                                 });
                                             }}
                                             className="text-red-500 hover:underline cursor-pointer"
                                         >
                                             Delete
                                         </span>
-                                    </Table.Cell>
-
-                                    <Table.Cell>
-                                        <Link
-                                            to={`/post/edit/${post._id}`}
-                                            className="text-teal-500 hover:underline"
-                                        >
-                                            <span>Edit</span>
-                                        </Link>
                                     </Table.Cell>
                                 </Table.Row>
                             </Table.Body>
@@ -194,14 +199,14 @@ const DashPost = () => {
                     )}
                 </>
             ) : (
-                <p>There is no Post Uploaded Yet!</p>
+                <p>There is no Comment Yet!</p>
             )}
 
             <Modal
                 show={showModal}
                 onClose={() => {
                     setShowModal(false);
-                    setSelectedPost(null);
+                    setSelectedComment(null);
                 }}
                 popup
                 size={"md"}
@@ -212,17 +217,17 @@ const DashPost = () => {
                         <HiOutlineExclamationCircle className="h-14 w-14 text-gray-400 dark:text-gray-200 mb-4 mx-auto" />
 
                         <h3 className="mb-3 text-lg font-semibold text-gray-500 dark:text-gray-400">
-                            Are You sure you want to Delete This Post?
+                            Are You sure you want to Delete This Comment?
                         </h3>
 
                         <p className="text-medium font-semibold text-gray-500 dark:text-gray-400">
-                            Title : {selectedPost?.title}
+                            Comment : {selectedComment?.comment}
                         </p>
 
                         <div className="flex justify-between mt-3">
                             <Button
                                 color="failure"
-                                onClick={handleDeletePost}
+                                onClick={handleDeleteComment}
                                 className="font-semibold"
                             >
                                 Yes, I'm Sure
@@ -231,7 +236,7 @@ const DashPost = () => {
                                 color="success"
                                 onClick={() => {
                                     setShowModal(false);
-                                    setSelectedPost(null);
+                                    setSelectedComment(null);
                                 }}
                                 className="font-semibold"
                             >
@@ -245,4 +250,4 @@ const DashPost = () => {
     );
 };
 
-export default DashPost;
+export default DashAdminComments;

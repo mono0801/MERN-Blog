@@ -109,3 +109,17 @@ export const verifyAdminComment = (
         next();
     }
 };
+
+export const verifyAdminGetComments = (
+    req: Request,
+    res: Response,
+    next: NextFunction
+) => {
+    if (req.user?.admin) {
+        next();
+    } else if (req.user?.id !== req.query.userId) {
+        return res.status(403).json("You're not Allowed to Access Comment");
+    } else {
+        next();
+    }
+};

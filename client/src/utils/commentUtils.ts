@@ -1,4 +1,4 @@
-import { IComment } from "./interface";
+import { IComment, ICommentList } from "./interface";
 
 export async function getCommentList(postId: string) {
     try {
@@ -45,6 +45,17 @@ export async function deleteComment(userId: number, commentId: string) {
             }),
         });
         const data: string = await response.json();
+        return { response, data };
+    } catch (err) {
+        return { data: "Something is Worng" };
+    }
+}
+
+export async function getDashboardComment(param?: string) {
+    param = param ? param : "";
+    try {
+        const response = await fetch(`/api/comment${param}`);
+        const data: ICommentList = await response.json();
         return { response, data };
     } catch (err) {
         return { data: "Something is Worng" };

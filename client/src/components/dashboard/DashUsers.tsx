@@ -156,7 +156,9 @@ const DashUsers = () => {
                             <Table.HeadCell>E-mail</Table.HeadCell>
                             <Table.HeadCell>Social Login</Table.HeadCell>
                             <Table.HeadCell>Admin</Table.HeadCell>
-                            <Table.HeadCell>Delete</Table.HeadCell>
+                            <Table.HeadCell>
+                                <span className="sr-only">Delete</span>
+                            </Table.HeadCell>
                         </Table.Head>
 
                         {users.map((user) => (

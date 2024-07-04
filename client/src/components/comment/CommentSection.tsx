@@ -1,5 +1,5 @@
 import { useSelector } from "react-redux";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { Alert, Button, Modal, Textarea } from "flowbite-react";
 import { useEffect, useState } from "react";
 import {
@@ -13,6 +13,9 @@ import Comment from "./Comment";
 
 const CommentSection = ({ postId }: { postId: string }) => {
     const { currentUser } = useSelector((state: RootState) => state.user);
+    const location = useLocation();
+    const [query, setQuery] = useState<string>("");
+
     const [comment, setComment] = useState<string>("");
     const [commentList, setCommentList] = useState<IComment[]>([]);
     const [errCommentMsg, setErrCommentMsg] = useState<string | null>(null);
@@ -20,6 +23,15 @@ const CommentSection = ({ postId }: { postId: string }) => {
     const [showModal, setShowModal] = useState<boolean>(false);
     const [deletedComment, setDeletedComment] = useState<string | null>(null);
     const navigate = useNavigate();
+
+    useEffect(() => {
+        const searchParams = new URLSearchParams(location.search);
+        const param = searchParams.get("commentId");
+
+        if (param !== null) {
+            setQuery(param);
+        }
+    }, [location.search]);
 
     useEffect(() => {
         getCommentList(postId).then((msg) => {
@@ -221,6 +233,7 @@ const CommentSection = ({ postId }: { postId: string }) => {
                                 setShowModal(true);
                                 setDeletedComment(commentId);
                             }}
+                            query={query}
                         />
                     ))}
                 </>

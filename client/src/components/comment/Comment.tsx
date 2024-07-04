@@ -14,6 +14,7 @@ const Comment = ({
     admin,
     onEdit,
     onDelete,
+    query,
 }: {
     comment: IComment;
     handleLike: Function;
@@ -22,6 +23,7 @@ const Comment = ({
     admin?: boolean;
     onEdit: Function;
     onDelete: Function;
+    query?: string;
 }) => {
     const [isEditing, setIsEditing] = useState<boolean>(false);
     const [editedContent, setEditedContent] = useState<string>(comment.content);
@@ -49,7 +51,13 @@ const Comment = ({
     };
 
     return (
-        <div className="flex p-3 border-b dark:border-gray-600 text-sm">
+        <div
+            className={`flex p-3  text-sm ${
+                query == comment._id
+                    ? "border-4 border-teal-500 rounded-md"
+                    : "border-b dark:border-gray-600"
+            }`}
+        >
             <div className="flex-shrink-0 mr-4">
                 <img
                     src={

@@ -7,14 +7,24 @@ import { useSelector } from "react-redux";
 import { RootState } from "../redux/store";
 import DashPost from "../components/dashboard/DashPost";
 import DashUsers from "../components/dashboard/DashUsers";
+import DashAdminComments from "../components/dashboard/DashAdminComments";
+import DashUserComments from "../components/dashboard/DashUserComments";
 
-type TabType = "profile" | "password" | "post" | "user" | "category" | "";
+type TabType =
+    | "profile"
+    | "password"
+    | "post"
+    | "user"
+    | "category"
+    | "comments"
+    | "";
 
 const Dashboard = () => {
     const { currentUser } = useSelector((state: RootState) => state.user);
     const location = useLocation();
     const navigate = useNavigate();
     const [tab, setTab] = useState<TabType>("");
+    const forAdmin = ["category", "post", "user"];
 
     useEffect(() => {
         const searchParams = new URLSearchParams(location.search);
@@ -25,7 +35,7 @@ const Dashboard = () => {
         }
     }, [location.search]);
 
-    if ((tab === "category" || tab === "post") && !currentUser?.admin) {
+    if (forAdmin.includes(tab) && !currentUser?.admin) {
         navigate("/");
     }
 
@@ -42,6 +52,12 @@ const Dashboard = () => {
             {tab === "category" && <DashCategory />}
             {tab === "post" && <DashPost />}
             {tab === "user" && <DashUsers />}
+            {tab === "comments" &&
+                (currentUser?.admin ? (
+                    <DashAdminComments />
+                ) : (
+                    <DashUserComments />
+                ))}
         </div>
     );
 };

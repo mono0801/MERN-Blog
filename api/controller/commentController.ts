@@ -1,5 +1,6 @@
 import { Request, Response } from "express";
 import Comment from "../model/Comment";
+import { oneMonthAgo } from "../utils/utils";
 
 export const postComment = async (req: Request, res: Response) => {
     const { content, postId, userId } = req.body;
@@ -20,7 +21,7 @@ export const postComment = async (req: Request, res: Response) => {
     }
 };
 
-export const getComments = async (req: Request, res: Response) => {
+export const getPostComments = async (req: Request, res: Response) => {
     try {
         const comments = await Comment.find({
             postId: req.params.postId,
@@ -38,6 +39,59 @@ export const getComments = async (req: Request, res: Response) => {
             });
 
         return res.status(200).json(comments);
+    } catch (err) {
+        console.log(err);
+        return res.end();
+    }
+};
+
+export const getDashBoardComments = async (req: Request, res: Response) => {
+    const startIndex = Number(req.query.startIndex) || 0;
+    const limit = Number(req.query.limit) || 9;
+    const sortDirection = req.query.sort === "asc" ? 1 : -1;
+
+    try {
+        const comments = await Comment.find({
+            ...(req.query.userId && { userId: req.query.userId }),
+        })
+            .sort({ createdAt: sortDirection })
+            .populate([
+                {
+                    path: "userId",
+                    select: [
+                        "-email",
+                        "-password",
+                        "-admin",
+                        "-socialLogin",
+                        "-createdAt",
+                        "-updatedAt",
+                    ],
+                },
+                {
+                    path: "postId",
+                    select: [
+                        "-userId",
+                        "-category",
+                        "-content",
+                        "-image",
+                        "-createdAt",
+                        "-updatedAt",
+                    ],
+                },
+            ])
+            .skip(startIndex)
+            .limit(limit);
+
+        const total = await Comment.countDocuments();
+        const lastMonthCommentsCount = await Comment.countDocuments({
+            createdAt: { $gte: oneMonthAgo() },
+        });
+
+        return res.status(200).json({
+            comments,
+            total,
+            lastMonthCommentsCount,
+        });
     } catch (err) {
         console.log(err);
         return res.end();

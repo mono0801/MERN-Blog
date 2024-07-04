@@ -10,7 +10,11 @@ import { LuLogOut } from "react-icons/lu";
 import { RiLockPasswordLine } from "react-icons/ri";
 import { logoutSuccess } from "../redux/user/userSlice";
 import { TbCategoryPlus } from "react-icons/tb";
-import { HiDocumentText, HiOutlineUserGroup } from "react-icons/hi";
+import {
+    HiAnnotation,
+    HiDocumentText,
+    HiOutlineUserGroup,
+} from "react-icons/hi";
 
 const Header = () => {
     const path = useLocation().pathname;
@@ -120,6 +124,12 @@ const Header = () => {
                                 </Link>
                             </>
                         )}
+                        <Dropdown.Divider />
+                        <Link to={"/dashboard?tab=comments"}>
+                            <Dropdown.Item icon={HiAnnotation}>
+                                Comments
+                            </Dropdown.Item>
+                        </Link>
                         <Dropdown.Divider />
                         <Dropdown.Item icon={LuLogOut} onClick={handleLogOut}>
                             Log Out

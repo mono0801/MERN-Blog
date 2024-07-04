@@ -8,7 +8,11 @@ import { logoutSuccess } from "../../redux/user/userSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "../../redux/store";
 import { TbCategoryPlus } from "react-icons/tb";
-import { HiDocumentText, HiOutlineUserGroup } from "react-icons/hi";
+import {
+    HiAnnotation,
+    HiDocumentText,
+    HiOutlineUserGroup,
+} from "react-icons/hi";
 
 const DashSidebar = () => {
     const location = useLocation();
@@ -101,6 +105,16 @@ const DashSidebar = () => {
                             </Link>
                         </>
                     ) : null}
+                    <Link to="/dashboard?tab=comments">
+                        <Sidebar.Item
+                            active={tab === "comments"}
+                            icon={HiAnnotation}
+                            className="font-semibold"
+                            as="div"
+                        >
+                            Comments
+                        </Sidebar.Item>
+                    </Link>
                     <Sidebar.Item
                         onClick={handleLogOut}
                         icon={LuLogOut}
