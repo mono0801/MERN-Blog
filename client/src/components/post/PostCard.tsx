@@ -1,27 +1,30 @@
 import { Link } from "react-router-dom";
-import { ICard, IImg, IPost } from "../../utils/interface";
+import { IPost } from "../../utils/interface";
 import { Button } from "flowbite-react";
 import { getTimeDiff } from "../../utils/utils";
 import { SignInputValue } from "../../styles/components/sign.style";
 
-const PostCard = ({
-    post,
-    card,
-    img,
-}: {
-    post: IPost;
-    card: ICard;
-    img: IImg;
-}) => {
+const PostCard = ({ post, isPost }: { post: IPost; isPost: boolean }) => {
+    // TODO : postCard의 설정값이 실제 브라우저에서 적용 안되는 오류 해결하기
+    // TODO : page[home, search] 에서 postCard의 가로 세로 길이 설정하기
+
     return (
         <div
-            className={`group relative w-full border border-teal-500 hover:border-2 h-[${card.cardHeight}] overflow-hidden rounded-lg sm:w-[${card.cardWidth}] transition-all`}
+            className={`group relative w-full border border-teal-500 hover:border-2 ${
+                isPost ? "h-[410px]" : null
+            } overflow-hidden rounded-lg ${
+                isPost ? "sm:w-[360px]" : null
+            } transition-all`}
         >
             <Link to={`/post/${post._id}`}>
                 <img
                     src={post.image}
                     alt={post.title}
-                    className={`h-[${img.imgHeight}] w-full object-cover group-hover:h-[${img.hoverImgHeight}] transition-all duration-300 z-20`}
+                    className={`${
+                        isPost ? "h-[230px]" : null
+                    } w-full object-cover ${
+                        isPost ? "group-hover:h-[170px]" : null
+                    } transition-all duration-300 z-20`}
                 />
             </Link>
 

@@ -79,13 +79,3 @@ export interface IComment {
     createdAt: Date;
     updatedAt: Date;
 }
-
-export interface ICard {
-    cardWidth: string;
-    cardHeight: string;
-}
-
-export interface IImg {
-    imgHeight: string;
-    hoverImgHeight: string;
-}

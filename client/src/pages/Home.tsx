@@ -57,7 +57,7 @@ const Home = () => {
                               key={post._id}
                               className="hover:underline"
                           >
-                              <p>{post.title}</p>
+                              <p className="line-clamp-1">{post.title}</p>
                           </Link>
                       ))
                     : null}

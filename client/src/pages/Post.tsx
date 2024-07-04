@@ -1,22 +1,12 @@
 import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import { getPostList } from "../utils/postUtils";
-import { ICard, IImg, IPost } from "../utils/interface";
+import { IPost } from "../utils/interface";
 import Loading from "../components/Loading";
 import { Button } from "flowbite-react";
 import Ad from "../components/Ad";
 import CommentSection from "../components/comment/CommentSection";
 import PostCard from "../components/post/PostCard";
-
-const card: ICard = {
-    cardHeight: "410px",
-    cardWidth: "360px",
-};
-
-const img: IImg = {
-    imgHeight: "230px",
-    hoverImgHeight: "170px",
-};
 
 const Post = () => {
     const { id } = useParams();
@@ -113,8 +103,7 @@ const Post = () => {
                                         <PostCard
                                             key={post._id}
                                             post={post}
-                                            card={card}
-                                            img={img}
+                                            isPost={true}
                                         />
                                     ))}
                             </div>

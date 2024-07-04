@@ -1,5 +1,6 @@
 import hljs from "highlight.js";
-// TODO :React-Quill의 Code-Block 설정하기
+// TODO: React-Quill의 Code-Block 설정하기
+// TODO: 위즈윅 대체제 찾기
 
 export const quillConfig = {
     modules: {
