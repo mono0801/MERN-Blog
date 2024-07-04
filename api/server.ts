@@ -6,6 +6,7 @@ import { HttpException } from "./utils/interface";
 import cookieParser from "cookie-parser";
 import postRouter from "./router/postRouter";
 import commentRouter from "./router/commentRouter";
+import utilsRouter from "./router/utilsRouter";
 
 const app = express();
 
@@ -18,6 +19,7 @@ app.use("/api/users", userRouter);
 app.use("/api/auth", authRouter);
 app.use("/api/post", postRouter);
 app.use("/api/comment", commentRouter);
+app.use("/api/utils", utilsRouter);
 
 app.use(
     (err: HttpException, req: Request, res: Response, next: NextFunction) => {

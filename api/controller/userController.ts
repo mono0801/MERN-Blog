@@ -120,7 +120,11 @@ export const getUsers = async (req: Request, res: Response) => {
     const sortDirection = req.query.sort === "asc" ? 1 : -1;
 
     try {
-        const users = await User.find()
+        const users = await User.find({
+            ...(req.query.admin && {
+                admin: { $ne: true },
+            }),
+        })
             .sort({ createdAt: sortDirection })
             .skip(startIndex)
             .limit(limit);

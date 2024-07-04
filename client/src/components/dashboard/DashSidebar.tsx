@@ -10,6 +10,7 @@ import { AppDispatch, RootState } from "../../redux/store";
 import { TbCategoryPlus } from "react-icons/tb";
 import {
     HiAnnotation,
+    HiChartPie,
     HiDocumentText,
     HiOutlineUserGroup,
 } from "react-icons/hi";
@@ -49,6 +50,16 @@ const DashSidebar = () => {
         <Sidebar className="w-full md:w-56">
             <Sidebar.Items>
                 <Sidebar.ItemGroup className="flex flex-col gap-1">
+                    <Link to="/dashboard?tab=overview">
+                        <Sidebar.Item
+                            active={tab === "overview"}
+                            icon={HiChartPie}
+                            className="font-semibold"
+                            as="div"
+                        >
+                            Dashboard
+                        </Sidebar.Item>
+                    </Link>
                     <Link to="/dashboard?tab=profile">
                         <Sidebar.Item
                             active={tab === "profile"}
@@ -71,7 +82,7 @@ const DashSidebar = () => {
                             Password
                         </Sidebar.Item>
                     </Link>
-                    {currentUser?.admin ? (
+                    {currentUser && currentUser.admin ? (
                         <>
                             <Link to="/dashboard?tab=category">
                                 <Sidebar.Item

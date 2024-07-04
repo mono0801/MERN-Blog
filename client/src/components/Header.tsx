@@ -12,6 +12,7 @@ import { logoutSuccess } from "../redux/user/userSlice";
 import { TbCategoryPlus } from "react-icons/tb";
 import {
     HiAnnotation,
+    HiChartPie,
     HiDocumentText,
     HiOutlineUserGroup,
 } from "react-icons/hi";
@@ -95,6 +96,12 @@ const Header = () => {
                         </Dropdown.Header>
                         <Link to={"/dashboard?tab=profile"}>
                             <Dropdown.Item icon={FaUser}>Profile</Dropdown.Item>
+                        </Link>
+                        <Dropdown.Divider />
+                        <Link to={"/dashboard?tab=overview"}>
+                            <Dropdown.Item icon={HiChartPie}>
+                                Dashboard
+                            </Dropdown.Item>
                         </Link>
                         <Dropdown.Divider />
                         <Link to={"/dashboard?tab=password"}>

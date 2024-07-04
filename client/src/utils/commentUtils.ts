@@ -51,10 +51,10 @@ export async function deleteComment(userId: number, commentId: string) {
     }
 }
 
-export async function getDashboardComment(param?: string) {
-    param = param ? param : "";
+export async function getDashboardComment(urlQuery?: string) {
+    urlQuery = urlQuery ? urlQuery : "";
     try {
-        const response = await fetch(`/api/comment${param}`);
+        const response = await fetch(`/api/comment${urlQuery}`);
         const data: ICommentList = await response.json();
         return { response, data };
     } catch (err) {

@@ -143,7 +143,7 @@ const DashPost = () => {
                                     <Table.Cell>
                                         <Link
                                             to={`/post/${post._id}`}
-                                            className="text-gray-900 dark:text-white"
+                                            className="text-gray-900 dark:text-white hover:underline"
                                         >
                                             {post.title}
                                         </Link>

@@ -9,6 +9,8 @@ import DashPost from "../components/dashboard/DashPost";
 import DashUsers from "../components/dashboard/DashUsers";
 import DashAdminComments from "../components/dashboard/DashAdminComments";
 import DashUserComments from "../components/dashboard/DashUserComments";
+import DashUserOverview from "../components/dashboard/DashUserOverview";
+import DashAdminOverview from "../components/dashboard/DashAdminOverview";
 
 type TabType =
     | "profile"
@@ -17,6 +19,7 @@ type TabType =
     | "user"
     | "category"
     | "comments"
+    | "overview"
     | "";
 
 const Dashboard = () => {
@@ -32,6 +35,10 @@ const Dashboard = () => {
 
         if (tabParam !== "" || tabParam !== null) {
             setTab(tabParam as TabType);
+        }
+
+        if (tabParam == "" || tabParam == null) {
+            navigate("/dashboard?tab=profile");
         }
     }, [location.search]);
 
@@ -57,6 +64,12 @@ const Dashboard = () => {
                     <DashAdminComments />
                 ) : (
                     <DashUserComments />
+                ))}
+            {tab === "overview" &&
+                (currentUser?.admin ? (
+                    <DashAdminOverview />
+                ) : (
+                    <DashUserOverview />
                 ))}
         </div>
     );

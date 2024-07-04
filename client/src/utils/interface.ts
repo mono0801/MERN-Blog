@@ -88,3 +88,18 @@ export interface ICommentList {
     total: number;
     lastMonthCommentsCount: number;
 }
+
+export interface IOverview {
+    user: {
+        total: number;
+        lastMonth: number;
+    };
+    post: {
+        total: number;
+        lastMonth: number;
+    };
+    comment: {
+        total: number;
+        lastMonth: number;
+    };
+}

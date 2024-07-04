@@ -1,5 +1,6 @@
 import dayjs from "dayjs";
 import duration, { Duration } from "dayjs/plugin/duration";
+import { IOverview } from "./interface";
 
 dayjs.extend(duration);
 
@@ -39,5 +40,15 @@ export function getTimeDiff(timeToCompare: Date): string {
         return "a few seconds ago";
     } else {
         return "Just now";
+    }
+}
+
+export async function getOverview() {
+    try {
+        const response = await fetch(`/api/utils/overview`);
+        const data: IOverview = await response.json();
+        return { response, data };
+    } catch (err) {
+        return { data: "Something is Worng" };
     }
 }
