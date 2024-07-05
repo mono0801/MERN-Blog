@@ -1,6 +1,7 @@
 import { combineReducers, configureStore } from "@reduxjs/toolkit";
 import userReducer from "./user/userSlice";
 import themeReducer from "./theme/themeSlice";
+import layoutReducer from "./layout/layoutSlice";
 import localStorage from "redux-persist/lib/storage";
 import sessionStorage from "redux-persist/lib/storage/session";
 import { persistReducer, persistStore } from "redux-persist";
@@ -17,15 +18,26 @@ const themePersistConfig = {
     version: 1,
 };
 
+const layoutPersistConfig = {
+    key: "layout",
+    storage: localStorage,
+    version: 1,
+};
+
 const persistanceUserReducer = persistReducer(userPersistConfig, userReducer);
 const persistanceThemeReducer = persistReducer(
     themePersistConfig,
     themeReducer
 );
+const persistanceLayoutReducer = persistReducer(
+    layoutPersistConfig,
+    layoutReducer
+);
 
 const rootReducer = combineReducers({
     user: persistanceUserReducer,
     theme: persistanceThemeReducer,
+    layout: persistanceLayoutReducer,
 });
 
 export const store = configureStore({

@@ -5,26 +5,25 @@ import { getTimeDiff } from "../../utils/utils";
 import { SignInputValue } from "../../styles/components/sign.style";
 
 const PostCard = ({ post, isPost }: { post: IPost; isPost: boolean }) => {
-    // TODO : postCard의 설정값이 실제 브라우저에서 적용 안되는 오류 해결하기
     // TODO : page[home, search] 에서 postCard의 가로 세로 길이 설정하기
 
     return (
         <div
             className={`group relative w-full border border-teal-500 hover:border-2 ${
-                isPost ? "h-[410px]" : null
+                isPost ? "h-[410px]" : "h-[420px]"
             } overflow-hidden rounded-lg ${
-                isPost ? "sm:w-[360px]" : null
+                isPost ? "sm:w-[360px]" : "sm:w-[365px]"
             } transition-all`}
         >
             <Link to={`/post/${post._id}`}>
                 <img
                     src={post.image}
                     alt={post.title}
-                    className={`${
-                        isPost ? "h-[230px]" : null
-                    } w-full object-cover ${
-                        isPost ? "group-hover:h-[170px]" : null
-                    } transition-all duration-300 z-20`}
+                    className={`${isPost ? "h-[230px]" : "h-[240px]"}  ${
+                        isPost
+                            ? "group-hover:h-[170px]"
+                            : "group-hover:h-[180px]"
+                    } w-full object-cover border-b border-teal-500 transition-all duration-300 z-20`}
                 />
             </Link>
 
