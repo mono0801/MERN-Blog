@@ -4,7 +4,7 @@ import About from "./pages/About";
 import LogIn from "./pages/LogIn";
 import Join from "./pages/Join";
 import Dashboard from "./pages/Dashboard";
-import Projects from "./pages/Projects";
+import Project from "./pages/Project";
 import Header from "./components/Header";
 import FooterComponent from "./components/Footer";
 import GithubCallback from "./pages/login/Github";
@@ -37,7 +37,7 @@ const App = () => {
             <Routes>
                 <Route path="/" element={<Home />} />
                 <Route path="/about" element={<About />} />
-                <Route path="/projects" element={<Projects />} />
+                <Route path="/projects" element={<Project />} />
 
                 <Route path="/post/:id" element={<Post />} />
 

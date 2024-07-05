@@ -40,7 +40,7 @@ const Home = () => {
                 </p>
                 <Link
                     to={"/search"}
-                    className="text-xs sm:text-sm text-teal-500 font-bold hover:underline"
+                    className="text-xs sm:text-sm text-teal-500 font-bold hover:underline mr-auto"
                 >
                     View all Posts
                 </Link>

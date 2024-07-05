@@ -90,6 +90,7 @@ const FooterComponent = () => {
                         <Footer.Icon href="#" icon={BsInstagram} />
                         <Footer.Icon href="#" icon={BsTwitter} />
                         <Footer.Icon
+                            target="blank"
                             href="https://github.com/mono0801"
                             icon={BsGithub}
                         />
