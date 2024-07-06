@@ -1,5 +1,5 @@
 import { Avatar, Button, Dropdown, Navbar, TextInput } from "flowbite-react";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { LinkP, LogoSpan } from "../styles/components/header.style";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../redux/store";
@@ -16,12 +16,36 @@ import {
     HiDocumentText,
     HiOutlineUserGroup,
 } from "react-icons/hi";
+import { useEffect, useState } from "react";
+import { useForm } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup/src/yup.js";
+import { searchKeywordSchema } from "../pages/yup";
+
+interface IKeyword {
+    keyword?: string;
+}
 
 const Header = () => {
+    const location = useLocation();
     const path = useLocation().pathname;
     const dispatch = useDispatch();
     const { currentUser } = useSelector((state: RootState) => state.user);
     const { theme } = useSelector((state: RootState) => state.theme);
+    const [searchKeyword, setSearchKeyword] = useState<string | null>(null);
+    const navigate = useNavigate();
+
+    const { register, handleSubmit } = useForm<IKeyword>({
+        resolver: yupResolver<IKeyword>(searchKeywordSchema),
+    });
+
+    useEffect(() => {
+        const urlParams = new URLSearchParams(location.search);
+        const keyword = urlParams.get("keyword");
+
+        if (keyword) {
+            setSearchKeyword(keyword);
+        }
+    }, [location.search]);
 
     const handleLogOut = async () => {
         try {
@@ -39,6 +63,10 @@ const Header = () => {
         }
     };
 
+    const handleValid = (keyword: IKeyword) => {
+        navigate(`/search?keyword=${keyword.keyword}`);
+    };
+
     return (
         <Navbar className="border-b-2">
             <Link
@@ -51,12 +79,14 @@ const Header = () => {
                 <LogoSpan>Blog</LogoSpan>
             </Link>
 
-            <form>
+            <form onSubmit={handleSubmit(handleValid)}>
                 <TextInput
+                    {...register("keyword")}
                     type="text"
                     placeholder="Search..."
                     rightIcon={AiOutlineSearch}
                     className="hidden lg:inline"
+                    defaultValue={searchKeyword ? searchKeyword : ""}
                 />
             </form>
 

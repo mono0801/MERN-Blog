@@ -48,6 +48,17 @@ export const verifyAdminforUser = (
     next();
 };
 
+export const verifyAdminCategory = (
+    req: Request,
+    res: Response,
+    next: NextFunction
+) => {
+    if (!req.user?.admin) {
+        return res.status(403).json("You're not Allowed to Access Category");
+    }
+    next();
+};
+
 export const protectAdminUploadPost = (
     req: Request,
     res: Response,

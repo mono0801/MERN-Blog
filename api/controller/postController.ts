@@ -102,7 +102,7 @@ export const getPosts = async (req: Request, res: Response) => {
                     "-updatedAt",
                 ],
             })
-            .sort({ updatedAt: sortDirection })
+            .sort({ createdAt: sortDirection })
             .skip(startIndex)
             .limit(limit);
 

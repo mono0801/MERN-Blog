@@ -17,6 +17,7 @@ import OnlyAdmin from "./components/Protect/OnlyAdmin";
 import Post from "./pages/Post";
 import PostEdit from "./pages/PostEdit";
 import ScrollToTop from "./components/ScrollToTop";
+import Search from "./pages/Search";
 
 const LoginRoutes = () => {
     return (
@@ -38,6 +39,7 @@ const App = () => {
                 <Route path="/" element={<Home />} />
                 <Route path="/about" element={<About />} />
                 <Route path="/projects" element={<Project />} />
+                <Route path="/search" element={<Search />} />
 
                 <Route path="/post/:id" element={<Post />} />
 

@@ -75,13 +75,17 @@ const Home = () => {
                         {layout ? (
                             <div className="flex flex-wrap gap-4 justify-center">
                                 {posts.postList.map((post) => (
-                                    <PostCard post={post} isPost={false} />
+                                    <PostCard
+                                        key={post._id}
+                                        post={post}
+                                        isPost={false}
+                                    />
                                 ))}
                             </div>
                         ) : (
                             <div className="flex flex-col gap-3 justify-center items-center">
                                 {posts.postList.slice(0, 4).map((post) => (
-                                    <PostList post={post} />
+                                    <PostList key={post._id} post={post} />
                                 ))}
                             </div>
                         )}

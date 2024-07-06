@@ -1,6 +1,7 @@
 import express from "express";
 import {
     protectAdminUploadPost,
+    verifyAdminCategory,
     verifyAdminforPost,
     verifyToken,
     verifyUserforPost,
@@ -19,9 +20,9 @@ const postRouter = express.Router();
 
 postRouter
     .route("/category")
-    .get(verifyToken, getCategory)
-    .post(verifyToken, postCategory)
-    .delete(verifyToken, deleteCategory);
+    .get(getCategory)
+    .post(verifyToken, verifyAdminCategory, postCategory)
+    .delete(verifyToken, verifyAdminCategory, deleteCategory);
 
 postRouter
     .route("/")

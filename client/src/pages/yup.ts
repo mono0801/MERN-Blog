@@ -59,3 +59,7 @@ export const editCategorySchema = yup.object().shape({
 export const uploadPostSchema = yup.object().shape({
     title: yup.string().required("Please write Title"),
 });
+
+export const searchKeywordSchema = yup.object().shape({
+    keyword: yup.string(),
+});
