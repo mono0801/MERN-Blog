@@ -1,6 +1,6 @@
 import { Link, useNavigate } from "react-router-dom";
 import { LogoSpan } from "../styles/components/header.style";
-import { Alert, Button, Spinner, TextInput } from "flowbite-react";
+import { Alert, Button, Modal, Spinner, TextInput } from "flowbite-react";
 import {
     BlogDescriptSpan,
     SignInputBtn,
@@ -15,6 +15,9 @@ import { IErrMsg, IJoin } from "../utils/interface";
 import styled from "styled-components";
 import { HiInformationCircle } from "react-icons/hi";
 import SocialLogin from "../components/socialLogin/SocialLogin";
+import { FaCheck } from "react-icons/fa";
+import { LuTimerReset } from "react-icons/lu";
+import { sendVerifyEmail } from "../utils/utils";
 
 interface IForm extends IJoin {
     passwordConfirm: String;
@@ -32,8 +35,17 @@ const SignUp = () => {
     const [data, setData] = useState<IJoin | null>(null);
     const [errMsg, setErrMsg] = useState<IErrMsg>({ message: "" });
     const [loading, setLoading] = useState(false);
+    const [showModal, setShowModal] = useState<boolean>(false);
+    const [email, setEmail] = useState<string | null>(null);
+    const [code, setCode] = useState<string | null>(null);
+    const [confirmCode, setConfirmCode] = useState<string>("");
+    const [confirm, setConfirm] = useState<boolean>(false);
+    const [timeLeft, setTimeLeft] = useState<number>(0);
 
     const handleValid = async (formData: IForm) => {
+        if (!confirm) {
+            return setErrMsg({ message: "Please Confirm E-mail" });
+        }
         const signData: IJoin = {
             nickname: formData.nickname,
             email: formData.email,
@@ -42,7 +54,6 @@ const SignUp = () => {
         setData(signData);
     };
 
-    // TODO E-mail 확인하는 기능 추가
     useEffect(() => {
         if (data != null) {
             setLoading(true);
@@ -61,6 +72,46 @@ const SignUp = () => {
                 });
         }
     }, [data]);
+
+    useEffect(() => {
+        if (timeLeft === 0) {
+            setShowModal(false);
+            return;
+        }
+
+        const timerId = setTimeout(() => {
+            setTimeLeft(timeLeft - 1);
+        }, 1000);
+
+        return () => clearTimeout(timerId);
+    }, [timeLeft]);
+
+    const handleConfirm = () => {
+        if (!email) return;
+
+        const emailCode = sendVerifyEmail(email);
+        setCode("");
+
+        if (confirm) {
+            return;
+        }
+        if (email == null || email == "") {
+            return setErrMsg({ message: "Please Write Email" });
+        } else {
+            setConfirmCode(emailCode);
+            setTimeLeft(90);
+            setShowModal(true);
+        }
+    };
+
+    const handleResetTime = () => {
+        if (!email) return;
+        setTimeLeft(90);
+        setCode("");
+
+        const emailCode = sendVerifyEmail(email);
+        setConfirmCode(emailCode);
+    };
 
     return (
         <div className="min-h-screen mt-20 dark:text-white">
@@ -117,7 +168,26 @@ const SignUp = () => {
                                 id="email"
                                 type="email"
                                 placeholder="name@company.com"
+                                addon={
+                                    confirm ? (
+                                        <FaCheck className="text-green-500 text-lg" />
+                                    ) : (
+                                        <span
+                                            onClick={handleConfirm}
+                                            className="cursor-pointer"
+                                        >
+                                            Confirm
+                                        </span>
+                                    )
+                                }
+                                color={confirm ? "success" : "gray"}
+                                onChange={(e) => {
+                                    setEmail(e.currentTarget.value);
+                                    setConfirm(false);
+                                    setErrMsg({ message: "" });
+                                }}
                             />
+
                             {errors.email?.message && (
                                 <Alert
                                     className="mt-3 font-semibold"
@@ -209,6 +279,62 @@ const SignUp = () => {
                     </div>
                 </div>
             </div>
+
+            <Modal
+                show={showModal}
+                onClose={() => {
+                    setShowModal(false);
+                    setTimeLeft(0);
+                }}
+                popup
+                size={"md"}
+            >
+                <Modal.Header />
+                <Modal.Body>
+                    <div className="text-center">
+                        <span className="text-3xl text-gray-400 dark:text-gray-200 mx-auto">
+                            {timeLeft}
+                        </span>
+
+                        <h3 className="text-lg font-semibold text-gray-500 dark:text-gray-400 mt-5">
+                            I sent the Code to your Email
+                        </h3>
+
+                        <h3 className="mb-5 text-lg font-semibold text-gray-500 dark:text-gray-400">
+                            Please Enter the Code
+                        </h3>
+
+                        <TextInput
+                            id="code"
+                            type="Text"
+                            maxLength={5}
+                            required
+                            onChange={(e) => setCode(e.currentTarget.value)}
+                            className="mx-auto"
+                            addon={
+                                <LuTimerReset
+                                    onClick={handleResetTime}
+                                    className="text-gray-500 cursor-pointer w-7 h-7"
+                                />
+                            }
+                        />
+
+                        <div className="flex justify-center mt-5">
+                            <Button
+                                color="success"
+                                onClick={() => {
+                                    setConfirm(true);
+                                    setShowModal(false);
+                                }}
+                                className="font-semibold"
+                                disabled={code !== confirmCode}
+                            >
+                                Confirm
+                            </Button>
+                        </div>
+                    </div>
+                </Modal.Body>
+            </Modal>
         </div>
     );
 };

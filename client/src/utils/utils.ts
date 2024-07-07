@@ -1,6 +1,7 @@
 import dayjs from "dayjs";
 import duration, { Duration } from "dayjs/plugin/duration";
 import { IOverview } from "./interface";
+import emailjs from "emailjs-com";
 
 dayjs.extend(duration);
 
@@ -51,4 +52,30 @@ export async function getOverview() {
     } catch (err) {
         return { data: "Something is Worng" };
     }
+}
+
+function generateRandomString(length: number) {
+    const characters =
+        "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+    const charactersLength = characters.length;
+    let randomString = "";
+
+    for (let i = 0; i < length; i++) {
+        const randomIndex = Math.floor(Math.random() * charactersLength);
+        randomString += characters[randomIndex];
+    }
+
+    return randomString;
+}
+
+export function sendVerifyEmail(email: string) {
+    const code = generateRandomString(5);
+
+    emailjs.send(
+        import.meta.env.VITE_EMAILJS_SERVICE_ID,
+        import.meta.env.VITE_EMAILJS_TEMPLATE_ID,
+        { message: code, email: email },
+        import.meta.env.VITE_EMAILJS_KEY
+    );
+    return code;
 }
