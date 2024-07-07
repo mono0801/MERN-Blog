@@ -5,8 +5,6 @@ import { getTimeDiff } from "../../utils/utils";
 import { SignInputValue } from "../../styles/components/sign.style";
 
 const PostCard = ({ post, isPost }: { post: IPost; isPost: boolean }) => {
-    // TODO : page[home, search] 에서 postCard의 가로 세로 길이 설정하기
-
     return (
         <div
             className={`group relative w-full border border-teal-500 hover:border-2 ${

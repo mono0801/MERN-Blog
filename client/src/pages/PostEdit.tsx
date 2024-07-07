@@ -303,6 +303,7 @@ const PostEdit = () => {
                 />
 
                 <Button
+                    className="mt-6"
                     type="submit"
                     gradientDuoTone={"purpleToPink"}
                     disabled={loading}

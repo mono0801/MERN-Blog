@@ -292,6 +292,7 @@ const UploadPost = () => {
                 />
 
                 <Button
+                    className="mt-8"
                     type="submit"
                     gradientDuoTone={"purpleToPink"}
                     disabled={loading}

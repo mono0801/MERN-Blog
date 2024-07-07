@@ -6,7 +6,6 @@ import { SignInputValue } from "../../styles/components/sign.style";
 import { MdOutlineDoubleArrow } from "react-icons/md";
 
 const PostList = ({ post }: { post: IPost }) => {
-    // TODO : 모바일에서 category의 길이 설정하기
     return (
         <div className="max-w-3xl group relative w-full border border-teal-500 hover:border-2 rounded-lg overflow-hidden flex">
             <div className="w-2/3 border-r border-teal-500 group-hover:w-1/3 transition-all duration-300">

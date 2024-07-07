@@ -47,31 +47,42 @@ const Home = () => {
             </div>
 
             <div className="max-w-6xl mx-auto p-3 flex flex-col gap-8 py-7">
+                <h2 className="text-4xl font-semibold text-center">
+                    Recent Posts
+                </h2>
+
+                <div className="flex justify-center items-center gap-4 ">
+                    <TbLayoutGridFilled
+                        onClick={() => dispatch(toggleLayout())}
+                        className={`${
+                            layout
+                                ? "text-teal-500 dark:text-white"
+                                : "text-gray-600"
+                        } text-3xl cursor-pointer hover:scale-125 transition-all`}
+                    />
+                    <FaList
+                        onClick={() => dispatch(toggleLayout())}
+                        className={`${
+                            layout
+                                ? "text-gray-600"
+                                : "text-teal-500 dark:text-white"
+                        } text-2xl cursor-pointer hover:scale-125 transition-all`}
+                    />
+                </div>
+
+                {!posts && (
+                    <p className="text-xl font-semibold text-center">
+                        Posts Not Found
+                    </p>
+                )}
+                {posts && posts.postList.length == 0 && (
+                    <p className="text-xl font-semibold text-center">
+                        No Posts Uploaded
+                    </p>
+                )}
+
                 {posts && posts.postList.length > 0 && (
                     <div className="flex flex-col gap-6">
-                        <h2 className="text-4xl font-semibold text-center">
-                            Recent Posts
-                        </h2>
-
-                        <div className="flex justify-center items-center gap-4 ">
-                            <TbLayoutGridFilled
-                                onClick={() => dispatch(toggleLayout())}
-                                className={`${
-                                    layout
-                                        ? "text-teal-500 dark:text-white"
-                                        : "text-gray-600"
-                                } text-3xl cursor-pointer hover:scale-125 transition-all`}
-                            />
-                            <FaList
-                                onClick={() => dispatch(toggleLayout())}
-                                className={`${
-                                    layout
-                                        ? "text-gray-600"
-                                        : "text-teal-500 dark:text-white"
-                                } text-2xl cursor-pointer hover:scale-125 transition-all`}
-                            />
-                        </div>
-
                         {layout ? (
                             <div className="flex flex-wrap gap-4 justify-center">
                                 {posts.postList.map((post) => (

@@ -99,4 +99,11 @@ body::-webkit-scrollbar {
     .ql-indent-4 {
         padding-left: 14rem;
     }
+
+    .ql-syntax {
+        background-color: black;
+        border-radius: 5px;
+        padding: 1rem;
+        overflow: auto;
+    }
 }

@@ -1,6 +1,18 @@
 import hljs from "highlight.js";
-// TODO: React-Quill의 Code-Block 설정하기
-// TODO: 위즈윅 대체제 찾기
+import "highlight.js/styles/atom-one-dark.css";
+
+hljs.configure({
+    languages: [
+        "javascript",
+        "ruby",
+        "python",
+        "java",
+        "cpp",
+        "kotlin",
+        "sql",
+        "json",
+    ],
+});
 
 export const quillConfig = {
     modules: {
@@ -17,6 +29,9 @@ export const quillConfig = {
             ],
             ["clean"],
         ],
+        syntax: {
+            highlight: (text: string) => hljs.highlightAuto(text).value,
+        },
     },
 
     formats: [
@@ -27,7 +42,7 @@ export const quillConfig = {
         "strike",
         "blockquote",
         "link",
-        "script",
+        "code-block",
         "color",
         "background",
         "align",
