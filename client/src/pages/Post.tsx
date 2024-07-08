@@ -3,11 +3,14 @@ import { Link, useNavigate, useParams } from "react-router-dom";
 import { getPostList } from "../utils/postUtils";
 import { IPost } from "../utils/interface";
 import Loading from "../components/Loading";
-import { Button, Modal } from "flowbite-react";
+import { Alert, Button, Modal } from "flowbite-react";
 import Ad from "../components/Ad";
 import CommentSection from "../components/comment/CommentSection";
 import PostCard from "../components/post/PostCard";
-import { HiOutlineExclamationCircle } from "react-icons/hi";
+import {
+    HiInformationCircle,
+    HiOutlineExclamationCircle,
+} from "react-icons/hi";
 import { useSelector } from "react-redux";
 import { RootState } from "../redux/store";
 
@@ -22,8 +25,7 @@ const Post = () => {
     const navigate = useNavigate();
     const [post, setPost] = useState<IPost | null>(null);
     const [recentPost, setRecentPost] = useState<IPost[] | null>(null);
-    // TODO : error 사용하기
-    const [error, setError] = useState<boolean>(false);
+    const [error, setError] = useState<string | null>(null);
     const [loading, setLoading] = useState<boolean>(true);
     const [showModal, setShowModal] = useState<boolean>(false);
     const [selectedPost, setSelectedPost] = useState<ISelectedPost | null>(
@@ -33,10 +35,10 @@ const Post = () => {
     useEffect(() => {
         getPostList(`?postId=${id}`).then((msg) => {
             if (!msg.response?.ok) {
-                setError(true);
+                setError(msg.data as string);
             } else {
                 setPost(msg.data.postList[0]);
-                setError(false);
+                setError(null);
             }
             setLoading(false);
         });
@@ -45,10 +47,10 @@ const Post = () => {
     useEffect(() => {
         getPostList(`?limit=3`).then((msg) => {
             if (!msg.response?.ok) {
-                setError(true);
+                setError(msg.data as string);
             } else {
                 setRecentPost(msg.data.postList);
-                setError(false);
+                setError(null);
             }
             setLoading(false);
         });
@@ -87,92 +89,109 @@ const Post = () => {
                     string2="Please Wait a Minute"
                 />
             ) : (
-                post && (
-                    <main className="p-3 flex flex-col max-w-6xl mx-auto min-h-screen">
-                        <h1 className="text-3xl mt-10 p-3 text-center font-serif max-w-2xl mx-auto lg:text-4xl">
-                            {post.title}
-                        </h1>
+                <>
+                    {error && (
+                        <Alert
+                            className="mt-3 font-semibold"
+                            color={"failure"}
+                            icon={HiInformationCircle}
+                        >
+                            {error}
+                        </Alert>
+                    )}
+                    {post && (
+                        <main className="p-3 flex flex-col max-w-6xl mx-auto min-h-screen">
+                            <h1 className="text-3xl mt-10 p-3 text-center font-serif max-w-2xl mx-auto lg:text-4xl">
+                                {post.title}
+                            </h1>
 
-                        <div className="flex gap-2 self-center mt-5">
-                            {post.category.map((category) => (
-                                <Link
-                                    to={`/search?category=${category}`}
-                                    key={category}
-                                >
-                                    <Button color="gray" pill size={"xs"}>
-                                        {category}
-                                    </Button>
-                                </Link>
-                            ))}
-                        </div>
+                            <div className="flex gap-2 self-center mt-5">
+                                {post.category.map((category) => (
+                                    <Link
+                                        to={`/search?category=${category}`}
+                                        key={category}
+                                    >
+                                        <Button color="gray" pill size={"xs"}>
+                                            {category}
+                                        </Button>
+                                    </Link>
+                                ))}
+                            </div>
 
-                        <img
-                            src={post.image}
-                            alt={post.title}
-                            className="mt-10 p-3 max-h-[600px] w-full object-cover"
-                        />
+                            <img
+                                src={post.image}
+                                alt={post.title}
+                                className="mt-10 p-3 max-h-[600px] w-full object-cover"
+                            />
 
-                        <div className="flex justify-between p-3 border-b border-slate-500 mx-auto w-full max-w-2xl text-sm">
-                            <span className="italic">
-                                Upload :{" "}
-                                {new Date(post.createdAt).toLocaleDateString()}
-                            </span>
-                            <span className="italic">
-                                Update :{" "}
-                                {new Date(post.updatedAt).toLocaleDateString()}
-                            </span>
-                        </div>
-
-                        <div
-                            className="p-3 max-w-2xl mx-auto w-full post-content border-b border-slate-500 "
-                            dangerouslySetInnerHTML={{ __html: post.content }}
-                        />
-
-                        {(currentUser?.admin ||
-                            post.userId._id == currentUser?._id + "") && (
-                            <div className="flex justify-between p-3 font-semibold">
-                                <Link
-                                    to={`/post/edit/${post._id}`}
-                                    className="text-teal-500 hover:underline"
-                                >
-                                    <span>Edit</span>
-                                </Link>
-                                <span
-                                    onClick={() => {
-                                        setShowModal(true);
-                                        setSelectedPost({
-                                            id: post._id,
-                                            title: post.title,
-                                        });
-                                    }}
-                                    className="text-red-500 hover:underline cursor-pointer"
-                                >
-                                    Delete
+                            <div className="flex justify-between p-3 border-b border-slate-500 mx-auto w-full max-w-2xl text-sm">
+                                <span className="italic">
+                                    Upload :{" "}
+                                    {new Date(
+                                        post.createdAt
+                                    ).toLocaleDateString()}
+                                </span>
+                                <span className="italic">
+                                    Update :{" "}
+                                    {new Date(
+                                        post.updatedAt
+                                    ).toLocaleDateString()}
                                 </span>
                             </div>
-                        )}
 
-                        <div className="max-w-4xl mx-auto w-full mt-3">
-                            <Ad />
-                        </div>
+                            <div
+                                className="p-3 max-w-2xl mx-auto w-full post-content border-b border-slate-500 "
+                                dangerouslySetInnerHTML={{
+                                    __html: post.content,
+                                }}
+                            />
 
-                        <CommentSection postId={post._id} />
+                            {(currentUser?.admin ||
+                                post.userId._id == currentUser?._id + "") && (
+                                <div className="flex justify-between p-3 font-semibold">
+                                    <Link
+                                        to={`/post/edit/${post._id}`}
+                                        className="text-teal-500 hover:underline"
+                                    >
+                                        <span>Edit</span>
+                                    </Link>
+                                    <span
+                                        onClick={() => {
+                                            setShowModal(true);
+                                            setSelectedPost({
+                                                id: post._id,
+                                                title: post.title,
+                                            });
+                                        }}
+                                        className="text-red-500 hover:underline cursor-pointer"
+                                    >
+                                        Delete
+                                    </span>
+                                </div>
+                            )}
 
-                        <div className="flex flex-col justify-center items-center mb-5">
-                            <h1 className="text-xl mt-5">Recent Posts</h1>
-                            <div className="mt-5 flex flex-wrap justify-center gap-5">
-                                {recentPost &&
-                                    recentPost.map((post) => (
-                                        <PostCard
-                                            key={post._id}
-                                            post={post}
-                                            isPost={true}
-                                        />
-                                    ))}
+                            <div className="max-w-4xl mx-auto w-full mt-3">
+                                <Ad />
                             </div>
-                        </div>
-                    </main>
-                )
+
+                            <CommentSection postId={post._id} />
+
+                            <div className="flex flex-col justify-center items-center mb-5">
+                                <h1 className="text-xl mt-5">Recent Posts</h1>
+                                <div className="mt-5 flex flex-wrap justify-center gap-5">
+                                    {recentPost &&
+                                        recentPost.map((post) => (
+                                            <PostCard
+                                                key={post._id}
+                                                post={post}
+                                                isPost={true}
+                                            />
+                                        ))}
+                                </div>
+                            </div>
+                        </main>
+                    )}
+                </>
             )}
             <Modal
                 show={showModal}
