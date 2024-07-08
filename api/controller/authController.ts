@@ -23,7 +23,6 @@ export const postJoin = async (
             });
         }
     } catch (err) {
-        console.log("Error : ", err);
         next(err);
     }
 
@@ -34,8 +33,7 @@ export const postJoin = async (
                 message: "E-mail is Exist",
             });
         }
-    } catch (err) {
-        console.log("Error : ", err);
+    } catch (err: any) {
         next(err);
     }
 
@@ -221,7 +219,9 @@ export const githubLoginCallback = async (req: Request, res: Response) => {
             .cookie("access_token", token, { httpOnly: true })
             .json(rest);
     } else {
-        return res.json("Something Problem is occured");
+        return res.json({
+            message: "Something Problem is occured in Github Login",
+        });
     }
 };
 
@@ -293,7 +293,7 @@ export const kakaoLoginCallback = async (req: Request, res: Response) => {
             .cookie("access_token", token, { httpOnly: true })
             .json(rest);
     } else {
-        return res.json("Something Problem is occured");
+        res.json({ message: "Something Problem is occured in Kakao Login" });
     }
 };
 
@@ -369,17 +369,17 @@ export const naverLoginCallback = async (req: Request, res: Response) => {
             .cookie("access_token", token, { httpOnly: true })
             .json(rest);
     } else {
-        return res.json("Something Problem is occured");
+        res.json({ message: "Something Problem is occured in Naver Login" });
     }
 };
 
-export const logout = (req: Request, res: Response) => {
+export const logout = (req: Request, res: Response, next: NextFunction) => {
     try {
         return res
             .clearCookie("access_token")
             .status(200)
             .json("User is Logged Out");
     } catch (error) {
-        console.log("Error : ", error);
+        next(error);
     }
 };

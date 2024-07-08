@@ -16,8 +16,7 @@ export const postComment = async (req: Request, res: Response) => {
 
         return res.status(201).json(newComment);
     } catch (err) {
-        console.log(err);
-        return res.end();
+        return res.json("Something Problem is occured in Comment Upload");
     }
 };
 
@@ -40,8 +39,7 @@ export const getPostComments = async (req: Request, res: Response) => {
 
         return res.status(200).json(comments);
     } catch (err) {
-        console.log(err);
-        return res.end();
+        return res.json("Something Problem is occured in Get Comment");
     }
 };
 
@@ -93,8 +91,7 @@ export const getDashBoardComments = async (req: Request, res: Response) => {
             lastMonthCommentsCount,
         });
     } catch (err) {
-        console.log(err);
-        return res.end();
+        return res.json("Something Problem is occured in Get Comment List");
     }
 };
 
@@ -120,8 +117,7 @@ export const putCommentLike = async (req: Request, res: Response) => {
 
         return res.status(200).json(comment);
     } catch (err) {
-        console.log(err);
-        return res.end();
+        return res.json("Something Problem is occured in Edit Comment");
     }
 };
 
@@ -143,8 +139,7 @@ export const putComment = async (req: Request, res: Response) => {
         );
         return res.status(201).json(newComment);
     } catch (err) {
-        console.log(err);
-        return res.end();
+        return res.json("Something Problem is occured in Edit Comment Like");
     }
 };
 
@@ -160,7 +155,6 @@ export const deleteComment = async (req: Request, res: Response) => {
         await Comment.findByIdAndDelete(commentId);
         return res.status(200).json("Delete Comment is Successfully");
     } catch (err) {
-        console.log(err);
-        return res.end();
+        return res.json("Something Problem is occured in Delete Comment");
     }
 };

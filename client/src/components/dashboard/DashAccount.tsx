@@ -59,7 +59,7 @@ const DashAccount = () => {
                         }
                     })
                     .catch((err) => {
-                        setErrMsg(err);
+                        setErrMsg(err.message);
                         setLoading(false);
                     });
             } catch (err) {}

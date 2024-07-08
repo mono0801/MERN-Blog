@@ -85,8 +85,7 @@ export const updatePassword = async (req: Request, res: Response) => {
             return res.status(401).json("The Password is Same");
         }
     } catch (err) {
-        console.log("Error : ", err);
-        return res.end();
+        return res.json("Something Problem is occured in Update Password");
     }
 
     user.password = newPassword;
@@ -109,8 +108,7 @@ export const deleteUser = async (req: Request, res: Response) => {
         await User.findByIdAndDelete(_id);
         res.status(200).json("User Account is Deleted");
     } catch (error) {
-        console.log("Error : ", error);
-        return res.end();
+        return res.json("Something Problem is occured in Delete User");
     }
 };
 
@@ -145,8 +143,7 @@ export const getUsers = async (req: Request, res: Response) => {
             lastMonthUserCount,
         });
     } catch (error) {
-        console.log("Error : ", error);
-        return res.end();
+        return res.json("Something Problem is occured in Get User List");
     }
 };
 

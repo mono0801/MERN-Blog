@@ -38,7 +38,6 @@ export const getOverview = async (req: Request, res: Response) => {
 
         res.status(200).json(data);
     } catch (error) {
-        console.log("Error : ", error);
-        return res.end();
+        return res.json("Something Problem is occured in Get Overview Data");
     }
 };

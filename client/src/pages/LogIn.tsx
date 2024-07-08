@@ -59,14 +59,15 @@ const LogIn = () => {
             dispatch(logInStart());
             fetchLogIn(data)
                 .then((msg) => {
-                    dispatch(logInFailure(msg?.data.message));
                     if (msg?.response.ok) {
                         dispatch(logInSuccess(msg.data));
                         navigate("/");
+                    } else {
+                        dispatch(logInFailure(msg?.data.message));
                     }
                 })
                 .catch((err) => {
-                    dispatch(logInFailure(err));
+                    dispatch(logInFailure(err.message));
                 });
         }
     }, [data]);

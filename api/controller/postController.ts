@@ -8,8 +8,7 @@ export const getCategory = async (req: Request, res: Response) => {
         const category = await Category.find<ICategory>({});
         return res.status(200).json(category);
     } catch (error) {
-        console.log("Error : ", error);
-        return res.end();
+        return res.json("Something Problem is occured in Get Category List");
     }
 };
 
@@ -25,8 +24,7 @@ export const postCategory = async (req: Request, res: Response) => {
         const category = await Category.find<ICategory>({});
         return res.status(200).json(category);
     } catch (error) {
-        console.log("Error : ", error);
-        return res.end();
+        return res.json("Something Problem is occured in Upload Category");
     }
 };
 
@@ -39,8 +37,7 @@ export const deleteCategory = async (req: Request, res: Response) => {
         const category = await Category.find<ICategory>({});
         return res.status(200).json(category);
     } catch (error) {
-        console.log("Error : ", error);
-        return res.end();
+        return res.json("Something Problem is occured in Delete Category");
     }
 };
 
@@ -63,8 +60,9 @@ export const postUpload = async (req: Request, res: Response) => {
             post: savedPost,
         });
     } catch (error) {
-        console.log("Error : ", error);
-        return res.end();
+        return res.json({
+            message: "Something Problem is occured in Upload Post",
+        });
     }
 };
 
@@ -117,8 +115,7 @@ export const getPosts = async (req: Request, res: Response) => {
             lastMonthPostCount,
         });
     } catch (error) {
-        console.log("Error : ", error);
-        return res.end();
+        return res.json("Something Problem is occured in Get Post List");
     }
 };
 
@@ -127,8 +124,7 @@ export const deletePost = async (req: Request, res: Response) => {
         await Post.findByIdAndDelete(req.params.postId);
         return res.status(200).json(`${req.body.title} is Deleted`);
     } catch (error) {
-        console.log("Error : ", error);
-        return res.end();
+        return res.json("Something Problem is occured in Delete Post");
     }
 };
 
@@ -156,7 +152,8 @@ export const putPost = async (req: Request, res: Response) => {
             .status(200)
             .json({ message: `[ ${req.body.title} ] is Updated`, post: post });
     } catch (error) {
-        console.log("Error : ", error);
-        return res.end();
+        return res.json({
+            message: "Something Problem is occured in Edit Post",
+        });
     }
 };
