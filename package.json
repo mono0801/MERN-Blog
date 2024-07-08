@@ -7,8 +7,9 @@
     "scripts": {
         "dev": "nodemon --exec ts-node api/index.ts",
         "start": "node dist/api/index.js",
-        "build": "npm run build-api && npm install --prefix client && npm run build --prefix client",
-        "build-api": "tsc -p ."
+        "build": "npm install && npm run build-api",
+        "build-api": "npm install && tsc -p .",
+        "build-client": "npm install --prefix client && npm run build --prefix client"
     },
     "keywords": [],
     "author": "",
