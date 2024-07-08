@@ -9,7 +9,7 @@ import commentRouter from "./router/commentRouter";
 import utilsRouter from "./router/utilsRouter";
 import path from "path";
 
-const __dirname = path.resolve();
+const dirname = path.resolve();
 
 const app = express();
 
@@ -24,9 +24,9 @@ app.use("/api/post", postRouter);
 app.use("/api/comment", commentRouter);
 app.use("/api/utils", utilsRouter);
 
-app.use(express.static(path.join(__dirname, "/client/dist")));
+app.use(express.static(path.join(dirname, "/client/dist")));
 app.get("*", (req: Request, res: Response) => {
-    res.sendFile(path.join(__dirname, "client", "dist", "index.html"));
+    res.sendFile(path.join(dirname, "client", "dist", "index.html"));
 });
 
 app.use(
