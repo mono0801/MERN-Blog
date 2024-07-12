@@ -228,7 +228,7 @@ export const kakaoLogin = (req: Request, res: Response) => {
         client_id: process.env.KAKAOTALK_CLIENT_ID!,
         redirect_uri: process.env.KAKAOTALK_REDIRECT_URL!,
         response_type: "code",
-        scope: "account_email,profile_nickname,profile_image,name",
+        scope: "account_email,profile_nickname,profile_image",
     };
 
     const params = new URLSearchParams(config).toString();
