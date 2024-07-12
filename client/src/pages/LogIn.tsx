@@ -172,8 +172,20 @@ const LogIn = () => {
 
                     <div className="flex gap-2 mt-3">
                         <span>Don't Have an Account?</span>
-                        <Link to="/join" className="text-blue-500 font-bold">
+                        <Link
+                            to="/join"
+                            className="text-blue-500 font-bold hover:underline"
+                        >
                             Sign In
+                        </Link>
+                    </div>
+
+                    <div className="flex gap-2 mt-3">
+                        <Link
+                            to="/forgotpassword"
+                            className="text-blue-500 font-bold hover:underline"
+                        >
+                            Forgot Password?
                         </Link>
                     </div>
                 </div>

@@ -1,7 +1,14 @@
 import * as yup from "yup";
 
 export const logInSchema = yup.object().shape({
-    email: yup.string().email().required("Please write E-mail"),
+    email: yup
+        .string()
+        .email()
+        .matches(
+            /^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*.[a-zA-Z]{2,3}$/i,
+            "Invalid E-mail"
+        )
+        .required("Please write E-mail"),
     password: yup
         .string()
         .min(6, "Password must be at least 6 Characters")
@@ -27,7 +34,14 @@ export const editAccountSchema = yup.object().shape({
         .string()
         .min(2, "Nickname must be at least 2 Characters")
         .required("Please write Nickname"),
-    email: yup.string().email().required("Please write E-mail"),
+    email: yup
+        .string()
+        .email()
+        .matches(
+            /^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*.[a-zA-Z]{2,3}$/i,
+            "Invalid E-mail"
+        )
+        .required("Please write E-mail"),
 });
 
 export const editPasswordSchema = yup.object().shape({
@@ -62,4 +76,15 @@ export const uploadPostSchema = yup.object().shape({
 
 export const searchKeywordSchema = yup.object().shape({
     keyword: yup.string(),
+});
+
+export const emailSchema = yup.object().shape({
+    email: yup
+        .string()
+        .email()
+        .matches(
+            /^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*.[a-zA-Z]{2,3}$/i,
+            "Invalid E-mail"
+        )
+        .required("Please write E-mail"),
 });

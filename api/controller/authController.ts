@@ -59,10 +59,7 @@ export const postLogin = async (
     const { email, password } = req.body;
 
     try {
-        const validUser = await User.findOne<IUser>({
-            email,
-            socialLogin: false,
-        });
+        const validUser = await User.findOne<IUser>({ email });
         if (!validUser) {
             return res.status(404).json({ message: "User Not Found" });
         }
@@ -381,5 +378,29 @@ export const logout = (req: Request, res: Response, next: NextFunction) => {
             .json("User is Logged Out");
     } catch (error) {
         next(error);
+    }
+};
+
+export const putReissuePassword = async (req: Request, res: Response) => {
+    const { email, password } = req.body;
+
+    if (!email || email == "") {
+        return res.status(400).json({ message: "All Fields are Required" });
+    }
+
+    const user = await User.findOne<IUser>({ email });
+    if (!user) {
+        return res.status(404).json({
+            message: "E-mail Not Found",
+        });
+    }
+
+    try {
+        user.password = password;
+        await user.save();
+
+        return res.json({ message: `Send Reissue Password to [ ${email} ]` });
+    } catch (error: any) {
+        return res.status(500).json({ message: error.message });
     }
 };

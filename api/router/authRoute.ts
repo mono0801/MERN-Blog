@@ -10,12 +10,15 @@ import {
     postGoogle,
     postJoin,
     postLogin,
+    putReissuePassword,
 } from "../controller/authController";
 
 const authRouter = express.Router();
 
 authRouter.route("/join").post(postJoin);
 authRouter.route("/login").post(postLogin);
+authRouter.route("/reissue").put(putReissuePassword);
+
 authRouter.route("/google").post(postGoogle);
 
 authRouter.route("/github").get(githubLogin);

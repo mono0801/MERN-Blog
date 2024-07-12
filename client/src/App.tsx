@@ -18,6 +18,7 @@ import Post from "./pages/Post";
 import PostEdit from "./pages/PostEdit";
 import ScrollToTop from "./components/ScrollToTop";
 import Search from "./pages/Search";
+import ForgotPassword from "./pages/ForgotPassword";
 
 const LoginRoutes = () => {
     return (
@@ -46,6 +47,10 @@ const App = () => {
                 <Route element={<ProtectLogIn />}>
                     <Route path="/login/*" element={<LoginRoutes />} />
                     <Route path="/join" element={<Join />} />
+                    <Route
+                        path="/forgotpassword"
+                        element={<ForgotPassword />}
+                    />
                 </Route>
 
                 <Route element={<PrivateRoute />}>

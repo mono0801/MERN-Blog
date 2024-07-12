@@ -54,7 +54,7 @@ export async function getOverview() {
     }
 }
 
-function generateRandomString(length: number) {
+export function generateRandomString(length: number) {
     const characters =
         "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
     const charactersLength = characters.length;
@@ -78,4 +78,15 @@ export function sendVerifyEmail(email: string) {
         import.meta.env.VITE_EMAILJS_KEY
     );
     return code;
+}
+
+export function sendReissuePassword(email: string, password: string) {
+    emailjs.send(
+        import.meta.env.VITE_EMAILJS_SERVICE_ID,
+        import.meta.env.VITE_EMAILJS_REISSUE_TEMPLATE_ID,
+        { message: password, email: email },
+        import.meta.env.VITE_EMAILJS_KEY
+    );
+
+    return password;
 }
