@@ -51,7 +51,7 @@ body::-webkit-scrollbar {
 }
 
 .dark .post-content a {
-    color: red;
+    color: #1e90ff;
 }
 
 .post-content ul {
@@ -65,10 +65,10 @@ body::-webkit-scrollbar {
 }
 
 .post-content blockquote {
-    border-left: 4px solid #ccc;
+    border-left: 4px solid #3cb371;
     padding-left: 10px;
     color: #666;
-    margin: 0 0 20px;
+    margin: 10px 0;
 }
 
 .post-content {
@@ -101,9 +101,10 @@ body::-webkit-scrollbar {
     }
 
     .ql-syntax {
-        background-color: black;
+        background-color: #272727;
         border-radius: 5px;
         padding: 1rem;
         overflow: auto;
+        color: white;
     }
 }
